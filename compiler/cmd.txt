@@ -1,0 +1,8 @@
+arduino-cli compile -v -b STM32:stm32:Nucleo_64:pnum=NUCLEO_L476RG .\Blink --build-path .\tmp --build-cache-path .\tmp --output .\Blink
+arduino-cli compile -v -b STM32:stm32:Nucleo_64:pnum=NUCLEO_L476RG .\tmp
+
+.\packages\STM32\tools\xpack-arm-none-eabi-gcc\9.2.1-1.1\bin\arm-none-eabi-objcopy.exe .\tmp\tmp.STM32.stm32.Nucleo_64.elf -O binary .\tmp\tmp.STM32.stm32.Nucleo_64.bin
+
+arduino-cli.exe upload -p E -b STM32:stm32:Nucleo_64:pnum=NUCLEO_L476RG,upload_method=MassStorage .\tmp
+
+..\gcc\bin\arm-none-eabi-gcc ".\tmp\tmp.ino" -mcpu=cortex-m4 -std=gnu11 -g3 -DUSE_HAL_DRIVER -DSTM32L476xx -DDEBUG -c -I../Drivers/CMSIS/Include -I../Core/Inc -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/system_stm32l4xx.d" -MT"Core/Src/system_stm32l4xx.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/system_stm32l4xx.o"

@@ -1,23 +1,19 @@
-
-# STudio4Education Electron
-![ST logo](https://raw.githubusercontent.com/SebCanet/Studio4Education/gh-pages/S4E/media/STMicroelectronics_normal.png)
+# STudio4Education
+![logo](https://raw.githubusercontent.com/A-S-T-U-C-E/STudio4Education/master/S4E/media/STMicroelectronics_normal.png)
 
 Designed for **Arrowhead** Tools Project: [https://www.arrowhead.eu/arrowheadtools](https://www.arrowhead.eu/arrowheadtools)
 
-![Arrowhead tools logo](https://raw.githubusercontent.com/SebCanet/Studio4Education/gh-pages/S4E/media/arrowhead_tools.jpg)
+![enter image description here](https://raw.githubusercontent.com/A-S-T-U-C-E/STudio4Education/master/S4E/media/arrowhead_tools.jpg)
 
 
 STudio4Education is a **web-based visual programming editor for [ST microelectronics](https://www.st.com)** boards.
 
 STudio4Education is based on [Blockly](https://developers.google.com/blockly/), the web-based, graphical programming editor.
 
-![Blockly logo](https://raw.githubusercontent.com/SebCanet/Studio4Education/gh-pages/S4E/media/logo_built_on.png)
+![Blockly logo](https://raw.githubusercontent.com/A-S-T-U-C-E/STudio4Education/master/S4E/media/logo_built_on.png)
 
 STudio4Education provides static type language blocks and code generators for simple C programming.
 
-Upload in boards thanks to STM32Duino project: [https://github.com/stm32duino](https://github.com/stm32duino):
-
-![STM32Duino logo](https://avatars0.githubusercontent.com/u/12180191?s=200&v=4)
 
 ## Features
 
@@ -61,7 +57,7 @@ The cursor controls how the user navigates the blocks, inputs, fields and connec
 
 ## Demo
 
-STudio4Education is a web tool. You can give it a try at [Web](http://sebcanet.github.io/Studio4Education/).
+STudio4Education is a web tool. You can give it a try at [Web](https://a-s-t-u-c-e.github.io/STudio4Education/).
 
 ## Run locally on your web browser
 
@@ -69,27 +65,23 @@ If you want to install it locally. Get code from github and open `index.html` in
 
 ## Integrated upload
 
-The [Electron](https://www.electronjs.org/) version embeds [arduino-cli](https://github.com/arduino/arduino-cli) for an off-line version.
+Soon an [Electron](https://www.electronjs.org/) version with [arduino-cli](https://github.com/arduino/arduino-cli) embbeded for an off-line version: [https://github.com/SebCanet/S4E_electron](https://github.com/A-S-T-U-C-E/S4E_Electron)
 
 ## Usage
 
-1. Configure S4Electron
-2. Select your board, your language, your favorite theme + renderer.
-3. Drag and drop blocks to make a program.
-4. Verify your code.
-5. Configure with the right board and communication port.
-6. Press the 'Upload' button to burn the code into a connected board.
+1. Open browser to STudio4Education folder and select your board, your language, your favorite theme + renderer.
+2. Drag and drop blocks to make a program.
+3. Copy all of the source code into an existing or new project in the Arduino IDE with [STM32Duino](https://github.com/stm32duino/Arduino_Core_STM32) installed
+4. Configure your Arduino IDE with the right board and communication port.
+5. Press the 'Upload' button in the Arduino IDE to burn the code into a connected board.
 
 ## ChangeLog
 
-Check changelog [here](https://github.com/SebCanet/Studio4Education/blob/gh-pages/CHANGELOG.txt)
+Check changelog [here](https://github.com/A-S-T-U-C-E/STudio4Education/blob/master/CHANGELOG.txt)
 
 ## Tools used
 
 [Ace editor](https://ace.c9.io)
-[Electron](https://www.electronjs.org/)
-[Node SerialPort](https://serialport.io/)
-[STM32Duino](https://github.com/stm32duino)
 
 
 ## Authors and Contributors

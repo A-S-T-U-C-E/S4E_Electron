@@ -19,12 +19,13 @@ function createBlocklyWindow() {
         width: 1510,
         height: 700,
         webPreferences: {
-            nodeIntegration: true
+            nodeIntegration: true,
+            nodeIntegrationInWorker: true
         },
         icon: __dirname + '/src/icon.ico'
     });
-    // var url = '/www/index.html';
-    var url = '../../../www/index.html';
+    var url = '/www/index.html';
+    // var url = '../../../www/index.html';
     if (process.platform === 'win32' && process.argv.length >= 2) {    
         url = url + process.argv[1];
     }
@@ -46,8 +47,8 @@ function createSerialWindow(argLangChoice) {
         resizable: false,
         icon: __dirname + '/src/icon.ico'
     });
-    // var url = '/www/electron/serialMonitor.html';
-    var url = '../../../www/electron/serialMonitor.html';
+    var url = '/www/electron/serialMonitor.html';
+    // var url = '../../../www/electron/serialMonitor.html';
     if (argLangChoice !== "" || argLangChoice !== "undefined")
         url = url + '?lang=' + argLangChoice;
     SerialWindow.loadURL(`file://${__dirname}` + url);
@@ -55,11 +56,11 @@ function createSerialWindow(argLangChoice) {
     SerialWindow.on('closed', function () {
         SerialWindow = null;
     });
-    // devtools = new BrowserWindow();
-    // SerialWindow.webContents.setDevToolsWebContents(devtools.webContents);
-    // SerialWindow.webContents.openDevTools({
-        // mode: 'detach'
-    // });
+    devtools = new BrowserWindow();
+    SerialWindow.webContents.setDevToolsWebContents(devtools.webContents);
+    SerialWindow.webContents.openDevTools({
+        mode: 'detach'
+    });
     console.log(url);
 };
 
@@ -76,8 +77,8 @@ function createFactoryWindow(argLangChoice) {
         frame: false,
         modal: false
     });
-    // var url = '/www/blocksfactory/blocksfactory.html';
-    var url = '../../../www/blocksfactory/blocksfactory.html';
+    var url = '/www/blocksfactory/blocksfactory.html';
+    // var url = '../../../www/blocksfactory/blocksfactory.html';
     if (argLangChoice !== "" || argLangChoice !== "undefined")
         url = url + '?lang=' + argLangChoice;
     SerialWindow.loadURL(`file://${__dirname}` + url);
@@ -101,13 +102,13 @@ app.on('ready', () => {
     createBlocklyWindow();
     globalShortcut.register('F12', openDevTools);
     globalShortcut.register('F5', refresh);
-    // devtools = new BrowserWindow();
-    // BlocklyWindow.webContents.setDevToolsWebContents(devtools.webContents);
-    // BlocklyWindow.webContents.openDevTools({
-        // mode: 'detach'
-    // });
-    tray = new Tray('../../www/blocklyduino/media/logo_only.png');
-    // tray = new Tray('./www/blocklyduino/media/logo_only.png');
+    devtools = new BrowserWindow();
+    BlocklyWindow.webContents.setDevToolsWebContents(devtools.webContents);
+    BlocklyWindow.webContents.openDevTools({
+        mode: 'detach'
+    });
+    // tray = new Tray('../../www/S4E/media/logo_only.png');
+    tray = new Tray('./www/S4E/media/logo_only.png');
     tray.setToolTip('BlocklyDuino');
 });
 

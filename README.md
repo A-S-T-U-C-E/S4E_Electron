@@ -1,19 +1,15 @@
-# STudio4Education
-![logo](https://raw.githubusercontent.com/A-S-T-U-C-E/STudio4Education/master/S4E/media/STMicroelectronics_normal.png)
 
-Designed for **Arrowhead** Tools Project: [https://www.arrowhead.eu/arrowheadtools](https://www.arrowhead.eu/arrowheadtools)
+# STudio4Education All In One
 
-![enter image description here](https://raw.githubusercontent.com/A-S-T-U-C-E/STudio4Education/master/S4E/media/arrowhead_tools.jpg)
+![logos](https://raw.githubusercontent.com/A-S-T-U-C-E/S4E_Electron/master/www/electron/media/logos.png)
 
+Designed for **Arrowhead** Tools Project ([https://www.arrowhead.eu/arrowheadtools](https://www.arrowhead.eu/arrowheadtools)), STudio4Education is a **web-based visual programming editor for [ST microelectronics](https://www.st.com)** boards.
 
-STudio4Education is a **web-based visual programming editor for [ST microelectronics](https://www.st.com)** boards.
+STudio4Education is based on [Blockly](https://developers.google.com/blockly/) framework, the  blocks graphical programming editor behind *Scratch3*.
 
-STudio4Education is based on [Blockly](https://developers.google.com/blockly/), the web-based, graphical programming editor.
+STudio4Education provides static type language blocks and code generators for simple C programming and Arduino like.
 
-![Blockly logo](https://raw.githubusercontent.com/A-S-T-U-C-E/STudio4Education/master/S4E/media/logo_built_on.png)
-
-STudio4Education provides static type language blocks and code generators for simple C programming.
-
+This AIO version provides an offline client for desktop use. Thanks to **STM32Duino** project: [https://github.com/stm32duino](https://github.com/stm32duino), it adds verifying, compiling and uploading features.
 
 ## Features
 
@@ -26,6 +22,9 @@ STudio4Education provides static type language blocks and code generators for si
 * Block render choice
 * Multi language
 * Keyboard navigation
+* Verify, compile and upload to board
+* Serial monitor for USB communication
+* Libraries & board packges management
 * etc
 
 ## Accessibility
@@ -57,31 +56,35 @@ The cursor controls how the user navigates the blocks, inputs, fields and connec
 
 ## Demo
 
-STudio4Education is a web tool. You can give it a try at [Web](https://a-s-t-u-c-e.github.io/STudio4Education/).
+STudio4Education is a web tool. You can give it a try at [Web](https://a-s-t-u-c-esebcanet.github.io/STtudio4Education/).
 
-## Run locally on your web browser
+## Run locally
 
 If you want to install it locally. Get code from github and open `index.html` in your browser.
 
 ## Integrated upload
 
-Soon an [Electron](https://www.electronjs.org/) version with [arduino-cli](https://github.com/arduino/arduino-cli) embbeded for an off-line version: [https://github.com/SebCanet/S4E_electron](https://github.com/A-S-T-U-C-E/S4E_Electron)
+The [Electron](https://www.electronjs.org/) version embeds [arduino-cli](https://github.com/arduino/arduino-cli), thanks to [STM32Duino project](https://www.stm32duino.com/).
+
 
 ## Usage
 
-1. Open browser to STudio4Education folder and select your board, your language, your favorite theme + renderer.
-2. Drag and drop blocks to make a program.
-3. Copy all of the source code into an existing or new project in the Arduino IDE with [STM32Duino](https://github.com/stm32duino/Arduino_Core_STM32) installed
-4. Configure your Arduino IDE with the right board and communication port.
-5. Press the 'Upload' button in the Arduino IDE to burn the code into a connected board.
+1. Configure S4Electron: select your **board**, your language, your favorite theme + renderer.
+3. Drag and drop blocks to make a program.
+4. Click on 'Compile' to verify code and prepare binary file.
+5. Configure the communication port.
+6. Press the 'Upload' button to send the binary file into a connected board.
 
 ## ChangeLog
 
-Check changelog [here](https://github.com/A-S-T-U-C-E/STudio4Education/blob/master/CHANGELOG.txt)
+Check changelog [here](https://github.com/A-S-T-U-C-E/S4E_Electron/blob/master/CHANGELOG.txt)
 
 ## Tools used
 
 [Ace editor](https://ace.c9.io)
+[Electron](https://www.electronjs.org/)
+[Node SerialPort](https://serialport.io/)
+[STM32Duino](https://github.com/stm32duino)
 
 
 ## Authors and Contributors
@@ -113,3 +116,19 @@ Help us focus our development efforts by telling us [what you are doing with Blo
 a few minutes and will help us better support the Blockly community.
 
 Want to contribute? Great! First, read [our guidelines for contributors](https://developers.google.com/blockly/guides/modify/contributing).
+
+# Arduino core support for STM32 based boards
+
+[![forums](https://camo.githubusercontent.com/2fe5a04c0c55c3704cf1993cab7e8197c8bf7a2d/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f6a6f696e2d746865253230666f72756d732d626c75652e737667)](https://www.stm32duino.com/) [![wiki](https://camo.githubusercontent.com/bbeee33e0bdbd610aa82ca8dcdd81caef9f76ea6/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f62726f7773652d74686525323077696b692d6f72616e67652e737667)](https://github.com/stm32duino/wiki/wiki) [![STM32 Core Continuous Integration](https://github.com/stm32duino/Arduino_Core_STM32/workflows/STM32%20Core%20Continuous%20Integration/badge.svg?branch=master)](https://github.com/stm32duino/Arduino_Core_STM32/workflows/STM32%20Core%20Continuous%20Integration/badge.svg?branch=master)
+
+[![GitHub release](https://camo.githubusercontent.com/e723ea1243b0c49eb44399ff6bc0f8ece710fe48/68747470733a2f2f696d672e736869656c64732e696f2f6769746875622f72656c656173652f73746d33326475696e6f2f41726475696e6f5f436f72655f53544d33322e737667)](https://github.com/stm32duino/Arduino_Core_STM32/releases/latest) [![GitHub All Releases](https://camo.githubusercontent.com/52f5df97357861fa9416b8c7333f63d68a72e415/68747470733a2f2f696d672e736869656c64732e696f2f6769746875622f646f776e6c6f6164732f73746d33326475696e6f2f41726475696e6f5f436f72655f53544d33322f746f74616c2e7376673f6c6162656c3d646f776e6c6f61647325323073696e6365253230312e342e30)](https://camo.githubusercontent.com/52f5df97357861fa9416b8c7333f63d68a72e415/68747470733a2f2f696d672e736869656c64732e696f2f6769746875622f646f776e6c6f6164732f73746d33326475696e6f2f41726475696e6f5f436f72655f53544d33322f746f74616c2e7376673f6c6162656c3d646f776e6c6f61647325323073696e6365253230312e342e30) [![GitHub commits](https://camo.githubusercontent.com/683eb83c663d89d6fb62741b7b072b1226f8f1d7/68747470733a2f2f696d672e736869656c64732e696f2f6769746875622f636f6d6d6974732d73696e63652f73746d33326475696e6f2f41726475696e6f5f436f72655f53544d33322f312e392e302e737667)](https://github.com/stm32duino/Arduino_Core_STM32/compare/1.9.0...master)
+
+-   [Introduction](https://github.com/stm32duino/Arduino_Core_STM32#Introduction)  
+    
+-   [Getting Started](https://github.com/stm32duino/Arduino_Core_STM32#getting-started)  
+    
+-   [Supported boards](https://github.com/stm32duino/Arduino_Core_STM32#supported-boards)  
+    
+-   [Troubleshooting](https://github.com/stm32duino/Arduino_Core_STM32#troubleshooting)  
+    
+-   [Wiki](https://github.com/stm32duino/wiki/wiki/)

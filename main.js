@@ -111,7 +111,7 @@ app.on('ready', () => {
     // BlocklyWindow.webContents.openDevTools({
         // mode: 'detach'
     // });
-    tray = new Tray('../../www/S4E/media/logo_only.png');
+    tray = new Tray('../../../www/S4E/media/logo_only.png');
     // tray = new Tray('./www/S4E/media/logo_only.png');
     tray.setToolTip('S4E');
 });

@@ -40,40 +40,75 @@ Some basic commands for moving around are below.
 
 ### Workspace Navigation
 
--   W: Previous block/field/input at the same level.
--   A: Up one level (Field (or input) -> Block -> Input (or field) -> Block -> Stack -> Workspace).
--   S: Next block/field/input at the same level.
--   D: Down one level (Workspace -> Stack -> Block -> Input (or field) -> Block -> Field (or input)).
--   T: Will open the toolbox. Once in there you can moving around using the WASD keys. And insert a block by hitting Enter.
--   X: While on a connection hit X to disconnect the block after the cursor.
+-   **W**: Previous block/field/input at the same level.
+-   **A**: Up one level (Field (or input) -> Block -> Input (or field) -> Block -> Stack -> Workspace).
+-   **S**: Next block/field/input at the same level.
+-   **D**: Down one level (Workspace -> Stack -> Block -> Input (or field) -> Block -> Field (or input)).
+-   **T**: Will open the toolbox. Once in there you can moving around using the WASD keys. And insert a block by hitting Enter.
+-   **X**: While on a connection hit X to disconnect the block after the cursor.
 
 ### Cursor 
 The cursor controls how the user navigates the blocks, inputs, fields and connections on a workspace. Two different cursors:  
 
--   **Default Cursor**: Allow the user to go to the previous, next, in or out location.
--   **Basic Cursor**: Using the pre order traversal allows the user to go to the next and previous location.
+-   **default Cursor**: Allow the user to go to the previous, next, in or out location;
+-   **basic Cursor**: Using the pre order traversal allows the user to go to the next and previous location.
 
 
 ## Demo
 
-STudio4Education is a web tool. You can give it a try at [Web](https://a-s-t-u-c-esebcanet.github.io/STtudio4Education/).
-
-## Run locally
-
-If you want to install it locally. Get code from github and open `index.html` in your browser.
+STudio4Education is a web tool, you can give it a try at [Web version](https://a-s-t-u-c-esebcanet.github.io/STtudio4Education/).
 
 ## Integrated upload
 
-The [Electron](https://www.electronjs.org/) version embeds [arduino-cli](https://github.com/arduino/arduino-cli), thanks to [STM32Duino project](https://www.stm32duino.com/).
+Unlike the web version, the [Electron](https://www.electronjs.org/) version embeds [arduino-cli](https://github.com/arduino/arduino-cli), thanks to [STM32Duino project](https://www.stm32duino.com/).
+
+
+## Run locally
+
+*Windows user*:  you can download [latest release](https://github.com/A-S-T-U-C-E/S4E_Electron/releases/latest), double click on exe file to launch it and follow usage.
+
+If you want to test it locally and compile by yourself, you have to get [code from github](https://github.com/A-S-T-U-C-E/S4E_Electron/archive/master.zip) and follow instructions below.
+
+### Requirements
+
+You'll need [Node.js](https://nodejs.org/) installed on your computer.
+
+Install all required tools (as Administrator or sudo):
+
+ - tools for compiling on Windows
+``` bash
+> npm install -g windows-build-tools
+``` 
+- addon build tool
+``` bash
+> npm install -g node-gyp
+``` 
+### Getting Started
+``` bash
+> cd S4E_Electron-master
+> npm install
+> npm start
+```
+### Build
+``` bash
+> npm run compile
+``` 
+*Cross compile for all OS is still on the TODO list...need help.*
 
 
 ## Usage
 
-1. Configure S4Electron: select your **board**, your language, your favorite theme + renderer.
-3. Drag and drop blocks to make a program.
-4. Click on 'Compile' to verify code and prepare binary file.
-5. Configure the communication port.
-6. Press the 'Upload' button to send the binary file into a connected board.
+1. Configure S4Electron: open setup panel and select your **board**, your language, your favorite theme + renderer, etc.
+2. Drag and drop blocks to make a program.
+3. If needed, unzip libraries in `sketchbook\libraries folder`, or use CLI panel:
+	1. click on '*update core and libraries*' button;
+	2. search for the eaxct name of the library you are looking for;
+	3. type name, case sensitive, in input field and click on button '*install this library*':
+![enter image description here](https://raw.githubusercontent.com/A-S-T-U-C-E/S4E_Electron/master/www/electron/media/lib_install.jpg)
+4. Click on '*Compile*' to verify code and prepare binary file.
+5. If needed, install specific packages by taping FQBN name in '*board install to CLI*' input field and click on button '*install this board type'*.
+6. If not done before, select communication port in setup panel.
+7. Press the '*Upload*' button to send the binary file into a connected board.
 
 ## ChangeLog
 

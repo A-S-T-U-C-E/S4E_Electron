@@ -37,7 +37,7 @@ smoothieChart.addTimeSeries(line0, {
     strokeStyle: 'none',
     fillStyle: 'rgba(0,64,128,0.53)'
 });
-smoothieChart.streamTo(document.getElementById("serialGraph"), 500);
+smoothieChart.streamTo(document.getElementById("serialGraph"), 0);
 smoothieChart.stop();
 
 var serialMonitor = {};

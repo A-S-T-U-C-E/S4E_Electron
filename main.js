@@ -1,4 +1,14 @@
-// Modules to control application life and create native browser window
+/**
+ * @license
+ * Copyright 2020 Sébastien CANET
+ * SPDX-License-Identifier: BSD-3-Clause
+ */
+
+/**
+ * @fileoverview Modules to control application life and create native browser window.
+ * @author scanet@libreduc.cc (Sébastien CANET)
+ */
+ 
 const {
     app,
     BrowserWindow,

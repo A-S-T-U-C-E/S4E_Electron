@@ -1,9 +1,18 @@
-﻿/* fake IDE code Arduino
- ** boardMenu: Arduino boards list
- ** serialMenu: serial port list
- ** serialConnectButton: open modal with serial console
- ** verifyButton: verify and compile in hex file
- ** uploadButton: upload hex file in Arduino board
+﻿/**
+ * @license
+ * Copyright 2020 Sébastien CANET
+ * SPDX-License-Identifier: BSD-3-Clause
+ */
+
+/**
+ * @fileoverview Utility functions for handling typed variables.
+ * fake IDE code Arduino
+ * boardMenu: Arduino boards list
+ * serialMenu: serial port list
+ * serialConnectButton: open modal with serial console
+ * verifyButton: verify and compile in hex file
+ * uploadButton: upload hex file in Arduino board
+ * @author scanet@libreduc.cc (Sébastien CANET)
  */
 
 const {ipcRenderer} = require('electron');

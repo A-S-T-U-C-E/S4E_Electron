@@ -1,4 +1,15 @@
-var {ipcRenderer} = require("electron");
+/**
+ * @license
+ * Copyright 2020 Sébastien CANET
+ * SPDX-License-Identifier: BSD-3-Clause
+ */
+
+/**
+ * @fileoverview Utility functions for handling serial communication & plotter.
+ * @author scanet@libreduc.cc (Sébastien CANET)
+ */
+ 
+ var {ipcRenderer} = require("electron");
 var {dialog} = require("electron").remote;
 var fs = require('fs-extra');
 
@@ -40,12 +51,14 @@ window.addEventListener('load', function load(event) {
             connexion = false;
             smoothieChart.stop();
         } else {
-            SerialPortToMonitor = new SerialPort(comPortToUse, {
+            let SerialPortToMonitor = new SerialPort(comPortToUse, {
+                autoOpen: false,
+                parser: SerialPort.parsers.readline('\n'),
                 baudRate: baud
             });
-            const parser = new Readline({
-                delimiter: '\n'
-            });
+            // const parser = new Readline({
+                // delimiter: '\n'
+            // });
             SerialPortToMonitor.pipe(parser);
             document.getElementById('btn_serialConnect').innerHTML = MSG['serial_btn_stop'];
             document.getElementById('btn_serialSend').disabled = false;
@@ -75,18 +88,18 @@ window.addEventListener('load', function load(event) {
                 }
             ]
         },
-                function (result) {
-                    var code = document.getElementById('fenetre_term').innerHTML
-                    code = code.split('<br>').join('\n')
-                    if (result === null) {
-                        return
-                    } else {
-                        fs.writeFile(result, code, function (err) {
-                            if (err)
-                                return console.log(err)
-                        })
-                    }
+        function (result) {
+            var code = document.getElementById('fenetre_term').innerHTML
+            code = code.split('<br>').join('\n')
+            if (result === null) {
+                return
+            } else {
+                fs.writeFile(result, code, function (err) {
+                    if (err)
+                        return console.log(err)
                 })
+            }
+        })
     };
     document.getElementById('btn_serialChart').onclick = function () {
         if (!graph) {

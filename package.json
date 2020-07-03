@@ -1,8 +1,8 @@
 {
     "name": "S4E",
-    "version": "0.7.0",
+    "version": "0.7.2",
     "description": "Studio4Education is a web-based visual programming editor for [STmicroelectronics boards](https://www.st.com/content/st_com/en.html)",
-    "license": "GPL-3.0",
+    "license": "BSD-3-Clause",
     "author": "Sebastien Canet <scanet@libreduc.cc>",
     "main": "main.js",
     "keywords": [

@@ -56,11 +56,11 @@ The cursor controls how the user navigates the blocks, inputs, fields and connec
 
 ## Demo
 
-STudio4Education is a web tool, you can give it a try at [Web version](https://a-s-t-u-c-esebcanet.github.io/STtudio4Education/).
+STudio4Education is a web tool, you can give it a try at [Web version](https://a-s-t-u-c-e.github.io/STudio4Education/).
 
 ## Integrated upload
 
-Unlike the web version, the [Electron](https://www.electronjs.org/) version embeds [arduino-cli](https://github.com/arduino/arduino-cli), thanks to [STM32Duino project](https://www.stm32duino.com/).
+Unlike the web version, this [Electron](https://www.electronjs.org/) version embeds [arduino-cli](https://github.com/arduino/arduino-cli), thanks to [STM32Duino project](https://www.stm32duino.com/).
 
 
 ## Run locally
@@ -117,8 +117,13 @@ Check changelog [here](https://github.com/A-S-T-U-C-E/S4E_Electron/blob/master/C
 ## Tools used
 
 [Ace editor](https://ace.c9.io)
+
+[Arduino-CLI](https://github.com/arduino/arduino-cli)
+
 [Electron](https://www.electronjs.org/)
+
 [Node SerialPort](https://serialport.io/)
+
 [STM32Duino](https://github.com/stm32duino)
 
 
@@ -135,6 +140,9 @@ Copyright (C) 2020 Sébastien Canet scanet@libreduc.cc
 -   Licensed under the BSD 3-Clause License.
 -   You may not use this project or any file except in compliance with the License.
 -   You may obtain a copy of the License at [https://opensource.org/licenses/BSD-3-Clause](https://opensource.org/licenses/BSD-3-Clause).
+
+Code from Blockly is licensed under the Apache 2.0 license.
+
 
 # Blockly [![Build Status]( https://travis-ci.org/google/blockly.svg?branch=master)](https://travis-ci.org/google/blockly)
 

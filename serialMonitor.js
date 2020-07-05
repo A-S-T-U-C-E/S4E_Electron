@@ -9,7 +9,7 @@
  * @author scanet@libreduc.cc (Sébastien CANET)
  */
  
- var {ipcRenderer} = require("electron");
+var {ipcRenderer} = require("electron");
 var {dialog} = require("electron").remote;
 var fs = require('fs-extra');
 

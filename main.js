@@ -31,11 +31,11 @@ function createBlocklyWindow() {
         webPreferences: {
             nodeIntegration: true
         },
-        icon: __dirname + '/www/S4E/media/icon.ico'
-        // icon: __dirname + '../../../www/S4E/media/icon.ico'
+        // icon: __dirname + '/www/S4E/media/icon.ico'
+        icon: __dirname + '../../../www/S4E/media/icon.ico'
     });
-    var url = '/www/index.html';
-    // var url = '../../../www/index.html';
+    // var url = '/www/index.html';
+    var url = '../../../www/index.html';
     if (process.platform === 'win32' && process.argv.length >= 2) {    
         url = url + process.argv[1];
     }
@@ -55,11 +55,11 @@ function createSerialWindow(argLangChoice) {
             nodeIntegration: true
         },
         resizable: false,
-        icon: __dirname + '/src/icon.ico'
-        // icon: __dirname + '../../../www/S4E/media/icon.ico'
+        // icon: __dirname + '/src/icon.ico'
+        icon: __dirname + '../../../www/S4E/media/icon.ico'
     });
-    var url = '/www/electron/serialMonitor.html';
-    // var url = '../../../www/electron/serialMonitor.html';
+    // var url = '/www/electron/serialMonitor.html';
+    var url = '../../../www/electron/serialMonitor.html';
     if (argLangChoice !== "" || argLangChoice !== "undefined")
         url = url + '?lang=' + argLangChoice;
     SerialWindow.loadURL(`file://${__dirname}` + url);
@@ -86,11 +86,11 @@ function createFactoryWindow(argLangChoice) {
         movable: true,
         frame: false,
         modal: false,
-        icon: __dirname + '/www/S4E/media/icon.ico'
-        // icon: __dirname + '../../../www/S4E/media/icon.ico'
+        // icon: __dirname + '/www/S4E/media/icon.ico'
+        icon: __dirname + '../../../www/S4E/media/icon.ico'
     });
-    var url = '/www/blocksfactory/blocksfactory.html';
-    // var url = '../../../www/blocksfactory/blocksfactory.html';
+    // var url = '/www/blocksfactory/blocksfactory.html';
+    var url = '../../../www/blocksfactory/blocksfactory.html';
     if (argLangChoice !== "" || argLangChoice !== "undefined")
         url = url + '?lang=' + argLangChoice;
     SerialWindow.loadURL(`file://${__dirname}` + url);
@@ -121,8 +121,8 @@ app.on('ready', () => {
     // BlocklyWindow.webContents.openDevTools({
         // mode: 'detach'
     // });
-    tray = new Tray('./www/S4E/media/logo_only.png');
-    // tray = new Tray('../../../www/S4E/media/logo_only.png');
+    // tray = new Tray('./www/S4E/media/logo_only.png');
+    tray = new Tray('../../../www/S4E/media/logo_only.png');
     tray.setToolTip('S4E');
 });
 

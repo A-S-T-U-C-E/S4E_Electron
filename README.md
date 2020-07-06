@@ -1,6 +1,4 @@
-
 # STudio4Education All In One
-
 ![logos](https://raw.githubusercontent.com/A-S-T-U-C-E/S4E_Electron/master/www/electron/media/logos.png)
 
 Designed for **Arrowhead** Tools Project ([https://www.arrowhead.eu/arrowheadtools](https://www.arrowhead.eu/arrowheadtools)), STudio4Education is a **web-based visual programming editor for [ST microelectronics](https://www.st.com)** boards.
@@ -58,6 +56,10 @@ The cursor controls how the user navigates the blocks, inputs, fields and connec
 
 STudio4Education is a web tool, you can give it a try at [Web version](https://a-s-t-u-c-e.github.io/STudio4Education/).
 
+### Run locally on your web browser
+
+If you want to install it locally. Get code from github and open `index.html` in your browser.
+
 ## Integrated upload
 
 Unlike the web version, this [Electron](https://www.electronjs.org/) version embeds [arduino-cli](https://github.com/arduino/arduino-cli), thanks to [STM32Duino project](https://www.stm32duino.com/).
@@ -68,6 +70,12 @@ Unlike the web version, this [Electron](https://www.electronjs.org/) version emb
 *Windows user*:  you can download [latest release](https://github.com/A-S-T-U-C-E/S4E_Electron/releases/latest), double click on exe file to launch it and follow usage.
 
 If you want to test it locally and compile by yourself, you have to get [code from github](https://github.com/A-S-T-U-C-E/S4E_Electron/archive/master.zip) and follow instructions below.
+
+
+## How to use by yourself
+
+Clone or [download the source code](https://github.com/A-S-T-U-C-E/S4E_Electron/archive/master.zip), add if needed the last version of [STudio4Education](https://github.com/A-S-T-U-C-E/STudio4Education/archive/master.zip) in folder `www`, and [arduino-cli](https://github.com/arduino/arduino-cli/releases) in `compiler` folder.
+
 
 ### Requirements
 

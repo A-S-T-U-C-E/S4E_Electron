@@ -83,7 +83,7 @@
         "url": "https://github.com/A-S-T-U-C-E/S4E_Electron/issues"
     },
     "devDependencies": {
-        "electron": "^9.0.5",
+        "electron": "^9.3.1",
         "electron-builder": "^22.7.0",
         "electron-rebuild": "^1.11.0"
     },

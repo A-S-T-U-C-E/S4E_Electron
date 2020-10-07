@@ -67,11 +67,11 @@ function createSerialWindow(argLangChoice) {
     SerialWindow.on('closed', function () {
         SerialWindow = null;
     });
-    // devtools = new BrowserWindow();
-    // SerialWindow.webContents.setDevToolsWebContents(devtools.webContents);
-    // SerialWindow.webContents.openDevTools({
-        // mode: 'detach'
-    // });
+    devtools = new BrowserWindow();
+    SerialWindow.webContents.setDevToolsWebContents(devtools.webContents);
+    SerialWindow.webContents.openDevTools({
+        mode: 'detach'
+    });
 };
 
 function createFactoryWindow(argLangChoice) {
@@ -114,13 +114,13 @@ app.allowRendererProcessReuse = false;
 
 app.on('ready', () => {
     createBlocklyWindow();
-    globalShortcut.register('F12', openDevTools);
+    globalShortcut.register('F8', openDevTools);
     globalShortcut.register('F5', refresh);
-    // devtools = new BrowserWindow();
-    // BlocklyWindow.webContents.setDevToolsWebContents(devtools.webContents);
-    // BlocklyWindow.webContents.openDevTools({
-        // mode: 'detach'
-    // });
+    devtools = new BrowserWindow();
+    BlocklyWindow.webContents.setDevToolsWebContents(devtools.webContents);
+    BlocklyWindow.webContents.openDevTools({
+        mode: 'detach'
+    });
     tray = new Tray('./www/S4E/media/logo_only.png');
     tray.setToolTip('S4E');
 });

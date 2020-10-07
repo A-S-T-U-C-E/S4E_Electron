@@ -49,6 +49,7 @@ document.getElementById('serialButton').addEventListener("mouseover", function (
             document.getElementById('portListModalBody').innerHTML = "Aucun port n'est disponible";
         } else {
             document.getElementById('portListModalBody').innerHTML = tableify(portsList);
+            console.log(portsList);
         }
     })
 });

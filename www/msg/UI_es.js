@@ -30,10 +30,8 @@ var MSG = {
     fullScreenButton_span: "full screen",
     undoButton_span: "Deshaz",
     redoButton_span: "Rehaz",
-    boardSpan: "escoge placa Arduino",
     boardButtonSpan: "list boards",
     verifyButton_span: "Verifica código",
-    serialSpan: "escoge puerto COM",
     serialButtonSpan: "list COM port",
     uploadButton_span: "Carga",
     serialConnectButton_span: "Monitor serie",
@@ -65,7 +63,7 @@ var MSG = {
         '<p style="text-align: left;">Official documentation: <a href="https://developers.google.com/blockly/guides/configure/web/keyboard-nav" rel="nofollow">Blockly developers</a>.</p>' +
         '<p style="text-align: left;">Wiki : <a href="https://github.com/A-S-T-U-C-E/STudio4Education/wiki">on Github</a>.</p>' +
         '<p style="text-align: left;">A bug? Post it here: <a href="https://github.com/A-S-T-U-C-E/STudio4Education/issues">on Github</a>.</p>' +
-        '<p style="text-align: center;">v0.7.3',
+        '<p style="text-align: center;">v0.7.5 - BSD3 license',
     editorReadOnlyToggle_span: "code editor writable or read-only",
     copyCodeButton_span: "Copia código a  portapapeles",
     accessibilitySpan: "habilita modo accesibilidad",
@@ -84,7 +82,7 @@ var MSG = {
     compilationInProgress: "Placa",
     keyMappingModalSpan: "Establece asignaciones de teclado",
     detailedCompilation_span: "Compilación detallada con mensajes",
-    CLI_title_span: "Configura Arduino CLI",
+    CLI_title_span: "Configura compiler",
     installBoard_title_span: "instala placa al CLI",
     searchlLib_title_span: "busca una biblioteca",
     installLib_title_span: "instala biblioteca  al CLI",
@@ -103,12 +101,12 @@ var MSG = {
     actionName12: "mueve el espacio de trabajo a derecha",
     actionName13: "conmuta el teclado de navegación",
     setup_sideButton_span: "configura",
+    config_UI_title_span: "interface",
     fontSizeSpan: "renderización",
     optionFontSizeBlocks: "Tamaño del tipo de letra bloques",
     optionFontSizePage: "Tamaño del tipo de letra página",
     optionFontSpacingPage: "Espaciado de letra página",
     //CLI_functions.js
-    config_sideButton_span: "Control del compilador Arduino CLI",
     CLI_githubLinkButton_span: "documentación",
     coreUpdateButton_msg: "Se está actualizando...\n<i class='fa fa-spinner fa-pulse fa-1_5x fa-fw'></i>",
     cleanCLIcacheButton_msg: "Se está limpiando...\n<i class='fa fa-spinner fa-pulse fa-1_5x fa-fw'></i>",

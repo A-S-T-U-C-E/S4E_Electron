@@ -1,5 +1,5 @@
 # STudio4Education All In One
-![logos](https://raw.githubusercontent.com/A-S-T-U-C-E/S4E_Electron/master/www/electron/media/logos.png)
+![logos](https://github.com/A-S-T-U-C-E/S4E_Electron/blob/master/www/S4E/media/logos.png)
 
 Designed for **Arrowhead** Tools Project ([https://www.arrowhead.eu/arrowheadtools](https://www.arrowhead.eu/arrowheadtools)), STudio4Education is a **web-based visual programming editor for [ST microelectronics](https://www.st.com)** boards.
 

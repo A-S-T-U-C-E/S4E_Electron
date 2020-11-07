@@ -1,0 +1,14 @@
+{
+	"arguments" : "lang=fr",
+	"components" :	[
+		{
+			"id": "DS18B20",
+			"name": "capteur extérieur",
+			"levels": "1,2,3"
+		}, {
+			"id": "RELAY",
+			"name": "relay",
+			"levels": "1,2,3"
+		}
+	]
+}

@@ -1,0 +1,36 @@
+#######################################
+# Syntax Coloring Map For LIS2MDL
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+LIS2MDLSensor	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+ReadID	KEYWORD2
+Enable	KEYWORD2
+Disable	KEYWORD2
+GetSensitivity	KEYWORD2
+GetOutputDataRate	KEYWORD2
+SetOutputDataRate	KEYWORD2
+GetFullScale	KEYWORD2
+SetFullScale	KEYWORD2
+GetAxes	KEYWORD2
+GetAxesRaw	KEYWORD2
+ReadReg	KEYWORD2
+WriteReg	KEYWORD2
+SetSelfTest	KEYWORD2
+GetDRDYStatus	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+
+LIS2MDL_OK	LITERAL1
+LIS2MDL_ERROR	LITERAL1
+LIS2MDL_MAG_SENSITIVITY_FS_50GAUSS	LITERAL1

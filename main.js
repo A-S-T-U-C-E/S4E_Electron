@@ -15,6 +15,7 @@ const {
     electron,
     ipcMain,
     globalShortcut,
+    dialog,
     Tray
 } = require('electron');
 
@@ -23,27 +24,69 @@ let SerialWindow = null;
 let FactoryWindow = null;
 let devtools = null;
 let tray = null;
+//for settings file or argument from Arrowhead
+const fs = require('fs-extra');
+var fileSettings = "./STudio4Education.json";
+var papyrusSettings = "./HomeAutomationSystemST4Econfig.json";
+var Settings = '';
 
 function createBlocklyWindow() {
     let BlocklyWindow = new BrowserWindow({
         width: 1510,
         height: 700,
         webPreferences: {
-            nodeIntegration: true
+            nodeIntegration: true,
+            enableRemoteModule: true
         },
         // icon: __dirname + '/www/S4E/media/icon.ico'
         icon: __dirname + '../../../www/S4E/media/icon.ico'
     });
     // var url = '/www/index.html';
     var url = '../../../www/index.html';
-    if (process.platform === 'win32' && process.argv.length >= 2) {    
-        url = url + process.argv[1];
+    // if (process.platform === 'win32' && process.argv.length >= 2) {    
+        // url = url + process.argv[1];
+    // }
+    // if (!fs.existsSync(fileSettings)) {
+        // console.log("File not found");
+        // fs.writeFileSync(fileSettings, '', (err) => {
+            // if (err) console.log("An error ocurred creating the file " + err.message);
+                // else console.log("The file has been succesfully saved");
+            // })
+    // } else {
+        // Settings = fs.readFileSync(fileSettings, 'utf8', (err, Settings) => {
+            // if (err) {
+                // console.log("An error occured reading the file :" + err.message);
+                // Settings = "";
+                // return
+            // }
+            // console.log("The file Settings is : " + Settings);
+        // })
+    // }
+    if (!fs.existsSync(papyrusSettings)) {
+        console.log("File not found");
+        BlocklyWindow.loadURL(`file://${__dirname}` + url);
+    } else {
+        Settings = fs.readFileSync(papyrusSettings, 'utf8', (err, Settings) => {
+            if (err) {
+                console.log("An error occured reading the file :" + err.message);
+                Settings = "";
+                return;
+            }
+            console.log("The file Settings is : " + Settings);
+        })
+        var idsCategories = JSON.parse(Settings);
+        BlocklyWindow.loadURL(`file://${__dirname}` + url + '?' + idsCategories.arguments + '&toolboxids=' + idsCategories.components[0].id + ',' + idsCategories.components[1].id);
+        fs.writeFileSync(fileSettings, `file://${__dirname}` + url + '?' + idsCategories.arguments + '&toolboxids=' + idsCategories.components[0].id + ',' + idsCategories.components[1].id);
     }
-    BlocklyWindow.loadURL(`file://${__dirname}` + url);
     BlocklyWindow.setMenu(null);
     BlocklyWindow.on('closed', function () {
         BlocklyWindow = null;
     });
+    // devtools = new BrowserWindow();
+    // BlocklyWindow.webContents.setDevToolsWebContents(devtools.webContents);
+    // BlocklyWindow.webContents.openDevTools({
+        // mode: 'detach'
+    // });
 };
 
 function createSerialWindow(argLangChoice) {
@@ -58,8 +101,8 @@ function createSerialWindow(argLangChoice) {
         // icon: __dirname + '/src/icon.ico'
         icon: __dirname + '../../../www/S4E/media/icon.ico'
     });
-    // var url = '/www/electron/serialMonitor.html';
-    var url = '../../../www/electron/serialMonitor.html';
+    // var url = '/electron/serialMonitor.html';
+    var url = '../../../electron/serialMonitor.html';
     if (argLangChoice !== "" || argLangChoice !== "undefined")
         url = url + '?lang=' + argLangChoice;
     SerialWindow.loadURL(`file://${__dirname}` + url);
@@ -67,11 +110,11 @@ function createSerialWindow(argLangChoice) {
     SerialWindow.on('closed', function () {
         SerialWindow = null;
     });
-    devtools = new BrowserWindow();
-    SerialWindow.webContents.setDevToolsWebContents(devtools.webContents);
-    SerialWindow.webContents.openDevTools({
-        mode: 'detach'
-    });
+    // devtools = new BrowserWindow();
+    // SerialWindow.webContents.setDevToolsWebContents(devtools.webContents);
+    // SerialWindow.webContents.openDevTools({
+        // mode: 'detach'
+    // });
 };
 
 function createFactoryWindow(argLangChoice) {
@@ -93,7 +136,7 @@ function createFactoryWindow(argLangChoice) {
     var url = '../../../www/blocksfactory/blocksfactory.html';
     if (argLangChoice !== "" || argLangChoice !== "undefined")
         url = url + '?lang=' + argLangChoice;
-    SerialWindow.loadURL(`file://${__dirname}` + url);
+    FactoryWindow.loadURL(`file://${__dirname}` + url);
     FactoryWindow.setMenu(null);
     FactoryWindow.on('closed', function () {
         FactoryWindow = null;
@@ -109,18 +152,13 @@ function openDevTools(BlocklyWindow = BrowserWindow.getFocusedWindow()) {
 function refresh(BlocklyWindow = BrowserWindow.getFocusedWindow()) {
     BlocklyWindow.webContents.reloadIgnoringCache();
 };
-//need to be deleted at next serialport upgrad > 9.0.0
+//need to be deleted at next serialport upgrade > 9.0.0
 app.allowRendererProcessReuse = false;
 
 app.on('ready', () => {
     createBlocklyWindow();
     globalShortcut.register('F8', openDevTools);
     globalShortcut.register('F5', refresh);
-    devtools = new BrowserWindow();
-    BlocklyWindow.webContents.setDevToolsWebContents(devtools.webContents);
-    BlocklyWindow.webContents.openDevTools({
-        mode: 'detach'
-    });
     tray = new Tray('./www/S4E/media/logo_only.png');
     tray.setToolTip('S4E');
 });
@@ -128,6 +166,9 @@ app.on('ready', () => {
 app.on('activate', function () {
     if (BlocklyWindow === null)
         createBlocklyWindow();
+    // On macOS it's common to re-create a window in the app when the
+    // dock icon is clicked and there are no other windows open.
+    if (BrowserWindow.getAllWindows().length === 0) createWindow()
 });
 
 app.on('window-all-closed', function () {
@@ -139,8 +180,17 @@ ipcMain.on("serialConnect", (event, argLangChoice) => {
     createSerialWindow(argLangChoice);
 });
 ipcMain.on("factory", function () {
-    createFactoryWindow();
+    createFactoryWindow(argLangChoice);
 });
-
+ipcMain.on('save-csv', function(event) {
+	var filename = dialog.showSaveDialog(BlocklyWindow,{
+		title: 'Export CSV',
+		defaultPath: './',
+		filters: [{ name: 'data', extensions: ['csv'] }]
+	},
+	function(filename){
+		event.sender.send('saved-csv', filename)
+	})
+})
 module.exports.openDevTools = openDevTools;
 module.exports.refresh = refresh;

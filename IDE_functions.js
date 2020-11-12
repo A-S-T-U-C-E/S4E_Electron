@@ -7,7 +7,7 @@
 /**
  * @fileoverview Utility functions for handling typed variables.
  * fake IDE code Arduino
- * boardSelector: Arduino boards list
+ * boardSelector: boards list
  * serialMenu: serial port list
  * serialConnectButton: open modal with serial console
  * verifyButton: verify and compile in hex file
@@ -134,17 +134,17 @@ window.addEventListener('load', function load(event) {
             }
             document.getElementById('content_serial').style.color = '#00FF00';
             document.getElementById('content_serial').innerHTML = stdout + '<br>' + MSG['IDE_upload_ok'];
-            // const path = require('path');
-            // fs.readdir('.\\compiler\\tmp', (err, files) => {
-                // if (err)
-                    // throw err;
-                // for (const file of files) {
-                    // fs.unlink(path.join('.\\compiler\\tmp', file), err => {
-                        // if (err)
-                            // throw err;
-                    // });
-                // }
-            // });
+            const path = require('path');
+            fs.readdir('.\\compiler\\tmp', (err, files) => {
+                if (err)
+                    throw err;
+                for (const file of files) {
+                    fs.unlink(path.join('.\\compiler\\tmp', file), err => {
+                        if (err)
+                            throw err;
+                    });
+                }
+            });
         });
     };
     document.getElementById('serialConnectButton').addEventListener('click', function () {
@@ -166,5 +166,23 @@ window.addEventListener('load', function load(event) {
                 localStorage.setItem("availableSpeed", JSON.stringify(profile.default['serialList']));
                 ipcRenderer.send("serialConnect", langChoice);
         }
+    });
+    document.getElementById('wiringButton').addEventListener('click', function () {
+  		// var val = location.search.match(new RegExp('[?&]lang=([^&]+)'));
+  		// var argLangChoice = val ? decodeURIComponent(val[1].replace(/\+/g, '%20')) : 'en';
+        var langChoice = document.getElementById('languageMenu').value;
+        ipcRenderer.send("hackCable", langChoice);
+    });
+    document.getElementById('factoryButton').addEventListener('click', function () {
+  		// var val = location.search.match(new RegExp('[?&]lang=([^&]+)'));
+  		// var argLangChoice = val ? decodeURIComponent(val[1].replace(/\+/g, '%20')) : 'en';
+        var langChoice = document.getElementById('languageMenu').value;
+        ipcRenderer.send("blockFactory", langChoice);
+    });
+    document.getElementById('htmlButton').addEventListener('click', function () {
+  		// var val = location.search.match(new RegExp('[?&]lang=([^&]+)'));
+  		// var argLangChoice = val ? decodeURIComponent(val[1].replace(/\+/g, '%20')) : 'en';
+        var langChoice = document.getElementById('languageMenu').value;
+        ipcRenderer.send("blocklyHTML", langChoice);
     });
 });

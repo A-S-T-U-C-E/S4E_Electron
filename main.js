@@ -27,7 +27,7 @@ let tray = null;
 //for settings file or argument from Arrowhead
 const fs = require('fs-extra');
 var fileSettings = "./STudio4Education.json";
-var papyrusSettings = "./HomeAutomationSystemST4Econfig.json";
+var papyrusSettings = "./PapyrusST4Econfig.json";
 var Settings = '';
 
 function createBlocklyWindow() {
@@ -62,9 +62,10 @@ function createBlocklyWindow() {
             // console.log("The file Settings is : " + Settings);
         // })
     // }
+    url = `file://${__dirname}` + url;
     if (!fs.existsSync(papyrusSettings)) {
         console.log("File not found");
-        BlocklyWindow.loadURL(`file://${__dirname}` + url);
+        BlocklyWindow.loadURL(url);
     } else {
         Settings = fs.readFileSync(papyrusSettings, 'utf8', (err, Settings) => {
             if (err) {
@@ -75,9 +76,20 @@ function createBlocklyWindow() {
             console.log("The file Settings is : " + Settings);
         })
         var idsCategories = JSON.parse(Settings);
-        BlocklyWindow.loadURL(`file://${__dirname}` + url + '?' + idsCategories.arguments + '&toolboxids=' + idsCategories.components[0].id + ',' + idsCategories.components[1].id);
-        fs.writeFileSync(fileSettings, `file://${__dirname}` + url + '?' + idsCategories.arguments + '&toolboxids=' + idsCategories.components[0].id + ',' + idsCategories.components[1].id);
+        var toolboxidsList = "";
+        for (let i = 0; i < idsCategories.components.length; i++)
+            toolboxidsList += idsCategories.components[i].id + ',';
+        toolboxidsList = toolboxidsList.slice(0, -1);
+        if (idsCategories.arguments) {
+            url += '?' + idsCategories.arguments;
+            if (toolboxidsList) url += '&toolboxids=' + toolboxidsList;
+        }
+        else if (toolboxidsList) url += '?toolboxids=' + toolboxidsList;
+        BlocklyWindow.loadURL(url);
     }
+	
+        // BlocklyWindow.loadURL(`file://${__dirname}` + url + '?' + idsCategories.arguments + '&toolboxids=' + idsCategories.components[0].id + ',' + idsCategories.components[1].id);
+        // fs.writeFileSync(fileSettings, `file://${__dirname}` + url + '?' + idsCategories.arguments + '&toolboxids=' + idsCategories.components[0].id + ',' + idsCategories.components[1].id);
     BlocklyWindow.setMenu(null);
     BlocklyWindow.on('closed', function () {
         BlocklyWindow = null;
@@ -101,8 +113,8 @@ function createSerialWindow(argLangChoice) {
         // icon: __dirname + '/src/icon.ico'
         icon: __dirname + '../../../www/S4E/media/icon.ico'
     });
-    // var url = '/electron/serialMonitor.html';
-    var url = '../../../electron/serialMonitor.html';
+    // var url = '/nodejs/serialMonitor.html';
+    var url = '../../../nodejs/serialMonitor.html';
     if (argLangChoice !== "" || argLangChoice !== "undefined")
         url = url + '?lang=' + argLangChoice;
     SerialWindow.loadURL(`file://${__dirname}` + url);
@@ -117,6 +129,27 @@ function createSerialWindow(argLangChoice) {
     // });
 };
 
+function createHackCableWindow(argLangChoice) {
+    HackCableWindow = new BrowserWindow({
+        width: 1066,
+        height: 640,
+        'parent': BlocklyWindow,
+        webPreferences: {
+            nodeIntegration: true
+        },
+        resizable: true,
+        icon: __dirname + '../../../www/S4E/media/icon.ico'
+    });
+    var url = '../../../www/tools/hackcable/index.html';
+    if (argLangChoice !== "" || argLangChoice !== "undefined")
+        url = url + '?lang=' + argLangChoice;
+    HackCableWindow.loadURL(`file://${__dirname}` + url);
+    HackCableWindow.setMenu(null);
+    HackCableWindow.on('closed', function () {
+        HackCableWindow = null;
+    });
+};
+
 function createFactoryWindow(argLangChoice) {
     FactoryWindow = new BrowserWindow({
         width: 1066,
@@ -126,20 +159,36 @@ function createFactoryWindow(argLangChoice) {
             nodeIntegration: true
         },
         resizable: true,
-        movable: true,
-        frame: false,
-        modal: false,
-        // icon: __dirname + '/www/S4E/media/icon.ico'
         icon: __dirname + '../../../www/S4E/media/icon.ico'
     });
-    // var url = '/www/blocksfactory/blocksfactory.html';
-    var url = '../../../www/blocksfactory/blocksfactory.html';
+    var url = '../../../www/tools/blockFactory/blockFactory.html';
     if (argLangChoice !== "" || argLangChoice !== "undefined")
         url = url + '?lang=' + argLangChoice;
     FactoryWindow.loadURL(`file://${__dirname}` + url);
     FactoryWindow.setMenu(null);
     FactoryWindow.on('closed', function () {
         FactoryWindow = null;
+    });
+};
+
+function createBlocklyHtmlWindow(argLangChoice) {
+    BlocklyHtmlWindow = new BrowserWindow({
+        width: 1066,
+        height: 640,
+        'parent': BlocklyWindow,
+        webPreferences: {
+            nodeIntegration: true
+        },
+        resizable: true,
+        icon: __dirname + '../../../www/S4E/media/icon.ico'
+    });
+    var url = '../../../www/tools/html/html_factory.html';
+    if (argLangChoice !== "" || argLangChoice !== "undefined")
+        url = url + '?lang=' + argLangChoice;
+    BlocklyHtmlWindow.loadURL(`file://${__dirname}` + url);
+    BlocklyHtmlWindow.setMenu(null);
+    BlocklyHtmlWindow.on('closed', function () {
+        BlocklyHtmlWindow = null;
     });
 };
 
@@ -166,9 +215,6 @@ app.on('ready', () => {
 app.on('activate', function () {
     if (BlocklyWindow === null)
         createBlocklyWindow();
-    // On macOS it's common to re-create a window in the app when the
-    // dock icon is clicked and there are no other windows open.
-    if (BrowserWindow.getAllWindows().length === 0) createWindow()
 });
 
 app.on('window-all-closed', function () {
@@ -179,8 +225,14 @@ app.on('window-all-closed', function () {
 ipcMain.on("serialConnect", (event, argLangChoice) => {
     createSerialWindow(argLangChoice);
 });
-ipcMain.on("factory", function () {
+ipcMain.on("hackCable", (event, argLangChoice) => {
+    createHackCableWindow(argLangChoice);
+});
+ipcMain.on("blockFactory", (event, argLangChoice) => {
     createFactoryWindow(argLangChoice);
+});
+ipcMain.on("blocklyHTML", (event, argLangChoice) => {
+    createBlocklyHtmlWindow(argLangChoice);
 });
 ipcMain.on('save-csv', function(event) {
 	var filename = dialog.showSaveDialog(BlocklyWindow,{

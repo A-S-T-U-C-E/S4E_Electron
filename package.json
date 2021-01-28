@@ -90,7 +90,7 @@
         "url": "https://github.com/A-S-T-U-C-E/S4E_Electron/issues"
     },
     "devDependencies": {
-        "electron": "^10.1.5",
+        "electron": "^10.2.0",
         "electron-builder": "^22.9.1",
         "electron-rebuild": "^2.3.2",
         "child_process": "^1.0.2"

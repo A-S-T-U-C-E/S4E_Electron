@@ -1,5 +1,5 @@
 # STudio4Education All In One
-![logos](https://raw.githubusercontent.com/A-S-T-U-C-E/S4E_Electron/master/www/electron/media/logos.png)
+![logos](https://github.com/A-S-T-U-C-E/S4E_Electron/blob/master/www/S4E/media/logos.png)
 
 Designed for **Arrowhead** Tools Project ([https://www.arrowhead.eu/arrowheadtools](https://www.arrowhead.eu/arrowheadtools)), STudio4Education is a **web-based visual programming editor for [ST microelectronics](https://www.st.com)** boards.
 
@@ -129,6 +129,10 @@ Check changelog [here](https://github.com/A-S-T-U-C-E/S4E_Electron/blob/master/C
 [Arduino-CLI](https://github.com/arduino/arduino-cli)
 
 [Electron](https://www.electronjs.org/)
+
+[Font Awesome](https://fontawesome.com/)
+[Font Bitter](https://fr.allfont.net/download/bitter/)
+[Font Luciole](https://luciole-vision.com/)
 
 [Node SerialPort](https://serialport.io/)
 

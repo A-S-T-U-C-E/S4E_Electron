@@ -29,7 +29,7 @@
     background: #03234b;
     color: #FFFFFF;
     font-size: 1.5em;
-    width: 32px;
+    width: 35px;
 }
 .iconButtons:hover{
     background: #FFFFFF;
@@ -86,7 +86,7 @@
 /* boutons classiques */
 #verifyButton,
 #uploadButton,
-#serialConnectButton
+#serialMonitorButton
 {
     border-radius: 50%;
 }

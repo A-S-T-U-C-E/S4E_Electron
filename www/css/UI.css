@@ -85,6 +85,15 @@ html[dir=rtl] {
     margin: 5px;
     width: auto;
 }
+#buttonsSerialPopup{
+    animation: fadein 0.5s;
+    position: absolute;
+    top: 70px;
+    left: 385px;
+    padding: 5px;
+    margin: 5px;
+    width: auto;
+}
 @keyframes fadein {
     from {opacity:0;} to {opacity:1;}
 }

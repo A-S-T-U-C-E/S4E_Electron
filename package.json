@@ -1,10 +1,137 @@
 {
-    "name": "S4E",
-    "version": "0.8.0",
-    "description": "STudio4Education is a web-based visual programming editor for [STmicroelectronics boards](https://www.st.com/content/st_com/en.html)",
-    "license": "BSD-3-Clause",
     "author": "Sébastien Canet <scanet@libreduc.cc>",
-    "main": "main.js",
+    "bugs": {
+        "url": "https://github.com/A-S-T-U-C-E/S4E_Electron/issues"
+    },
+    "build": {
+        "appId": "com.electron.STudio4Education",
+        "asar": true,
+        "directories": {
+            "buildResources": "./src",
+            "output": "./dist"
+        },
+        "extraFiles": [
+            "compiler",
+            "documentation",
+            "nodejs",
+            "sketchbook",
+            "www",
+            "CHANGELOG.txt",
+            "README.md",
+            "LICENSE"
+        ],
+        "fileAssociations": {
+            "ext": "S4E",
+            "icon": "src/icon.ico",
+            "name": "S4E File",
+            "role": "Editor"
+        },
+        "nsis": {
+            "allowToChangeInstallationDirectory": true,
+            "deleteAppDataOnUninstall": true,
+            "installerIcon": "src/install.ico",
+            "oneClick": false,
+            "perMachine": true,
+            "runAfterFinish": true,
+            "uninstallerIcon": "src/icon.ico"
+        },
+        "productName": "STudio4Education",
+        "publish": [
+            {
+                "owner": "SebCanet",
+                "provider": "github",
+                "releaseType": "release",
+                "repo": "A-S-T-U-C-E/S4E_Electron"
+            }
+        ],
+        "win": {
+            "files": [
+                "!v0.*/*",
+                "!nbproject/*",
+                "!.github/*"
+            ],
+            "icon": "src/appIcon.png",
+            "target": [
+                "portable",
+                "zip"
+            ]
+        }
+    },
+    "dependencies": {
+        "axios": "^0.21.1",
+        "babel-cli": "^6.26.0",
+        "babel-core": "^6.26.3",
+        "babel-eslint": "^10.1.0",
+        "babel-plugin-module-resolver": "^4.1.0",
+        "babel-plugin-transform-async-to-generator": "^6.24.1",
+        "babel-plugin-transform-es2015-destructuring": "^6.23.0",
+        "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
+        "babel-plugin-transform-object-rest-spread": "^6.26.0",
+        "babel-polyfill": "^6.26.0",
+        "babel-preset-env": "^1.7.0",
+        "babel-register": "^6.26.0",
+        "beautiful-dom": "^1.0.9",
+        "body-parser": "^1.19.0",
+        "boom": "^7.3.0",
+        "chai": "^4.3.4",
+        "chai-http": "^4.3.0",
+        "chai-things": "^0.2.0",
+        "chart.js": "^3.0.0-beta.10",
+        "child_process": "^1.0.2",
+        "colors": "^1.4.0",
+        "cors": "^2.8.5",
+        "cross-env": "^7.0.3",
+        "dotenv": "^8.2.0",
+        "eslint": "^7.22.0",
+        "eslint-config-standard": "^16.0.2",
+        "eslint-import-resolver-babel-module": "^5.2.0",
+        "eslint-plugin-import": "^2.22.1",
+        "eslint-plugin-node": "^11.1.0",
+        "eslint-plugin-promise": "^4.3.1",
+        "eslint-plugin-standard": "^4.1.0",
+        "expect": "^26.6.2",
+        "express": "^4.17.1",
+        "express-promise-router": "^4.0.1",
+        "express-winston": "^4.1.0",
+        "fs-extra": "^9.1.0",
+        "helmet": "^4.4.1",
+        "kill-port": "^1.6.1",
+        "lodash": "latest",
+        "lowdb": "^1.0.0",
+        "mocha": "^8.3.2",
+        "morgan": "^1.10.0",
+        "node-forge": "^0.10.0",
+        "node-html-parser": "^3.1.0",
+        "node-red": "^1.2.9",
+        "node-red-contrib-blockly": "^1.1.0",
+        "node-red-contrib-jsontohtml": "^1.0.2",
+        "node-red-contrib-webduino": "^0.0.15",
+        "node-red-dashboard": "^2.28.1",
+        "node-red-node-arduino": "^0.3.1",
+        "node-red-node-random": "^0.4.0",
+        "node-red-node-serialport": "^0.13.0",
+        "node-red-node-ui-table": "^0.3.10",
+        "node-static": "^0.7.11",
+        "nodemon": "^2.0.7",
+        "pm2": "^4.5.5",
+        "qs": "^6.9.6",
+        "serialport": "^9.0.7",
+        "shelljs": "^0.8.4",
+        "shelljs.exec": "^1.1.8",
+        "socket.io": "^4.0.0",
+        "socket.io-client": "^4.0.0",
+        "stoppable": "^1.1.0",
+        "tableify": "^1.1.0",
+        "winston": "^3.3.3"
+    },
+    "description": "STudio4Education is a web-based visual programming editor for [STmicroelectronics boards](https://www.st.com/content/st_com/en.html)",
+    "devDependencies": {
+        "electron": "^12.0.1",
+        "electron-build-env": "^0.2.0",
+        "electron-builder": "^22.10.5",
+        "electron-rebuild": "^2.3.5",
+        "electron-updater": "^4.3.8"
+    },
     "keywords": [
         "blockly",
         "ST",
@@ -20,87 +147,27 @@
         "ELECTRON",
         "serialport",
         "SERIALPORT",
-        "electron-builder"
+        "electron-builder",
+        "arrowhead"
     ],
-    "build": {
-        "asar": true,
-        "appId": "com.electron.STudio4Education",
-        "directories": {
-            "buildResources": "./src",
-            "output": "./dist"
-        },
-        "productName": "STudio4Education",
-        "win": {
-            "target": [
-                "portable",
-                "zip"
-            ],
-            "icon": "src/appIcon.png",
-            "files": [
-                "!v0.*/*",
-                "!nbproject/*",
-                "!.github/*"
-            ]
-        },
-        "nsis": {
-            "installerIcon": "src/install.ico",
-            "uninstallerIcon": "src/icon.ico",
-            "oneClick": false,
-            "perMachine": true,
-            "deleteAppDataOnUninstall": true,
-            "allowToChangeInstallationDirectory": true,
-            "runAfterFinish": true
-        },
-        "fileAssociations": {
-            "ext": "S4E",
-            "name": "S4E File",
-            "role": "Editor",
-            "icon": "src/icon.ico"
-        },
-        "extraFiles": [
-            "compiler",
-            "documentation",
-            "nodejs",
-            "sketchbook",
-            "www",
-            "CHANGELOG.txt",
-            "README.md",
-            "LICENSE"
-        ],
-        "publish": [
-            {
-                "provider": "github",
-                "repo": "A-S-T-U-C-E/S4E_Electron",
-                "owner": "SebCanet",
-                "releaseType": "release"
-            }
-        ]
-    },
-    "scripts": {
-        "postinstall": "electron-builder install-app-deps",
-        "prepare": "electron-build-env npm rebuild",
-        "start": "electron .",
-        "compile": "electron-builder --win --ia32"
-    },
+    "license": "BSD-3-Clause",
+    "main": "main.js",
+    "name": "S4E",
     "repository": {
         "type": "git",
-        "url": "https://github.com/A-S-T-U-C-E/S4E_Electron"
+        "url": "git+https://github.com/A-S-T-U-C-E/S4E_Electron"
     },
-    "bugs": {
-        "url": "https://github.com/A-S-T-U-C-E/S4E_Electron/issues"
+    "scripts": {
+        "compile": "electron-builder --win --ia32",
+        "postinstall": "electron-builder install-app-deps",
+        "prepare": "electron-build-env npm rebuild",
+        "start": "electron main.js",
+        "build": "node node_modules/electron-builder/out/cli/cli.js --platform all --arch all",
+        "build:osx": "node node_modules/electron-builder/out/cli/cli.js --mac --x64",
+        "build:linux32": "node node_modules/electron-builder/out/cli/cli.js --linux --ia32",
+        "build:linux64": "node node_modules/electron-builder/out/cli/cli.js --linux --x64",
+        "build:win32": "node node_modules/electron-builder/out/cli/cli.js --win --ia32",
+        "build:win64": "node node_modules/electron-builder/out/cli/cli.js --win --x64"
     },
-    "devDependencies": {
-        "electron": "^10.2.0",
-        "electron-builder": "^22.9.1",
-        "electron-rebuild": "^2.3.2",
-        "child_process": "^1.0.2"
-    },
-    "dependencies": {
-        "electron-build-env": "^0.2.0",
-        "electron-updater": "^4.3.5",
-        "fs-extra": "^9.0.1",
-        "node-static": "^0.7.11",
-        "serialport": "^9.0.2",
-        "tableify": "^1.1.0"
-    }
+    "version": "0.9.0"
 }

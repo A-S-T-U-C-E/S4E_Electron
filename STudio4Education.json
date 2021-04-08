@@ -1,0 +1,18 @@
+{
+	"lang" : "fr",
+	"theme_UI" : "",
+	"theme_code" : "",
+	"theme_block" : "",
+	"block_renderer" :"",
+	"display" : "",
+	"font" : "",
+	"size_font_block" : "",
+	"size_font_page" : "",
+	"size_font_spacing" : "",
+	"board" : "",
+	"localServerIP" : "",
+	"localServerPort" : "",
+	"papyrusPort" : "",
+	"arrowheadIP" : "",
+	"blynkIP" : "",
+}

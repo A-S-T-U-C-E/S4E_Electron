@@ -1,0 +1,19 @@
+{
+  "presets": [
+    "env"
+  ],
+  "plugins": [
+    "transform-async-to-generator",
+    "transform-es2015-destructuring",
+    "transform-object-rest-spread",
+    ["module-resolver", {
+      "root": ["./client", "./provider"],
+      "alias": {
+        "test": "./test"
+      }
+    }]
+  ],
+  "ignore": [
+
+  ]
+}

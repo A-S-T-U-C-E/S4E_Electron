@@ -1,0 +1,73 @@
+{
+  "name": "client-nodejs",
+  "version": "1.0.0",
+  "description": "Arrowhead Framework Client Skeletons in NodeJS",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "clean": "cross-env rm -rf dist",
+    "build": "cross-env npm run clean && mkdir dist && npm run build_system",
+    "build_system": "cross-env ./node_modules/babel-cli/bin/babel.js system -s -d ./dist/system --copy-files",
+    "system_dev": "cross-env NODE_ENV=development node ./bin/dev",
+    "system": "cross-env NODE_ENV=production node ./bin/production",
+    "nodemon": "cross-env ./node_modules/nodemon/bin/nodemon.js --config nodemon.json --exec npm run system_dev"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arrowhead-f/client-nodejs.git"
+  },
+  "keywords": [
+    "arrowhead",
+    "client"
+  ],
+  "author": "Szvetlin Tanyi <szvetlin@aitia.ai>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/arrowhead-f/client-nodejs/issues"
+  },
+  "homepage": "https://github.com/arrowhead-f/client-nodejs#readme",
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "chai-http": "^4.3.0",
+    "chai-things": "^0.2.0",
+    "cross-env": "^7.0.2",
+    "eslint": "^7.14.0",
+    "eslint-config-standard": "^16.0.2",
+    "eslint-import-resolver-babel-module": "^5.2.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.1.0",
+    "expect": "^26.6.2",
+    "mocha": "^8.2.1",
+    "nodemon": "^2.0.6"
+  },
+  "dependencies": {
+    "axios": "^0.21.0",
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
+    "babel-eslint": "^10.1.0",
+    "babel-plugin-module-resolver": "^4.0.0",
+    "babel-plugin-transform-async-to-generator": "^6.24.1",
+    "babel-plugin-transform-es2015-destructuring": "^6.23.0",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-register": "^6.26.0",
+    "body-parser": "^1.19.0",
+    "boom": "^7.3.0",
+    "colors": "^1.4.0",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-promise-router": "^4.0.1",
+    "express-winston": "^4.0.5",
+    "helmet": "^4.2.0",
+    "lodash": "latest",
+    "morgan": "^1.10.0",
+    "node-forge": "^0.10.0",
+    "qs": "^6.9.4",
+    "winston": "^3.3.3"
+  }
+}

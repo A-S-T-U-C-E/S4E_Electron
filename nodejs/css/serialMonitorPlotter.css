@@ -23,7 +23,7 @@ body {
 .grid-container {
     display: grid;
     gap: 1px 1px;
-    grid-template-areas: "serialSend serialSend" "serialPeek serialGraphWindow" "serialButtons serialButtons";
+    grid-template-areas: "serialSend serialSend" "serialPeek serialGraphWindow" "serialButtons1 serialButtons1" "serialButtons2 serialButtons2";
 }
 
 .serialSend{
@@ -52,9 +52,13 @@ body {
     grid-area: serialPeek;
 }
 
-.serialButtons{
+.serialButtons1{
     padding-right:5px;
-    grid-area: serialButtons;
+    grid-area: serialButtons1;
+}
+.serialButtons2{
+    padding-right:5px;
+    grid-area: serialButtons2;
 }
 
 .serialGraphWindow{

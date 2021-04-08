@@ -1,0 +1,13 @@
+The NodeJS client is and advanced client and recommended for people whom are proficient in JavaScript.
+
+To run the project you need NodeJS installed.
+From the project directory run npm install
+Create a .env file based on .env.example
+Place your certificate(s) in the system/certificates folder
+Change the JavaScript Objects to your data in system/utils/systemUtil.js
+
+Than you can run the project in by executing the command:  npm run nodemon
+
+This client implements the Service Registry, Authorisation Orchestration and Event Handler Core Systems.
+
+You website would be an Arrowhead Client, which offers this blocky service, which can be consumed by other clients.

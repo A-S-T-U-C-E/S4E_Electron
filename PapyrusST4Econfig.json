@@ -4,10 +4,12 @@
 		{
 			"id": "DS18B20",
 			"name": "capteur extérieur",
+			"description": "capteur sur composant DS18B20",
 			"levels": "1,2,3"
 		}, {
 			"id": "RELAY",
 			"name": "relay",
+			"description": "relais 220V piloté en tout ou rien",
 			"levels": "1,2,3"
 		}
 	]

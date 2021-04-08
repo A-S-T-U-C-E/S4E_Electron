@@ -18,7 +18,7 @@
             <div id="serialGraphWindow" class="serialGraphWindow">
                 <canvas id="serialGraph" width="475" height="415"> </canvas>                
             </div>
-            <div id="serialButtons" class="serialButtons">
+            <div id="serialButtons1" class="serialButtons1">
                 <select id="serialConnectSpeed_Menu" > </select>
                 <button id="btn_serialConnect" type="button" class="btn btn-info"> 
                     <span class='fa fa-play'></span>
@@ -28,22 +28,39 @@
                     <span class='fa fa-eraser'></span>
                     <span id="btn_serialPeekClear_span"></span>
                 </button>
-                <button id="btn_serialPeekCSV" type="button" class="btn btn-info">
-                    <span class='fa fa-eject'></span>
-                    <span id="btn_serialPeekCSV_span"></span>
-                </button>
                 <button id="btn_serialChart" type="button" class="btn btn-info">
                     <span class='fa fa-chart-line'></span>
                     <span id="btn_serialChart_span"></span>
                 </button>
                 <button id="btn_serialChartPause" type="button" class="btn btn-info" style="visibility: hidden;"> 
-                    <span class='fa fa-play'></span>
+                    <span class='fa fa-play'>Chart pause</span>
                     <span id="btn_serialChartPause_span"></span>
+                </button>
+                <input type="checkbox" id="btn_serialChartZoomAuto" type="button" class="btn btn-info"> 
+                    <span class='fas fa-chart-line'></span>
+                    <span id="btn_serialChartZoomAuto_span" ></span>
+                </input>
+            </div>
+            <div id="serialButtons2" class="serialButtons2">
+                <input type="checkbox" id="btn_serialSaveToJSON" type="button" class="btn btn-info"> 
+                    <span class='fas fa-file-medical-alt'>Save to JSON</span>
+                    <span id="btn_serialSaveToJSON_span" ></span>
+                </input>
+                <input type="checkbox" id="btn_serialAddTimeStamp" type="button" class="btn btn-info"> 
+                    <span class='fa fa-stop-circle'>Horodatage</span>
+                    <span id="btn_serialAddTimeStamp_span" ></span>
+                </input>
+                <button id="btn_serialPeekCSV" type="button" class="btn btn-info">
+                    <span class='fa fa-eject'></span>
+                    <span id="btn_serialPeekCSV_span"></span>
+                </button>
+                <button id="btn_serialPeekJSON" type="button" class="btn btn-info">
+                    <span class='fas fa-file-medical-alt'>Export JSON</span>
+                    <span id="btn_serialPeekJSON_span"></span>
                 </button>
             </div>
         </div>
         <script src="../www/@blockly/blockly_compressed.js"></script>
-        <script src="./js/addon/smoothie.js"></script>
         <script src="./js/serialMonitorPlotter.js"></script>
     </body>
     <script type="text/javascript">

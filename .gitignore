@@ -1,6 +1,2 @@
 node_modules/
 dist/
-nbproject/
-.git/
-compiler/packages/
-compiler/tmp/

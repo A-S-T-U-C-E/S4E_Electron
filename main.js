@@ -382,22 +382,102 @@ ipcMain.on('save-json', (event) => {
         event.sender.send('saved-json', result.filePath)
     });
 });
-ipcMain.on('launchNodeRed2', (event) => {
-    
+
+ipcMain.on('serialConnectIOT_launch_websocket', (event, argLangChoice, comPortToUse) => {
+    const SerialPort = require('serialport');
+    const Readline = require('@serialport/parser-readline');
+    const portToOpen = new SerialPort(comPortToUse, {
+            autoOpen: false,
+            baudRate: 9600
+        });
+    const parser = portToOpen.pipe(new Readline({
+                    delimiter: '\n'
+                }));
+    var express     = require('express'),
+        app         = express(),
+        server      = require('http').Server(app),
+        io          = require('socket.io')(server),
+        serverPort  = 8888;
+    server.listen(serverPort, () => console.log('Server listening on port' + serverPort))
+    //useful only to get directly webpage & websocket on it
+    app.get('*', function (req, res) {
+        fs.readFile(__dirname + '../../../nodejs/js/index.html', 'utf8', function (err, data) {
+            if (err) {
+                res.writeHead(500);
+                return res.end('Error loading index.html');
+            }
+            res.writeHead(200, {
+                'Content-Type': "text/html; charset=utf-8"
+            });
+            var result = data.replace("Node Serial Connection", "Node Serial Connection " + comPortToUse);
+            res.end(result);
+        });
+    });
+    io.on('connection', (socket) => {
+        socket.emit('connected');
+        //verify if message is sended from HTML page
+        socket.on('send', function (data) {
+            console.log(data);
+            portToOpen.write(data.data);
+        });
+        dialog.showMessageBox({
+            title: 'Launch',
+            type: 'info',
+            message: 'new connection made'
+        });
+    });
+    // JAMAIS LANCE ???
+    portToOpen.on('open', function () {
+        dialog.showMessageBox({
+            title: 'Launch',
+            type: 'info',
+            message: 'launching on port ' + comPortToUse
+        });
+        parser.on('open', function () {
+            dialog.showMessageBox({
+                title: 'Launch',
+                type: 'info',
+                message: 'data on port ' + comPortToUse
+            });
+        });
+    });
+    // portToOpen.on('open', () => {
+      // console.log('Serial Port Opened');
+      // io.on('connection', (socket) => {
+        // socket.emit('connected')
+        // parser.on('data', data => {
+            // console.log(data);
+            // socket.emit('data', {
+                // data: data
+            // });
+        // })
+      // })
+    // })
+    // portToOpen.on('error', function (err) {
+        // console.log('Error: ', err.message)
+    // })
+    parser.on('data', function (data) {
+        console.log(data);
+        io.emit('data', {
+            data: data
+        });
+    });
+    event.sender.send("serialConnectIOT_websocket_ok");
 });
+
 ipcMain.on('launchNodeRed', (event) => {
     var httpLaunchNodeRed = require('http');
     var expressLaunchNodeRed = require("express");
     var RED = require("node-red");
     var appLaunchNodeRed = expressLaunchNodeRed();
-    appLaunchNodeRed.use("/",expressLaunchNodeRed.static("public"));
+    appLaunchNodeRed.use("/", expressLaunchNodeRed.static("public"));
     var serverLaunchNodeRed = httpLaunchNodeRed.createServer(appLaunchNodeRed);
     var settings = {
-        httpAdminRoot:"/red",
+        httpAdminRoot: "/red",
         httpNodeRoot: "/api",
         // userDir: __dirname + "/nodejs/nodered",
         userDir: "./nodejs/nodered",
-        functionGlobalContext: { },
+        functionGlobalContext: {},
         logging: {
             console: {
                 level: process.env.NODE_RED_LOGLEVEL || "info"
@@ -405,15 +485,15 @@ ipcMain.on('launchNodeRed', (event) => {
         },
         editorTheme: {
             page: {
-              title: "STudio4Education - Node-RED"
-              // favicon: "/absolute/path/to/theme/icon",
-              // css: "/absolute/path/to/custom/css/file",
-              // scripts: "/absolute/path/to/custom/js/file"  // As of 0.17
+                title: "STudio4Education - Node-RED"
+                // favicon: "/absolute/path/to/theme/icon",
+                // css: "/absolute/path/to/custom/css/file",
+                // scripts: "/absolute/path/to/custom/js/file"  // As of 0.17
             },
             header: {
-              title: "STudio4Education - Node-RED"
-              // image: "/absolute/path/to/header/image", // or null to remove image
-              // url: "http://nodered.org" // optional url to make the header text/image a link to this url
+                title: "STudio4Education - Node-RED"
+                // image: "/absolute/path/to/header/image", // or null to remove image
+                // url: "http://nodered.org" // optional url to make the header text/image a link to this url
             }
 
             // deployButton: {
@@ -441,22 +521,23 @@ ipcMain.on('launchNodeRed', (event) => {
             // logout: {
             //     redirect: "http://example.com" // As of 0.17
             // }
-          }
+        }
     };
     console.log(settings.userDir);
-    RED.init(serverLaunchNodeRed,settings);
-    appLaunchNodeRed.use(settings.httpAdminRoot,RED.httpAdmin);
-    appLaunchNodeRed.use(settings.httpNodeRoot,RED.httpNode);
+    RED.init(serverLaunchNodeRed, settings);
+    appLaunchNodeRed.use(settings.httpAdminRoot, RED.httpAdmin);
+    appLaunchNodeRed.use(settings.httpNodeRoot, RED.httpNode);
     // serverLaunchNodeRed.listen(8000);
-    serverLaunchNodeRed.listen(8000, 'localhost', function() {
-      console.log(
-        "Express 4 https server listening on http%s://%s:%d%s, serving node-red",
-        serverLaunchNodeRed.address().address.replace("0.0.0.0", "localhost"),
-        serverLaunchNodeRed.address().port
-      );
+    serverLaunchNodeRed.listen(8000, 'localhost', function () {
+        console.log(
+            "Express 4 https server listening on http%s://%s:%d%s, serving node-red",
+            serverLaunchNodeRed.address().address.replace("0.0.0.0", "localhost"),
+            serverLaunchNodeRed.address().port);
     });
     RED.start();
-    setTimeout(() => { createNodeRedWindow(); }, 3000);
+    setTimeout(() => {
+        createNodeRedWindow();
+    }, 3000);
 });
 module.exports.openDevTools = openDevTools;
 module.exports.refresh = refresh;

@@ -19,7 +19,7 @@ const {ipcRenderer} = require('electron');
 const electron = require('electron');
 const nodemon = require('nodemon');
 const child_process = require('child_process');
-const { dialog } = require('electron')
+const { dialog } = require('electron');
 
 // This function will output the lines from the script 
 // and will return the full combined output
@@ -183,13 +183,62 @@ window.addEventListener('load', function load(event) {
         // var langChoice = document.getElementById('languageMenu').value;
         // ipcRenderer.send("registerToArrowhead", langChoice, registerToOrchestrator_autoLaunched);
     };
-    document.getElementById('blynkConnect').onclick = function (event) {
+    // document.getElementById('blynkConnect').onclick = function (event) {
   		// var val = location.search.match(new RegExp('[?&]lang=([^&]+)'));
   		// var argLangChoice = val ? decodeURIComponent(val[1].replace(/\+/g, '%20')) : 'en';
-        run_script("java -jar ./nodejs/blynk/server.jar -dataFolder ./nodejs/blynk", [""], null);
+        // run_script("java -jar ./nodejs/blynk/server.jar -dataFolder ./nodejs/blynk", [""], null);
+        // var langChoice = document.getElementById('languageMenu').value;
+        // ipcRenderer.send("launch_Blynk_server", langChoice);
+    // };
+    document.getElementById('serialConnectIOT').onclick = function (event) {
+  		// var val = location.search.match(new RegExp('[?&]lang=([^&]+)'));
+  		// var argLangChoice = val ? decodeURIComponent(val[1].replace(/\+/g, '%20')) : 'en';
+        var comPortToUse = localStorage.getItem("comPort");
+        document.getElementById('content_serial').innerHTML += "ok on port " + comPortToUse + "<br>";
         var langChoice = document.getElementById('languageMenu').value;
-        ipcRenderer.send("launch_Blynk_server", langChoice);
+        ipcRenderer.send("serialConnectIOT_launch_websocket", langChoice, comPortToUse);
     };
+    ipcRenderer.on('serialConnectIOT_websocket_ok', (event) => {
+        function zeroFill(i) { return (i < 10 ? '0' : '') + i }
+        function now() {
+          var d = new Date()
+          return d.getFullYear() + '-'
+            + zeroFill((d.getMonth() + 1)) + '-'
+            + zeroFill(d.getDate())        + ' '
+            + zeroFill(d.getHours())       + ':'
+            + zeroFill(d.getMinutes())     + ':'
+            + zeroFill(d.getSeconds())
+        }
+        document.getElementById('content_serial').innerHTML += "tentative...<br>";
+        const io = require("socket.io-client");
+        var connectionOptions = {
+          "force new connection" : true,
+          "reconnectionAttempts" : "Infinity",
+          "timeout" : 10000,
+          "transports" : ["websocket"]
+          }
+        var socket = io.connect('http://192.168.0.200:8888', connectionOptions);
+        socket.on('init', (data) => {
+          console.log(data.message);
+          document.getElementById('content_serial').innerHTML += data.message + "<br>";
+        })
+        socket.on('connected', () => {
+          console.log('Socket Connected')
+          document.getElementById('content_serial').innerHTML += "connected<br>";
+        });
+        socket.on('disconnected', () => {
+          console.log('Socket Disconnected');
+          document.getElementById('content_serial').innerHTML += "disconnected<br>";
+        });
+        socket.on('data', (data) => {
+          var msgs  = document.getElementById("content_serial");
+          var txt   = msgs.innerHTML;
+          var rep   = data.data.replace(/\x0D\x0A/g,"<br />");
+          txt       = txt + "<br>" + now() + " " + rep;
+          msgs.innerHTML = txt;
+          msgs.scrollTop = msgs.scrollHeight;
+        });
+    });
     document.getElementById('nodeRedFlowButton').onmouseover = function (event) {
         const scanFolder = '.\\nodejs\\nodered\\lib\\flows';
         const path = require('path');

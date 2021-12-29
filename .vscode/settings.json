@@ -1,0 +1,7 @@
+{
+    "files.exclude": {
+        "**/.github": true,
+        "**/nbproject": true,
+        "**/node_modules": true
+    }
+}

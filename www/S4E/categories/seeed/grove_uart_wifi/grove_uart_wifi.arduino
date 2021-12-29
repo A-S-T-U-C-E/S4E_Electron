@@ -1,0 +1,19 @@
+/**
+ * @license
+ * Copyright 2020 Sébastien CANET
+ * SPDX-License-Identifier: BSD-3-Clause
+ */
+
+/**
+ * @fileoverview DHT temperature & humidity sensors blocks for Blockly.
+ * @author scanet@libreduc.cc (Sébastien Canet)
+ */
+
+'use strict';
+
+goog.provide('Blockly.Arduino.grove_uart_wifi');
+
+goog.require('Blockly.Arduino');
+
+Blockly.Arduino['grove_uart_wifi'] = function() {
+};

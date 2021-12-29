@@ -136,6 +136,8 @@ Check changelog [here](https://github.com/A-S-T-U-C-E/S4E_Electron/blob/master/C
 
 [Node SerialPort](https://serialport.io/)
 
+[Node-RED](https://nodered.org/)
+
 [STM32Duino](https://github.com/stm32duino)
 
 

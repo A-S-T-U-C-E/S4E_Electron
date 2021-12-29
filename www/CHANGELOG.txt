@@ -1,9 +1,22 @@
 v0.9.0
 - change structure: simplify by adding all definition files in same folder
+- automatic typing for variables
+- add backpack plugin
+- add higlight content plugin
+- [WIP] add minimap
+- responsive spaces
+- move undo/redo buttons on workspace
+- shrink toolbox
+- skill level choice to design user interface
+- add Arrowhead framework control for network boards
+- use SVG file from /media/ for toolbox categories
+- add conversion tool text <-> binary
+- add colors conversion tool
+- add conversion blocks to send data in SenML format
 
 v0.8.1
 - finish text blocks translation in Arudino code
-- add skecth name field to save file (WIP: filled when open a file)
+- add sketch name field to save file (WIP: filled when open a file)
 
 v0.8.0
 - modify UI to add menus for less used commands

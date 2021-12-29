@@ -1,736 +1,1319 @@
 <!DOCTYPE HTML>
 <HTML>
-    <head>
-        <meta charset="utf-8">
-        <meta name="google" value="notranslate">
-        <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'">
-        <title>S4E</title>
-        <link rel="icon" type="image/png" href="./S4E/media/logo_only.png" />
-        <link rel="stylesheet" href="./css/font_awesome_all.min.css" />
-        <link rel="stylesheet" href="./css/keyboard_nav.css" />
-        <link rel="stylesheet" href="./css/lateral-panel.css" />
-        <link rel="stylesheet" href="./css/UI.css" />
-        <link rel="stylesheet" href="./S4E/css/S4E.css" />
-        <link rel="stylesheet" href="./S4E/css/override_css.css" />
-    </head>
-    <body>
-        <div class="table_wrapper">
-            <table id="globalTable">
-                <tr id="optionsTop">
-                    <td id="optionsTopTitle">
-                        <img src="./S4E/media/STMicroelectronics.png" style="width: 40px; vertical-align: middle;" />
-                        <span class="TitleText" id="appName"></span>
-                    </td>
-                    <td id="optionsTopButtons" align="center">
-                        <button id="btn_fake_min" type="button" class="iconButtons">
-                            <i class="far fa-window-minimize"></i>
-                        </button>
-                        <button id="btn_fake_max" type="button" class="iconButtons">
-                            <i class="far fa-window-maximize"></i>
-                        </button>
-                        <button id="btn_fake_restore" type="button" class="iconButtons">
-                            <i class="far fa-window-restore"></i>
-                        </button>
-                        <button id="btn_fake_close" type="button" class="iconButtons">
-                            <i class="far fa-window-close"></i>
-                        </button>
-                    </td>
-                </tr>
-                <tr id="interSpace">
-                    <td colspan="2"></td>
-                </tr>
-                <tr id="functionsIcons">
-                    <td colspan="2">
-                        <button id="menuButton" class="iconButtons" onclick="document.getElementById('menuPopup').style.display = 'block';document.getElementById('menuButton').classList.toggle('active');">
-                            <span id="menuButtonButton_span">
-                                <i class="fas fa-ellipsis-v"></i>
-                            </span>
-                        </button>
-                        <div id="menuPopup" class="popup_bckgrd" style="display:none" onclick="document.getElementById('menuPopup').style.display = 'none';document.getElementById('menuButton').classList.toggle('active');">
-                            <div id="buttonsMenuPopup" class="menu_div">
-                                <div id="buttonsMenuPopupInside">
-                                    <button id="newButton" class="iconButtons" onclick="Code.newProject()">
-                                        <span id="newButton_span"></span>
-                                    </button>
-                                    <span id="newButton_span_menu" class="menu_text"></span>
-                                    <br>
-                                    <button id="loadXMLfakeButton" class="iconButtons" onclick="Code.loadXmlBlocklyFile()">
-                                        <span id="loadXMLfakeButton_span"></span>
-                                    </button>
-                                    <span id="loadXMLfakeButton_span_menu" class="menu_text"></span>
-                                    <br>
-                                    <button id="saveXMLButton" class="iconButtons" onclick="Code.saveXmlBlocklyFile()">
-                                        <span id="saveXMLButton_span"></span>
-                                    </button>
-                                    <span id="saveXMLButton_span_menu" class="menu_text"></span>
-                                    <br>
-                                    <button id="saveCodeButton" class="iconButtons" onclick="Code.saveCodeFile()">
-                                        <span id="saveCodeButton_span"></span>
-                                    </button>
-                                    <span id="saveCodeButton_span_menu" class="menu_text"></span>
-                                    <br>
-                                    <hr>
-                                    <button id="parametersButton" class="iconButtons" onclick="document.getElementById('lateral-panel-setup-input').click();">
-                                        <span id="parametersButton_span">
-                                            <i class="fas fa-cog"></i>
-                                        </span>
-                                    </button>
-                                    <span id="parametersButton_span_menu" class="menu_text"></span>
-                                    <br>
-                                    <hr>
-                                    <button id="resetButton" class="iconButtons" onclick="Code.ResetWorkspace()">
-                                        <span id="resetButton_span">
-                                            <i class="fas fa-power-off"></i>
-                                        </span>
-                                    </button>
-                                    <span id="resetButton_span_menu" class="menu_text"></span>
-                                    <!-- <br> -->
-                                    <!-- <hr> -->
-                                    <!-- <button id="helpButton" class="iconButtons" onclick="toggleDisplayHelpModal()"> -->
-                                        <!-- <span id="helpButton_span"> -->
-                                            <!-- <i class="fas fa-question"></i> -->
-                                        <!-- </span> -->
-                                    <!-- </button> -->
-                                    <!-- <span id="helpButton_span_menu" class="menu_text"></span> -->
-                                </div>
-                            </div>
-                        </div>
-                        <button id="fullScreenButton" class="iconButtons" onclick="fullScreen()">
-                            <span id="fullScreenButton_span">
-                                <i class="fas fa-expand-arrows-alt"></i>
-                            </span>
-                        </button>
-                        <button id="undoButton" class="iconButtons" onclick="Code.Undo()">
-                            <span id="undoButton_span">
-                                <i class="fas fa-undo-alt"></i>
-                            </span>
-                        </button>
-                        <button id="redoButton" class="iconButtons" onclick="Code.Redo()">                           
-                            <span id="redoButton_span">
-                                <i class="fas fa-redo-alt"></i>
-                            </span>
-                        </button>
-                        <button id="toolsButton" class="iconButtons" onclick="document.getElementById('toolsPopup').style.display = 'block';document.getElementById('toolsButton').classList.toggle('active');">
-                            <span id="toolsButton_span">
-                                <i class="fas fa-toolbox"></i>
-                            </span>
-                        </button>
-                        <div id="toolsPopup" class="popup_bckgrd" style="display:none" onclick="document.getElementById('toolsPopup').style.display = 'none';document.getElementById('toolsButton').classList.toggle('active');">
-                            <div id="buttonsToolsPopup" class="menu_div">
-                                <div id="buttonsToolsPopupInside">
-                                    <button id="wiringButton" class="iconButtons">
-                                        <span id="wiringButton_span">
-                                            <i class="fas fa-code-branch"></i>
-                                        </span>
-                                    </button>
-                                    <span id="wiringButton_span_menu" class="menu_text"></span>
-                                    <br>
-                                    <hr>
-                                    <button id="factoryButton" class="iconButtons">
-                                        <span id="factoryButton_span">
-                                            <i class="fas fa-industry"></i>
-                                        </span>
-                                    </button>
-                                    <span id="factoryButton_span_menu" class="menu_text"></span>
-                                    <br>
-                                    <hr>
-                                    <button id="htmlButton" class="iconButtons">
-                                        <span id="htmlButton_span">
-                                            <i class="fab fa-firefox-browser"></i>
-                                        </span>
-                                    </button>
-                                    <span id="htmlButton_span_menu" class="menu_text"></span>
-                                    <br>
-                                    <hr>
-                                    <button id="colorConversionButton" class="iconButtons" onclick="">
-                                        <span id="colorConversionButton_span">
-                                            <i class="fas fa-swatchbook"></i>
-                                        </span>
-                                    </button>
-                                    <span id="colorConversionButton_span_menu" class="menu_text"></span>
-                                    <br>
-                                    <hr>
-                                    <button id="dataConversionButton" class="iconButtons" onclick="">
-                                        <span id="dataConversionButton_span">
-                                            <i class="fas fa-exchange-alt"></i>
-                                        </span>
-                                    </button>
-                                    <span id="dataConversionButton_span_menu" class="menu_text"></span>
-                                </div>
-                            </div>
-                        </div>
-                        <button id="iotConnectButton" class="iconButtons" onclick="document.getElementById('iotPopup').style.display = 'block';document.getElementById('iotConnectButton').classList.toggle('active');">
-                            <span id="iotConnectButton_span">
-                                <i class="fas fa-link"></i>
-                            </span>
-                        </button>
-                        <div id="iotPopup" class="popup_bckgrd" style="display:none" onclick="document.getElementById('iotPopup').style.display = 'none';document.getElementById('iotConnectButton').classList.toggle('active');">
-                            <div id="buttonsIotPopup" class="menu_div">
-                                <div id="buttonsIotPopupInside">
-                                    <button id="launchRedServer" class="iconButtons CLI">
-                                        <span id="launchRedServer_span">
-                                            <img src="../nodejs/media/node-red.png" style="width: 30px; height: 30px; vertical-align: middle;"/>
-                                        </span>
-                                    </button>
-                                    <span id="launchRedServer_span_menu" class="menu_text"></span>
-                                    <br>
-                                    <hr>
-                                    <button id="launchWebServer" class="iconButtons CLI">
-                                        <span id="launchWebServer_span">
-                                            <i class="fas fa-network-wired"></i>
-                                        </span>
-                                    </button>
-                                    <span id="launchWebServer_span_menu" class="menu_text"></span>
-                                    <br>
-                                    <hr>
-                                    <button id="papyrusConnect" class="iconButtons CLI" onclick="papyrusConnect()">
-                                        <span id="papyrusConnect_span">
-                                            <img src="./S4E/media/Eclipse_papyrus_logo.png" style="width: 30px; height: 30px; vertical-align: middle;"/>
-                                        </span>
-                                    </button>
-                                    <span id="papyrusConnect_span_menu" class="menu_text"></span>
-                                    <br>
-                                    <hr>
-                                    <button id="registerToOrchestrator_auto" class="iconButtons CLI">
-                                        <span id="registerToOrchestrator_span">
-                                            <img src="./S4E/media/arrowheadtools_invert.png" style="width: 30px; height: 30px; vertical-align: middle;"/>
-                                        </span>
-                                    </button>
-                                    <span id="registerToOrchestrator_span_menu" class="menu_text"></span>
-                                    <!-- <br> -->
-                                    <!-- <hr> -->
-                                    <!-- <button id="blynkConnect" class="iconButtons CLI"> -->
-                                        <!-- <span id="blynkConnect_span"> -->
-                                            <!-- <img src="./S4E/media/blynk.png" style="width: 30px; height: 30px; vertical-align: middle;"/> -->
-                                        <!-- </span> -->
-                                    <!-- </button> -->
-                                    <br>
-                                    <hr>
-                                    <button id="serialConnectIOT" class="iconButtons CLI">
-                                        <span id="serialConnectIOT_span">
-                                            <i class="fas fa-cloud-upload-alt"></i>
-                                        </span>
-                                    </button>
-                                    <span id="serialConnectIOT_span_menu" class="menu_text"></span>
-                                </div>
-                            </div>
-                        </div>
-                        <button id="boardButton" class="iconButtons" onclick="Code.boardsListModalShow()">
-                            <span id="boardButton_span">
-                                <i class="fas fa-microchip"></i>
-                            </span>
-                        </button>
-                        <button id="verifyButton" class="iconButtons">
-                            <span id="verifyButton_span">
-                                <i class="fas fa-check"></i>
-                            </span>
-                        </button>
-                        <button id="serialButton" class="iconButtons" onclick="Code.portsListModalShow()">
-                            <span id="serialButton_span">
-                                <i class="fab fa-usb"></i>
-                            </span>
-                        </button>
-                        <button id="uploadButton" class="iconButtons">
-                            <span id="uploadButton_span">
-                                <i class="fas fa-sign-out-alt"></i>
-                            </span>
-                        </button>
-                        <button id="serialConnectButton" class="iconButtons" onclick="document.getElementById('serialPopup').style.display = 'block';document.getElementById('serialConnectButton').classList.toggle('active');">
-                            <span id="serialConnectButton_span">
-                                <i class="fas fa-glasses"></i>
-                            </span>
-                        </button>
-                        <div id="serialPopup" class="popup_bckgrd" style="display:none" onclick="document.getElementById('serialPopup').style.display = 'none';document.getElementById('serialConnectButton').classList.toggle('active');">
-                            <div id="buttonsSerialPopup" class="menu_div">
-                                <div id="buttonsSerialPopupInside">
-                                    <button id="serialMonitorButton" class="iconButtons CLI">
-                                        <span id="serialMonitorButton_span">
-                                            <i class="fas fa-search"></i>
-                                        </span>
-                                    </button>
-                                    <span id="serialMonitorButton_span_menu" class="menu_text"></span>
-                                    <br>
-                                    <hr>
-                                    <button id="nodeRedFlowButton" class="iconButtons CLI" onclick="Code.flowsListModalShow()">
-                                        <span id="nodeRedFlowButton_span">
-                                            <i class="fas fa-tachometer-alt"></i>
-                                        </span>
-                                    </button>
-                                    <span id="nodeRedFlowButton_span_menu" class="menu_text"></span>
-                                    <br>
-                                    <hr>
-                                    <button id="supervisionButton" class="iconButtons CLI">
-                                        <span id="supervisionButton_span">
-                                            <i class="fas fa-exchange-alt"></i>
-                                        </span>
-                                    </button>
-                                    <span id="supervisionButton_span_menu" class="menu_text"></span>
-                                </div>
-                            </div>
-                        </div>
-                        <span class="sketch_name_wrapper" id="sketch_name_wrapper">
-                            <i class="sketch_name_icon fas fa-pen"></i>
-                            <input id="sketch_name" class="sketch_name" type="text" size="10">
-                        </span>      
-                        <button id="helpButton" class="iconButtons" onclick="toggleDisplayHelpModal()">
-                            <span id="helpButton_span">
-                                <i class="fas fa-question"></i>
-                            </span>
-                        </button>
-                        <span id="content_hoverButton"></span>
-                    </td>
-                </tr>
-                <tr id="globalWorkspace">
-                    <td colspan="2">
-                        <div class="content_wrapper">
-                            <div id="wrapper_up" class="wrapper_up">
-                                <div id="content_area">
-                                    <div id="content_blocks"></div>
-                                </div>
-                                <div id="separator">
-                                    <label id="editorReadOnlyToggle" class="switch">
-                                        <input type="checkbox" onclick="toggleEditorReadOnly(this)">
-                                        <span class="slider"></span>
-                                    </label>
-                                </div>
-                                <button id="copyCodeButton" class="iconButtons" onclick="Code.copyToClipboard()">
-                                    <span id="copyCodeButton_span">
-                                        <i class="far fa-copy"></i>
-                                    </span>
-                                </button>
-                                <div id="content_code"></div>
-                            </div>
-                            <div id="barre_h">
-                                <div id="checkDetails">
-                                    <input type="checkbox" name="detailedCompilation" id="detailedCompilation"/>
-                                    <span id="detailedCompilation_span"> </span>
-                                </div>
-                                <div id="infoBoardPort">                                
-                                    <span id="boardSelected_span"> </span>
-                                    <span id="portSelected_span"> </span>
-                                    <button id="consoleOutsideButton" class="iconButtons" onclick="">
-                                        <span name="consoleOutside" id="consoleOutside_span">
-                                            <i class="fas fa-external-link-alt"></i>
-                                        </span>
-                                    </button>
-                                </div>
-                            </div>
-                            <div id="content_serial"></div>
-                        </div>
-                    </td>
-                </tr>
-            </table>
-        </div>
-        <div id="helpModal" class="helpModal">
-            <div id="helpModal_header">
-                <span id="helpModalSpan_title"></span>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="google" value="notranslate">
+    <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'">
+    <title>S4E</title>
+    <link rel="icon" type="image/png" href="./S4E/media/logo_only.png" />
+    <link rel="stylesheet" href="./css/draggable-resizable-dialog.css" />
+    <link rel="stylesheet" href="./css/font_awesome_all.min.css" />
+    <link rel="stylesheet" href="./css/keyboard_nav.css" />
+    <link rel="stylesheet" href="./css/lateral-panel.css" />
+    <link rel="stylesheet" href="./css/serialMonitorPlotter.css" />
+    <link rel="stylesheet" href="./css/UI.css" />
+    <link rel="stylesheet" href="./S4E/css/S4E.css" />
+    <link rel="stylesheet" href="./S4E/css/override_css.css" />
+    <link rel="stylesheet" data-name="./tools/vs/editor/editor.main" href="./tools/vs/editor/editor.main.css">
+</head>
+
+<body>
+    <script type="text/javascript">
+        var canvas = document.createElement('canvas');
+        canvas.style.width = '100%';
+        canvas.style.height = '100%';
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        canvas.style.position = 'absolute';
+        canvas.style.left = 0;
+        canvas.style.top = 0;
+        canvas.style.zIndex = 100000;
+        canvas.style.pointerEvents = 'none';
+        document.body.appendChild(canvas);
+        var context = canvas.getContext('2d');
+        context.rect(0, 0, window.innerWidth, window.innerHeight);
+        context.fillStyle = 'white';
+        context.fill();
+        let img1 = new Image();
+        img1.src = "./S4E/media/sphere.png";
+        img1.height = window.innerHeight;
+        img1.onload = function() {
+            let x = (window.innerWidth - img1.width) / 2;
+            let y = (window.innerHeight - img1.height) / 2;
+            context.drawImage(img1, x, y);
+        };
+        let img2 = new Image();
+        img2.src = "./S4E/media/STudio4Education_logo.png";
+        img2.onload = function() {
+            let x = (window.innerWidth - img2.width) / 2;
+            let y = (window.innerHeight - img2.height) / 2;
+            context.drawImage(img2, x, y);
+        };
+    </script>
+    <flex class="content_wrapper">
+        <div id="optionsTop">
+            <div id="optionsTopTitle">
+                <img id="logo" src="./S4E/media/STudio4Education_logo.png" style="height: 25px; vertical-align: middle;" />
             </div>
-            <div id="helpModal_text">
-                <span id="helpModalSpan_text"></span>
+            <div id="optionsTopButtons" text-align="center">
+                <button id="btn_fake_min" type="button" class="iconButtonsTop">
+                    <i class="far fa-window-minimize"></i>
+                </button>
+                <button id="btn_fake_max" type="button" class="iconButtonsTop">
+                    <i class="far fa-window-maximize"></i>
+                </button>
+                <button id="btn_fake_restore" type="button" class="iconButtonsTop">
+                    <i class="far fa-window-restore"></i>
+                </button>
+                <button id="btn_fake_close" type="button" class="iconButtonsTop">
+                    <i class="far fa-window-close"></i>
+                </button>
             </div>
         </div>
-        <div id="keyboard_nav">
-            <div id="keyboard_nav_header">
-                <span id="keyMappingModalSpan"></span>
-            </div>
-            <form id="keyboard_mappings"></form>
-        </div>
-        <div id="lateral-panel-setup">
-            <input id="lateral-panel-setup-input" type="checkbox">
-            <label id="lateral-panel-setup-label" for="lateral-panel-setup-input" class="label_panel">
-                <span id="setup_side_span">
-                    <i class="fas fa-cog"></i>
+        <div id="functionsIcons">
+            <button id="menuButton" class="iconButtons" onclick="document.getElementById('menuPopup').style.display = 'block';document.getElementById('menuButton').classList.toggle('active');">
+                <span id="menuButtonButton_span">
+                    <i class="fas fa-ellipsis-v"></i>
                 </span>
-            </label>
-            <div id="lateral-panel-setup-bloc">
-                <button class="accordion">
-                    <span id="config_UI_title_span" aria-expanded="false" aria-controls="accordion_setup_content"></span>
-                </button></button>
-                <div id="setup_content" class="side_content config_content panel">
-                    <form id="options">
-                        <select id="boardMenu" style='display:none'>
-                            <option value="none" selected="selected">...</option>
-                            <option value="nucleo_L476RG" >Nucleo-64 STM32L476</option>
-                            <option value="stm32f103c8_blue_pills" >STM32F103C8 Blue Pill</option>
-                            <option value="mp157c_dk2" >STM32MP1 Discovery kits</option>
-                        </select>
-                        <br>
-                        <span id="languageSpan" class="UIText">...</span>
-                        <select id="languageMenu"></select>
-                        <br>
-                        <br>
-                        <span id="interfaceColorSpan" class="UIText">...</span>
-                        <select id="interfaceColorMenu">
-                            <option value="S4E" selected="selected">S4E</option>
-                        </select>
-                        <br>
-                        <span id="codeEditorColorSpan" class="UIText">...</span>
-                        <select id="codeEditorColorMenu">
-                            <option value="S4E" selected="selected">S4E</option>
-                        </select>
-                        <br>
-                        <br>
-                        <span id="themeSpan" class="UIText">...</span>
-                        <select name="theme" onchange="changeTheme(this.value)">
-                            <option value="classic" id="themeClassicSpan">classic</option>
-                            <option value="modern" id="themeModernSpan">modern</option>
-                            <option value="deuteranopia" id="themeDeuteranopiaSpan">deuteranopia</option>
-                            <option value="tritanopia" id="themeTritanopiaSpan">tritanopia</option>
-                            <option value="zelos" id="themeZelosSpan">zelos</option>
-                            <option value="high_contrast" id="themeHighContrastSpan">high_contrast</option>
-                            <option value="dark" id="themeDarkSpan">dark</option>
-                            <option value="blackWhite" id="themeBwSpan">blackWhite</option>
-                        </select>
-                        <br>
-                        <span id="renderSpan" class="UIText">...</span>
-                        <select name="renderer" onchange="document.forms.options.submit('options')">
-                            <option value="geras">Geras</option>
-                            <option value="thrasos">Thrasos</option>
-                            <option value="zelos">Zelos</option>
-                            <option value="minimalist">Minimalist</option>
-                        </select>
-                    </form>
-                    <br>
-                    <span id="displaySpan" class="UIText">...</span>
-                    <select name="displayChoice" onchange="">
-                        <option value="button" id="displayChoiceButtons">buttons</option>
-                        <option value="buttonText" id="displayChoiceBandT">buttons + text</option>
-                        <option value="text" id="displayChoiceText">text</option>
-                    </select>
-                    <br>
-                    <br>
-                    <span id="fontSpan" class="UIText">...</span>
-                    <select name="fontChoice" onchange="document.forms.options.submit('options')">
-                        <option value="arial">Arial</option>
-                        <option value="comics">Comic Sans MS</option>
-                        <option value="luciole">Luciole</option>
-                        <option value="opendyslexic">Open Dyslexic</option>
-                        <option value="trebuchet">Trebuchet MS</option>
-                        <option value="verdana">Verdana</option>
-                    </select>
-                    <br>
-                    <span id="fontSizeSpan" class="UIText"></span>
-                    <select id="rendering-constant-selector">
-                        <option value="fontSizeBlocks" id="optionFontSizeBlocks" selected="selected">Blocks & Editor Font Size</option>
-                        <option value="fontSizePage" id="optionFontSizePage">Page Font Size</option>
-                        <option value="fontSpacingPage" id="optionFontSpacingPage">Page Font Spacing</option>
-                    </select>
-                    <br>
-                    <input type="range" min="3" max="50" value="4" oninput="Code.changeRenderingConstant(this.value)" onchange="Code.changeRenderingConstant(this.value)" />
-                    <br>
-                    <br>
-                    <input id="accessibilityModeCheck" type="checkbox" onclick="toggleAccessibilityMode(this.checked)">
-                    <span id="accessibilitySpan" class="UIText"></span>
-                    <br>
-                    <input id="displayKeyMappings" type="checkbox" onclick="toggleDisplayKeyMappings(this.checked)">
-                    <span id="keyMappingSpan" class="UIText"></span>
-                    <br>
-                    <select id="cursorChanger" name="cursor" onchange="changeCursor(this.value)">
-                        <option value="default" id="defaultCursorSpan">default</option> 
-                        <option value="basic" id="basicCursorSpan">basic</option>
-                        <option value="line" id="lineCursorSpan">line</option>
-                    </select>
-                    <br>
-                </div>
-                <button class="accordion">
-                    <span id="CLI_title_span" aria-expanded="false" aria-controls="accordion_CLI_content"></span>
-                </button>
-                <div id="CLI_content" class="side_content config_content CLI panel">
-                    <div id="configCLI">
-                        <div id="CLI_title">
-                            <button id="coreUpdateButton" class="iconButtons CLI" onclick="">
-                                <span id="coreUpdateButton_span">
-                                    <i class="fas fa-sync"></i>
-                                </span>
-                            </button>
-                            <button id="cleanCLIcacheButton" class="iconButtons CLI" onclick="">
-                                <span id="cleanCLIcache_span">
-                                    <i class="fas fa-eraser"></i>
-                                </span>
-                            </button>
-                            <button id="listBoardsButton" class="iconButtons CLI" onclick="">
-                                <span id="listBoardsButton_span">
-                                    <i class="fas fa-list"></i>
-                                </span>
-                            </button>
-                            <a href="https://arduino.github.io/arduino-cli/" id="CLI_githubLinkButton" target="_blank">
-                                <img src="./S4E/media/featured-CLI.png" style="height: 40px" />
-                            </a>
-                        </div>
-                        <br>
-                        <span id="installBoard_title_span" class="UIText CLI">install board</span>
-                        <br>
-                        <input type="text" class="controlPanelInput" id="installBoardsInput" name="installBoardsInput">
-                        <button id="installBoardsButton" class="iconButtons CLI" onclick="">
-                            <span id="installBoardsButton_span">
-                                <i class="fas fa-cloud-download-alt"></i>
-                            </span>
-                        </button>
-                        <br>
-                        <br>
-                        <span id="searchlLib_title_span" class="UIText">search library</span>
-                        <br>
-                        <input type="text" class="controlPanelInput" id="searchlLibInput" name="searchlLibInput">
-                        <button id="searchlLibButton" class="iconButtons CLI" onclick="">
-                            <span id="searchlLibButton_span">
-                                <i class="fab fa-searchengin"></i>
-                            </span>
-                        </button>
-                        <br>
-                        <br>
-                        <span id="installLib_title_span" class="UIText">install library</span>
-                        <br>
-                        <input type="text" class="controlPanelInput" id="installLibInput" name="installLibInput">
-                        <button id="installLibButton" class="iconButtons CLI" onclick="">
-                            <span id="installLibButton_span">
-                                <i class="fas fa-cloud-download-alt"></i>
-                            </span>
-                        </button>
-                        <br>
+            </button>
+            <div id="menuPopup" class="popup_bckgrd" onclick="document.getElementById('menuPopup').style.display = 'none';document.getElementById('menuButton').classList.toggle('active');">
+                <div id="buttonsMenuPopup" class="menu_div">
+                    <div id="buttonsMenuPopupInside">
+                        <span id="newButton_span_menu" class="menu_text"></span>
+                        <span id="loadXMLfakeButton_span_menu" class="menu_text"></span>
+                        <span id="saveXMLButton_span_menu" class="menu_text"></span>
+                        <span id="saveCodeButton_span_menu" class="menu_text"></span>
+                        <span id="resetButton_span_menu" class="menu_text"></span>
+                        <span id="helpButton_span_menu" class="menu_text"></span>
                     </div>
                 </div>
-                <button class="accordion">
-                    <!-- <select name="toolbox" onchange="document.forms.options.submit('options')"> -->
-                        <!-- <option value="categories">Categories (untyped variables)</option> -->
-                        <!-- <option value="categories-typed-variables">Categories (typed variables)</option> -->
-                        <!-- <option value="simple">Simple</option> -->
-                        <!-- <option value="test-blocks">Test Blocks</option> -->
-                    <!-- </select> -->
-                    <span id="categories_title_span" aria-expanded="false" aria-controls="accordion_categories_content"></span>
-                </button>
-                <div id="categories_content" class="side_content config_content panel UIText">
+            </div>
+            <button id="resetButton" class="iconButtons" onclick="Code.ResetWorkspace()">
+                <span id="resetButton_span" class="fas fa-power-off">
+                </span>
+            </button>
+            <button id="newButton" class="iconButtons" onclick="Code.newProject()">
+                <span id="newButton_span" class="far fa-file">
+                </span>
+            </button>
+            <button id="loadXMLfakeButton" class="iconButtons" onclick="Code.loadXmlBlocklyFile()">
+                <span id="loadXMLfakeButton_span" class="fas fa-file-upload">
+                </span>
+            </button>
+            <button id="saveXMLButton" class="iconButtons" onclick="Code.saveXmlBlocklyFile()">
+                <span id="saveXMLButton_span" class="fas fa-file-download">
+                </span>
+            </button>
+            <button id="saveCodeButton" class="iconButtons" onclick="Code.saveCodeFile()">
+                <span id="saveCodeButton_span" class="far fa-file-code">
+                </span>
+            </button>
+            <button id="saveCodeButtonMenu" class="iconButtons" onclick="Code.saveCodeFile()">
+                <span id="saveCodeButton_span" class="far fa-file-code">
+                </span>
+            </button>
+            <button id="fullScreenButton" class="iconButtons" onclick="fullScreen()">
+                <span id="fullScreenButton_span" class="fas fa-expand-arrows-alt">
+                </span>
+            </button>
+            <button id="fullToolboxButton" class="iconButtons" onclick="Code.fullToolbox()">
+                <span id="fullToolboxButton_span" class="fas fa-toolbox">
+                </span>
+            </button>
+            <button id="blocksPictureButton" class="iconButtons" onclick="Code.blockPicture()">
+                <span id="blocksPictureButton_span" class="far fa-eye"></span>
+            </button>
+            <button id="toolsButton" class="iconButtons" onclick="openMenuTools()">
+                <span id="toolsButton_span" class="fas fa-tools">
+                </span>
+                <span id="serialConnectButton_span" style="font-size: 0.6em;">⏷
+                </span>
+            </button>
+            <div id="toolsPopup" class="popup_bckgrd" style="display:none" onclick="document.getElementById('toolsPopup').style.display = 'none';document.getElementById('toolsButton').classList.toggle('active');">
+                <div id="buttonsToolsPopup" class="menu_div">
+                    <div id="buttonsToolsPopupInside">
+                        <button id="wiringButton" class="iconButtons">
+                            <span id="wiringButton_span" class="fas fa-code-branch">
+                            </span>
+                        </button>
+                        <span id="wiringButton_span_menu" class="menu_text"></span>
+                        <br>
+                        <hr>
+                        <button id="factoryButton" class="iconButtons">
+                            <span id="factoryButton_span" class="fas fa-industry">
+                            </span>
+                        </button>
+                        <span id="factoryButton_span_menu" class="menu_text"></span>
+                        <br>
+                        <hr>
+                        <button id="htmlButton" class="iconButtons">
+                            <span id="htmlButton_span" class="fab fa-firefox-browser">
+                            </span>
+                        </button>
+                        <span id="htmlButton_span_menu" class="menu_text"></span>
+                        <br>
+                        <hr>
+                        <button id="colorConversionButton" class="iconButtons" onclick="showColorsModalDialog();">
+                            <span id="colorConversionButton_span" class="fas fa-swatchbook">
+                            </span>
+                        </button>
+                        <span id="colorConversionButton_span_menu" class="menu_text"></span>
+                        <br>
+                        <hr>
+                        <button id="dataConversionButton" class="iconButtons" onclick="showConvertModalDialog();">
+                            <span id="dataConversionButton_span" class="fas fa-exchange-alt">
+                            </span>
+                        </button>
+                        <span id="dataConversionButton_span_menu" class="menu_text"></span>
+                    </div>
                 </div>
-                <button class="accordion">
-                    <span id="iot_title_span" aria-expanded="false" aria-controls="accordion_categories_content"></span>
-                </button>
-                <div id="arrowhead_controls" class="side_content config_content panel UIText">
-                    <input type="text" class="controlPanelInput" id="launchWebServerInput" name="launchWebServerInput">
-                    <button id="launchWebServer" class="iconButtons CLI">
-                        <span id="launchWebServer_span">
-                            <i class="fas fa-network-wired"></i>
-                        </span>
-                    </button>
-                    <br>
-                    <br>
-                    <input type="text" class="controlPanelInput" id="papyrusConnectInput" name="papyrusConnectInput">
-                    <button id="papyrusConnect" class="iconButtons CLI" onclick="papyrusConnect()">
-                        <span id="papyrusConnect_span">
-                            <img src="./S4E/media/Eclipse_papyrus_logo.png" style="width: 30px; height: 30px; vertical-align: middle;"/>
-                        </span>
-                    </button>
-                    <br>
-                    <br>
-                    <input type="text" class="controlPanelInput" id="arrowheadConnectInput" name="arrowheadConnectInput">
-                    <button id="registerToOrchestrator" class="iconButtons CLI" onclick="ArrowheadRegister()">
-                        <span id="registerToOrchestrator_span">
-                            <img src="./S4E/media/arrowheadtools_invert.png" style="width: 30px; height: 30px; vertical-align: middle;"/>
-                        </span>
-                    </button>
-                    <!-- <br> -->
-                    <!-- <br> -->
-                    <!-- <input type="text" class="controlPanelInput" id="blynkConnectInput" name="blynkConnectInput"> -->
-                    <!-- <button id="blynkConnect" class="iconButtons CLI" onclick=""> -->
+            </div>
+            <button id="iotConnectButton" class="iconButtons" onclick="openMenuIoT()">
+                <span id="iotConnectButton_span" class="fas fa-link">
+                </span>
+                <span id="serialConnectButton_span" style="font-size: 0.6em;">⏷
+                </span>
+            </button>
+            <div id="iotPopup" class="popup_bckgrd" style="display:none" onclick="document.getElementById('iotPopup').style.display = 'none';document.getElementById('iotConnectButton').classList.toggle('active');">
+                <div id="buttonsIotPopup" class="menu_div">
+                    <div id="buttonsIotPopupInside">
+                        <button id="launchRedServer" class="iconButtons CLI">
+                            <span id="launchRedServer_span">
+                                <img src="./S4E/media/node-red.png" style="width: 30px; height: 30px; vertical-align: middle;" />
+                            </span>
+                        </button>
+                        <span id="launchRedServer_span_menu" class="menu_text"></span>
+                        <br>
+                        <hr>
+                        <button id="launchWebServer" class="iconButtons CLI">
+                            <span id="launchWebServer_span" class="fas fa-network-wired">
+                            </span>
+                        </button>
+                        <span id="launchWebServer_span_menu" class="menu_text"></span>
+                        <br>
+                        <hr>
+                        <button id="papyrusConnect" class="iconButtons CLI">
+                            <span id="papyrusConnect_span">
+                                <img src="./S4E/media/Eclipse_papyrus_logo.png"  style="width: 30px; height: 30px; vertical-align: middle;" />
+                            </span>
+                        </button>
+                        <span id="papyrusConnect_span_menu" class="menu_text"></span>
+                        <br>
+                        <hr>
+                        <button id="ArrowheadConfiguration_auto" class="iconButtons CLI">
+                            <span id="ArrowheadConfiguration_span">
+                                <img src="./S4E/media/arrowheadtools_invert.png" style="width: 30px; height: 30px; vertical-align: middle;" />
+                            </span>
+                        </button>
+                        <span id="ArrowheadConfiguration_span_menu" class="menu_text"></span>
+                        <!-- <br> -->
+                        <!-- <hr> -->
+                        <!-- <button id="blynkConnect" class="iconButtons CLI"> -->
                         <!-- <span id="blynkConnect_span"> -->
-                            <!-- <img src="./S4E/media/blynk.png" style="width: 30px; height: 30px; vertical-align: middle;"/> -->
+                        <!-- <img src="./S4E/media/blynk.png" style="width: 30px; height: 30px; vertical-align: middle;"/> -->
                         <!-- </span> -->
-                    <!-- </button> -->
-                    <br>
-                    <br>
-                    <input type="text" class="controlPanelInput" id="blynkConnectInput" name="serialConnectIOTInput">
-                    <button id="serialConnectIOT_save" class="iconButtons CLI" onclick="">
-                        <span id="serialConnectIOT_span">
-                            <i class="fas fa-cloud-upload-alt"></i>
+                        <!-- </button> -->
+                        <br>
+                        <hr>
+                        <button id="serialConnectIOT" class="iconButtons CLI">
+                            <span id="serialConnectIOT_span" class="fas fa-cloud-upload-alt">
+                            </span>
+                        </button>
+                        <span id="serialConnectIOT_span_menu" class="menu_text"></span>
+                    </div>
+                </div>
+            </div>
+            <button id="boardButton" class="iconButtons" onclick="Code.boardsListModalShow()">
+                <span id="boardButton_span" class="fas fa-microchip">
+                </span>
+            </button>
+            <button id="verifyButton" class="iconButtons">
+                <span id="verifyButton_span" class="fas fa-tasks">
+                </span>
+            </button>
+            <!-- <button id="serialButton" class="iconButtons" onclick="Code.portsListModalShow()"> -->
+            <button id="serialButton" class="iconButtons" onclick="Code.getPorts()">
+                <span id="serialButton_span" class="fab fa-usb">
+                </span>
+            </button>
+            <button id="uploadButton" class="iconButtons">
+                <span id="uploadButton_span" class="fas fa-sign-out-alt">
+                </span>
+            </button>
+            <button id="serialConnectButton" class="iconButtons" onclick="openMenuSerial()">
+                <span id="serialConnectButton_span" class="fas fa-glasses">
+                </span>
+                <span id="serialConnectButton_span" style="font-size: 0.6em;">&#x23F7
+                </span>
+            </button>
+            <div id="serialPopup" class="popup_bckgrd" style="display:none" onclick="document.getElementById('serialPopup').style.display = 'none';document.getElementById('serialConnectButton').classList.toggle('active');">
+                <div id="buttonsSerialPopup" class="menu_div">
+                    <div id="buttonsSerialPopupInside">
+                        <button id="serialMonitorButton" class="iconButtons CLI" onclick="showSerialMonitorModalDialog()">
+                            <span id="serialMonitorButton_span" class="fas fa-search">
+                            </span>
+                        </button>
+                        <span id="serialMonitorButton_span_menu" class="menu_text"></span>
+                        <br>
+                        <hr>
+                        <button id="nodeRedFlowButton" class="iconButtons CLI" onclick="Code.flowsListModalShow()" disabled>
+                            <span id="nodeRedFlowButton_span" class="fa-solid fa-chart-line">
+                            </span>
+                        </button>
+                        <span id="nodeRedFlowButton_span_menu" class="menu_text"></span>
+                        <br>
+                        <hr>
+                        <button id="supervisionButton" class="iconButtons CLI" disabled>
+                            <span id="supervisionButton_span" class="fas fa-exchange-alt">
+                            </span>
+                        </button>
+                        <span id="supervisionButton_span_menu" class="menu_text"></span>
+                    </div>
+                </div>
+            </div>
+            <span class="sketch_name_wrapper" id="sketch_name_wrapper">
+                <em class="sketch_name_icon fas fa-pen"></em>
+                <input id="sketch_name" name="sketch_name" class="sketch_name" type="text" size="10" placeholder="sketch name">
+            </span>
+            <button id="helpButton" class="iconButtons" onclick="toggleDisplayHelpModal()">
+                <span id="helpButton_span" class="fas fa-question">
+                </span>
+            </button>
+            <span id="content_hoverButton"></span>
+        </div>
+        <flex class="wrapper_cell" style="flex: 1;">
+            <flex-item style="flex: 1;">
+                <div id="content_area" style="height: 100%; width: 100%;"></div>
+                <div id="content_blocks" style="position: absolute;">
+                    <div id="minimapDiv"></div>
+                    <button id="undoButton" class="iconWorkspaceButtons" onclick="Code.Undo()" style="bottom: 327px">
+                        <span id="undoButton_span" class="fa-solid fa-arrow-rotate-left">
+                        </span>
+                    </button>
+                    <button id="redoButton" class="iconWorkspaceButtons" onclick="Code.Redo()" style="bottom: 290px">
+                        <span id="redoButton_span" class="fa-solid fa-arrow-rotate-right">
                         </span>
                     </button>
                 </div>
+            </flex-item>
+            <flex-resizer id="resizer_h">
+                <label id="editorDiffToggle" class="switch">
+                    <input id="editorDiffToggle_check" type="checkbox" onclick="toggleEditorDiff(this)" />
+                    <span class="slider"></span>
+                </label>
+                <div id="content_code_buttons_skill3">
+                </div>
+            </flex-resizer>
+            <flex-item id="content_code" style="flex: 0 1">
+                <pre id="content_pre_code" class="content_pre_code_large"></pre>
+                <pre id="content_editor_code" class="content_pre_code_large"></pre>
+                <pre id="content_diffEditor_code" class="content_pre_code_large"></pre>
+                <div id="content_code_buttons">
+                    <button id="copyCodeButton" class="iconButtons" onclick="Code.copyToClipboard()">
+                        <span id="copyCodeButton_span" class="far fa-copy">
+                        </span>
+                    </button>
+                    <button id="openCodeButton" class="iconButtons" onclick="Code.editorMonacoModalShow()">
+                        <span id="openCodeButton_span" class="fas fa-code">
+                        </span>
+                    </button>
+                </div>
+            </flex-item>
+        </flex>
+        <flex-resizer id="resizer_v">
+            <div id="checkDetails">
+                <input type="checkbox" name="detailedCompilation" id="detailedCompilation" />
+                <span id="detailedCompilation_span"> </span>
             </div>
-        </div>
-        <div id="overlayForModals" class="overlay"></div>
-        <div id="boardListModal" class="modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <i class="fas fa-microchip"></i>
-                    <span id="boardListModalHeader_span"></span>
-                    <span class="closeModal" id="closeModalBoards">&times;</span>
-                </div>
-                <div class="modal-body">
-                    <div id="board_mini_picture_div">
-                        <img id="board_mini_picture" />
-                    </div>
-                    <div id="hideSelectScrollbar">
-                        <select id="boardDescriptionSelector" size="11" onchange="Code.boardDescription()">
-                            <optgroup label="C / C++">
-                                <option value="none" >...</option>
-                                <option value="nucleo_G431KB" >Nucleo-32 G431KB</option>
-                                <option value="nucleo_L476RG" >Nucleo-64 L476RG</option>
-                                <option value="nucleo_H753ZI" >Nucleo-144 H753ZI</option>
-                                <option value="mp157c_dk2" >STM32MP1 Discovery kits</option>
-                            </optgroup>
-                        </select>
-                    </div>
-                </div>
-                <button id="boardListModalDialogOkay" onclick="Code.changeBoard()">&#10004;</button>
-                <button type="button" class="collapsibleButton">
-                    <span id="boardListModalButton_span">Details</span>
-                </button>
-                <div class="collapsibleContent" id="collapsibleContent">
-                    <span id="boardModal_connect"></span><span id="boardModal_connect_span" class="modalBoard_info">...</span><br>
-                    <span id="boardModal_voltage"></span><span id="boardModal_voltage_span" class="modalBoard_info">...</span><br>
-                    <span id="boardModal_voltage_normal"></span><span id="boardModal_voltage_normal_span" class="modalBoard_info">...</span><br>
-                    <span id="boardModal_voltage_maxi"></span><span id="boardModal_voltage_maxi_span" class="modalBoard_info">...</span><br>
-                    <span id="boardModal_cpu"></span><span id="boardModal_cpu_span" class="modalBoard_info">...</span><br>
-                    <span id="boardModal_speed"></span><span id="boardModal_speed_span" class="modalBoard_info">...</span><br>
-                    <span id="boardModal_inout"></span><span id="boardModal_inout_span" class="modalBoard_info">...</span><br>
-                    <span id="boardModal_in_analog"></span><span id="boardModal_in_analog_span" class="modalBoard_info">...</span><br>
-                    <span id="boardModal_out_analog"></span><span id="boardModal_out_analog_span" class="modalBoard_info">...</span><br>
-                    <span id="boardModal_i_max_out"></span><span id="boardModal_i_max_out_span" class="modalBoard_info">...</span><br>
-                    <span id="boardModal_i_max3"></span><span id="boardModal_i_max3_span" class="modalBoard_info">...</span><br>
-                    <span id="boardModal_i_max_5"></span><span id="boardModal_i_max_5_span" class="modalBoard_info">...</span><br>
-                    <span id="boardModal_flash"></span><span id="boardModal_flash_span" class="modalBoard_info">...</span><br>
-                    <span id="boardModal_sram"></span><span id="boardModal_sram_span" class="modalBoard_info">...</span><br>
-                    <span id="boardModal_eeprom"></span><span id="boardModal_eeprom_span" class="modalBoard_info">...</span><br>
-                </div> 
+            <div id="infoBoardPort">
+                <span id="boardSelected_span"> </span>
+                <span id="portSelected_span"> </span>
             </div>
+        </flex-resizer>
+        <flex-item id="content_serial">
+            <div id="content_serial_div">
+                <pre id="compiler-output-text" style="display: none;"></pre>
+                <pre id="serial-output-text" style="display: none;"></pre>
+            </div>
+        </flex-item>
+    </flex>
+    <div id="helpModal" class="helpModal">
+        <div id="helpModal_header">
+            <span id="helpModalSpan_title"></span>
         </div>
-        <div id="portListModal" class="modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <i class="fab fa-usb"></i>
-                    <span id="portListModalHeader_span"></span>
-                    <span class="closeModal" id="closeModalPorts">&times;</span>
-                </div>
-                <div class="modal-body" id="portListModalBody">
-                </div>
-                <div class="modal-footer">
-                    <select id="serialMenu">
-                        <option value="none">...</option>
+        <div id="helpModal_text">
+            <span id="helpModalSpan_text"></span>
+        </div>
+    </div>
+    <div id="keyboard_nav" class="modal">
+        <div id="keyboard_nav_header">
+            <span id="keyMappingModalSpan"></span>
+        </div>
+        <form id="keyboard_mappings"></form>
+    </div>
+    <div id="lateral-panel-setup">
+        <input id="lateral-panel-setup-input" type="checkbox">
+        <label id="lateral-panel-setup-label" for="lateral-panel-setup-input" class="label_panel">
+            <span id="setup_side_span" class="fas fa-cog">
+            </span>
+        </label>
+        <div id="lateral-panel-setup-bloc">
+            <button class="accordion">
+                <span id="config_UI_title_span" aria-expanded="false" aria-controls="accordion_setup_content"></span>
+            </button></button>
+            <div id="setup_content" class="side_content config_content panel">
+                <form id="options">
+                    <select id="boardMenu" style='display:none'>
+                        <option value="none" selected="selected">...</option>
+                        <option value="ESP_esp8266">ESP8266</option>
+                        <option value="ESP_esp32">ESP32</option>
+                        <option value="ST_nucleo_L432KC">Nucleo-32 L432KC</option>
+                        <option value="ST_nucleo_L476RG">Nucleo-64 L476RG</option>
+                        <option value="ST_nucleo_H753ZI">Nucleo-144 H753ZI</option>
+                        <option value="ST_mp157c_dk2">STM32MP1 Discovery kits</option>
                     </select>
-                    <button id="portListModalDialogOkay" onclick="Code.setPort()">&#10004;</button>
+                    <br>
+                    <span id="languageSpan" class="UIText">...</span>
+                    <select id="languageMenu"></select>
+                    <br>
+                    <span id="levelSpan" class="UIText">skill level</span>
+                    <select id="levelMenu">
+                        <option id="skill1_menu" value="skill1" selected="selected">novice (padawan)</option>
+                        <option id="skill2_menu" value="skill2">skilled (knight)</option>
+                        <option id="skill3_menu" value="skill3">expert (master)</option>
+                    </select>
+                    <br>
+                    <br>
+                    <span id="interfaceColorSpan" class="UIText">...</span>
+                    <select id="interfaceColorMenu">
+                        <option value="S4E" selected="selected">S4E</option>
+                    </select>
+                    <br>
+                    <span id="codeEditorColorSpan" class="UIText">...</span>
+                    <select id="codeEditorColorMenu">
+                        <option value="S4E" selected="selected">S4E</option>
+                    </select>
+                    <br>
+                    <br>
+                    <span id="themeSpan" class="UIText">...</span>
+                    <select id="themeMenu" onchange="changeTheme(this.value)">
+                        <option value="Classic" id="themeClassicSpan">classic</option>
+                        <option value="Modern" id="themeModernSpan">modern</option>
+                        <option value="Deuteranopia" id="themeDeuteranopiaSpan">deuteranopia</option>
+                        <option value="Tritanopia" id="themeTritanopiaSpan">tritanopia</option>
+                        <option value="Zelos" id="themeZelosSpan">zelos</option>
+                        <option value="HighContrast" id="themeHighContrastSpan">high_contrast</option>
+                        <option value="Dark" id="themeDarkSpan">dark</option>
+                        <option value="blackWhite" id="themeBwSpan">blackWhite</option>
+                    </select>
+                    <br>
+                    <span id="renderSpan" class="UIText">...</span>
+                    <select id="rendererMenu" onchange="changeRenderer(this.value)">
+                        <option value="geras">Geras</option>
+                        <option value="thrasos">Thrasos</option>
+                        <option value="zelos">Zelos</option>
+                        <option value="minimalist">Minimalist</option>
+                    </select>
+                </form>
+                <br>
+                <span id="displaySpan" class="UIText">...</span>
+                <select id="displayChoiceMenu" onchange="">
+                    <option value="button" id="displayChoiceButtons">buttons</option>
+                    <option value="buttonText" id="displayChoiceBandT">buttons + text</option>
+                    <option value="text" id="displayChoiceText">text</option>
+                </select>
+                <br>
+                <br>
+                <span id="fontSpan" class="UIText">...</span>
+                <select id="fontChoiceMenu" onchange="Code.changeFontFamily(this.value)">
+                    <option value="Arial">Arial</option>
+                    <option value="AccessibleDfA">Accessible-DfA</option>
+                    <option value="Bitter">Bitter</option>
+                    <option value="Comic Sans MS">Comic Sans MS</option>
+                    <option value="Luciole">Luciole</option>
+                    <option value="OpenDyslexic">Open Dyslexic</option>
+                    <option value="Trebuchet MS">Trebuchet MS</option>
+                    <option value="Verdana">Verdana</option>
+                </select>
+                <br>
+                <span id="fontSizeSpan" class="UIText"></span>
+                <select id="rendering-constant-selector">
+                    <option value="fontSizeBlocks" id="optionFontSizeBlocks" selected="selected">Blocks Font Size</option>
+                    <option value="iconSize" id="optionIconSize">Icons Size</option>
+                    <option value="fontSizeEditor" id="optionFontSizeEditor">Code Editor Font Size</option>
+                    <option value="fontSizePage" id="optionFontSizePage">Page Font Size</option>
+                    <option value="fontSpacingPage" id="optionFontSpacingPage">Page Font Spacing</option>
+                </select>
+                <br>
+                <input type="range" min="3" max="50" value="4" oninput="Code.changeRenderingConstant(this.value)" onchange="Code.changeRenderingConstant(this.value)" />
+                <br>
+                <br>
+                <input id="highlightModeCheck" type="checkbox" onclick="toggleHighlightMode(this.checked)">
+                <span id="highlightSpan" class="UIText"></span>
+                <br>
+                <br>
+                <input id="minimapCheck" type="checkbox" onclick="toggleMinimap(this.checked)">
+                <span id="minimapSpan" class="UIText"></span>
+                <br>
+                <br>
+                <input id="accessibilityModeCheck" type="checkbox" onclick="toggleAccessibilityMode(this.checked)">
+                <span id="accessibilitySpan" class="UIText"></span>
+                <br>
+                <input id="displayKeyMappings" type="checkbox" onclick="toggleDisplayKeyMappings(this.checked)">
+                <span id="keyMappingSpan" class="UIText"></span>
+                <br>
+                <select id="cursorChanger" name="cursor" onchange="changeCursor(this.value)">
+                    <option value="default" id="defaultCursorSpan">default</option>
+                    <option value="basic" id="basicCursorSpan">basic</option>
+                    <option value="line" id="lineCursorSpan">line</option>
+                </select>
+                <br>
+            </div>
+            <button class="accordion">
+                <span id="CLI_title_span" aria-expanded="false" aria-controls="accordion_CLI_content"></span>
+            </button>
+            <div id="CLI_content" class="side_content config_content CLI panel">
+                <div id="configCLI">
+                    <div id="CLI_title">
+                        <button id="coreUpdateButton" class="iconButtons CLI" onclick="">
+                            <span id="coreUpdateButton_span" class="fas fa-sync">
+                            </span>
+                        </button>
+                        <button id="cleanCLIcacheButton" class="iconButtons CLI" onclick="">
+                            <span id="cleanCLIcache_span" class="fas fa-eraser">
+                            </span>
+                        </button>
+                        <button id="listBoardsButton" class="iconButtons CLI" onclick="">
+                            <span id="listBoardsButton_span" class="fas fa-list">
+                            </span>
+                        </button>
+                        <a href="https://arduino.github.io/arduino-cli/" id="CLI_githubLinkButton" target="_blank">
+                            <img src="./S4E/media/featured-CLI.png" style="height: 40px" />
+                        </a>
+                    </div>
+                    <br>
+                    <span id="installBoard_title_span" class="UIText CLI">install board</span>
+                    <br>
+                    <input type="text" class="controlPanelInput" id="installBoardsInput" name="installBoardsInput">
+                    <button id="installBoardsButton" class="iconButtons CLI" onclick="">
+                        <span id="installBoardsButton_span" class="fas fa-cloud-download-alt">
+                        </span>
+                    </button>
+                    <br>
+                    <button id="installSTBoards" class="iconButtons CLI" onclick="">
+                        <span id="installSTBoards_span">
+                            <img src="./S4E/media/st_logo.jpg" style="height: 40px" />
+                        </span>
+                    </button>
+                    <button id="installArduinoBoards" class="iconButtons CLI" onclick="">
+                        <span id="installArduinoBoards_span">
+                            <img src="./S4E/media/arduino_logo.svg" style="height: 40px" />
+                        </span>
+                    </button>
+                    <button id="installEspBoards" class="iconButtons CLI" onclick="">
+                        <span id="installEspBoards_span">
+                            <img src="./S4E/media/espressif_logo.svg" style="height: 40px" />
+                        </span>
+                    </button>
+                    <button id="installMicrobitBoards" class="iconButtons CLI" onclick="">
+                        <span id="installMicrobitBoards_span">
+                            <img src="./S4E/media/microbit_logo.png" style="height: 40px" />
+                        </span>
+                    </button>
+                    <br>
+                    <br>
+                    <span id="searchlLib_title_span" class="UIText">search library</span>
+                    <br>
+                    <input type="text" class="controlPanelInput" id="searchlLibInput" name="searchlLibInput">
+                    <button id="searchlLibButton" class="iconButtons CLI" onclick="">
+                        <span id="searchlLibButton_span" class="fab fa-searchengin">
+                        </span>
+                    </button>
+                    <br>
+                    <br>
+                    <span id="installLib_title_span" class="UIText">install library</span>
+                    <br>
+                    <input type="text" class="controlPanelInput" id="installLibInput" name="installLibInput">
+                    <button id="installLibButton" class="iconButtons CLI" onclick="">
+                        <span id="installLibButton_span" class="fas fa-cloud-download-alt">
+                        </span>
+                    </button>
+                    <br>
+                </div>
+            </div>
+            <button class="accordion">
+                <span id="categories_title_span" aria-expanded="false" aria-controls="accordion_categories_content"></span>
+            </button>
+            <div id="categories_content_header" class="side_content config_content panel UIText">
+                <input type="checkbox" onchange="Code.checkAll()" name="checkbox_All" id="checkbox_All">
+                <span id="categories_content_selectAll_span"></span>
+                <button id="categories_content_filter_button" class="iconButtons CLI" onclick="">
+                    <span id="categories_content_filter_span" class="fas fa-filter">
+                    </span>
+                </button>
+                <br>
+                <span class="categories_search_wrapper" id="categories_search_wrapper" title="categories_search">
+                    <input id="categories_search" name="categories_search" class="categories_search" type="text" size="10" onkeyup="Code.filterCategories()" placeholder="Search for category...">
+                </span>
+                <div id="categories_content">
+                </div>
+            </div>
+            <button class="accordion" id="IoT_controls_accordion">
+                <span id="iot_title_span" aria-expanded="false" aria-controls="accordion_categories_content"></span>
+            </button>
+            <div id="IoT_controls" class="side_content config_content panel UIText">
+                <input type="text" class="controlPanelInput" id="launchWebServerInput" name="launchWebServerInput">
+                <button id="launchWebServerTo" class="iconButtons CLI">
+                    <span id="launchWebServer_span" class="fas fa-network-wired">
+                    </span>
+                </button>
+                <!-- <br> -->
+                <!-- <br> -->
+                <!-- <input type="text" class="controlPanelInput" id="blynkConnectInput" name="blynkConnectInput"> -->
+                <!-- <button id="blynkConnect" class="iconButtons CLI" onclick=""> -->
+                <!-- <span id="blynkConnect_span"> -->
+                <!-- <img src="./S4E/media/blynk.png" style="width: 30px; height: 30px; vertical-align: middle;"/> -->
+                <!-- </span> -->
+                <!-- </button> -->
+                <br>
+                <input type="text" class="controlPanelInput" id="blynkConnectInput" name="serialConnectIOTInput">
+                <button id="serialConnectIOT_save" class="iconButtons CLI" onclick="">
+                    <span id="serialConnectIOT_span" class="fas fa-cloud-upload-alt">
+                    </span>
+                </button>
+                <br>
+                <br>
+                <button class="accordion2nde">
+                    <img src="./S4E/media/arrowheadtools_invert.png" style="width: 30px; height: 30px; vertical-align: middle;" />
+                    <span id="ArrowheadConfiguration_helper_span" aria-expanded="false" aria-controls="accordion_categories_content"></span>
+                </button>
+                <div id="IoT_controls_Arrowhead" class="side_content config_content panel UIText">
+                    <button id="ArrowheadServRegConfiguration" class="iconButtons CLI" onclick="ArrowheadServRegConfigurationShow()">
+                        <span id="ArrowheadServRegConfiguration_span" class="fab fa-wpforms">
+                        </span>
+                    </button>
+                    <span id="ArrowheadConfiguration_ServReg_span">Configure service registry</span>
+                    <br>
+                    <button id="ArrowheadProviderConfiguration" class="iconButtons CLI" onclick="ArrowheadProviderConfigurationShow()">
+                        <span id="ArrowheadProviderConfiguration_span" class="fab fa-wpforms">
+                        </span>
+                    </button>
+                    <span id="ArrowheadConfiguration_provider_span">Configure provider</span>
+                    <br>
+                    <button id="ArrowheadConsumerConfiguration" class="iconButtons CLI" onclick="ArrowheadConsumerConfigurationShow()">
+                        <span id="ArrowheadConsumerConfiguration_span" class="fab fa-wpforms">
+                        </span>
+                    </button>
+                    <span id="ArrowheadConfiguration_consumer_span">Configure consumer</span>
+                    <br>
+                    <button id="ArrowheadAuthConfiguration" class="iconButtons CLI" onclick="ArrowheadAuthConfigurationShow()">
+                        <span id="ArrowheadAuthConfiguration_span" class="fab fa-wpforms">
+                        </span>
+                    </button>
+                    <span id="ArrowheadConfiguration_auth_span">Define authorization server</span>
+                    <br>
+                    <button id="ArrowheadOrchConfiguration" class="iconButtons CLI" onclick="ArrowheadOrchConfigurationShow()">
+                        <span id="ArrowheadOrchConfiguration_span" class="fab fa-wpforms">
+                        </span>
+                    </button>
+                    <span id="ArrowheadConfiguration_orch_span">Define orchestrator server</span>
+                </div>
+                <button class="accordion2nde">
+                    <img src="./S4E/media/Eclipse_papyrus_logo.png" style="width: 30px; height: 30px; vertical-align: middle;" />
+                    <span id="papyrusConnect_helper_span" aria-expanded="false" aria-controls="accordion_categories_content"></span>
+                </button>
+                <div id="IoT_controls_Papyrus" class="side_content config_content panel UIText">
+                    <br>
+                    <span id="papyrusConfiguration_id_span">Id of download service</span>
+                    <br>
+                    <input type="text" class="controlPanelInput" id="papyrusConnectInputId" name="papyrusConnectInputId" value="170">
+                    <br>
+                    <span id="papyrusConfiguration_name_span">Name of configuration file to download</span>
+                    <br>
+                    <input type="text" class="controlPanelInput" id="papyrusConnectInputFile" name="papyrusConnectInputFile" value="HomeAutomationSystemST4Econfig.json">
+                    <button id="PapyrusConfiguration_save" class="iconButtons CLI">
+                        <span id="papyrusConnect_validate_span" class="fas fa-archive">
+                        </span>
+                    </button>
+                    <span id="papyrusConfiguration_save_span">Store information</span>
                 </div>
             </div>
         </div>
-        <div id="flowsListModal" class="modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <i class="fab fa-usb"></i>
-                    <span id="flowsListModalHeader_span"></span>
-                    <span class="closeModal" id="closeModalFlows">&times;</span>
+    </div>
+    <div id="overlayForModals" class="overlay"></div>
+    <div id="circuitJSmodal" class="dialog" style="z-index: 80;">
+        <div class="titlebar" id="circuitJSmodal_titlebar">
+            <span id="circuitJSmodalTitle" class="modal-header">Code editor</span>
+        </div>
+        <button name="circuitJSmodal_close"></button>
+        <div id="circuitJSmodal_button_window" class="Modal_button_window">
+            <button id="circuitJSmodal_replaceBlockly" class="iconButtons" onclick="circuitJSmodal_replace_Blockly()">
+                <em class="fas fa-angle-left"></em>
+            </button>
+            <button id="circuitJSmodal_maximini" class="iconButtons" onclick="circuitJSmodal_maxi_mini()">
+                <em class="fa-regular fa-window-maximize"></em>
+            </button>
+        </div>
+        <div id="content_CircuitJS" class="content"></div>
+        <div class="buttonpane">
+            <div id="circuitJSmodal_statusLabel" style="display: inline; vertical-align: middle; text-align: left;"></div>
+            <div class="buttonset">
+                <button id="circuitJSmodal_run" name="circuitJSmodal_run" class="iconButtons fas fa-play">
+                </button>
+                <button id="circuitJSmodal_stop" name="circuitJSmodal_stop" class="iconButtons fas fa-stop">
+                </button>
+                <button id="circuitJSmodal_revert" name="circuitJSmodal_revert" class="iconButtons" style="display: none;">
+                </button>
+            </div>
+        </div>
+    </div>
+    <div id="editorMonacoModal" class="dialog" style="z-index: 80;">
+        <div class="titlebar">
+            <span id="editorMonacoModal_titlebar" class="modal-header">Code editor</span>
+        </div>
+        <button name="editorMonacoModal_close"></button>
+        <div id="editorMonacoModal_button_window" class="Modal_button_window">
+            <button id="editorMonacoModal_maximini" class="iconButtons" onclick="editorMonacoModal_maxi_mini()">
+                <em class="fa-regular fa-window-maximize"></em>
+            </button>
+        </div>
+        <div id="content_Monaco_editors" class="content">
+            <div id="content_diffCode_Monaco"></div>
+            <div id="content_code_Monaco"></div>
+        </div>
+        <div class="buttonpane">
+            <div class="buttonset">
+                <button id="editorMonacoModal_undo" name="editorMonacoModal_undo" class="iconButtons fas fa-level-up-alt">
+                </button>
+                <button id="editorMonacoModal_redo" name="editorMonacoModal_redo" class="iconButtons fas fa-level-down-alt">
+                </button>
+                <button id="editorMonacoModal_diff" name="editorMonacoModal_diff" class="iconButtons fas fa-check-double">
+                </button>
+                <button id="editorMonacoModal_ok" name="editorMonacoModal_ok" class="iconButtons fas fa-spell-check">
+                </button>
+                <button id="editorMonacoModal_cancel" name="editorMonacoModal_cancel" class="iconButtons fas fa-sync-alt">
+                </button>
+            </div>
+        </div>
+    </div>
+    <div id="boardListModal" class="modal">
+        <div class="modal-content" id="boardListModal_content">
+            <div class="modal-header">
+                <em class="fas fa-microchip"></em>
+                <span id="boardListModalHeader_span"></span>
+                <span class="closeModal" id="closeModalBoards">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div id="board_mini_picture_div">
+                    <img id="board_mini_picture" />
                 </div>
-                <div class="modal-body" id="filesFlowListModalBody">
-                    <ul id="filesFlowList">
-                    </ul> 
+                <div id="hideSelectScrollbar">
+                    <select id="boardDescriptionSelector" size="11" onchange="Code.boardDescription()">
+                        <optgroup label="C / C++">
+                            <option value="none">...</option>
+                        <optgroup label="STMicroelectronics">
+                            <option value="ST_nucleo_L432KC">Nucleo-32 L432KC</option>
+                            <option value="ST_nucleo_L476RG">Nucleo-64 L476RG</option>
+                            <option value="ST_nucleo_H753ZI">Nucleo-144 H753ZI</option>
+                            <option value="ST_mp157c_dk2">STM32MP1 Discovery kits</option>
+                        </optgroup>
+                        <optgroup label="Espressif">
+                            <option value="ESP_esp8266">ESP8266</option>
+                            <option value="ESP_esp32">ESP32</option>
+                        </optgroup>
+                        </optgroup>
+                    </select>
                 </div>
-                <div class="modal-footer">
+            </div>
+            <button id="boardListModalDialogOkay" class="modalDialogOkay" onclick="Code.changeBoard()">&#10004;</button>
+            <button type="button" class="collapsibleButton">
+                <span id="boardListModalButton_span">Details</span>
+            </button>
+            <div class="collapsibleContent" id="boardCollapsibleContent">
+                <span id="boardModal_connect"></span><span id="boardModal_connect_span" class="modalBoard_info">...</span><br>
+                <span id="boardModal_voltage"></span><span id="boardModal_voltage_span" class="modalBoard_info">...</span><br>
+                <span id="boardModal_voltage_normal"></span><span id="boardModal_voltage_normal_span" class="modalBoard_info">...</span><br>
+                <span id="boardModal_voltage_maxi"></span><span id="boardModal_voltage_maxi_span" class="modalBoard_info">...</span><br>
+                <span id="boardModal_cpu"></span><span id="boardModal_cpu_span" class="modalBoard_info">...</span><br>
+                <span id="boardModal_speed"></span><span id="boardModal_speed_span" class="modalBoard_info">...</span><br>
+                <span id="boardModal_inout"></span><span id="boardModal_inout_span" class="modalBoard_info">...</span><br>
+                <span id="boardModal_in_analog"></span><span id="boardModal_in_analog_span" class="modalBoard_info">...</span><br>
+                <span id="boardModal_out_analog"></span><span id="boardModal_out_analog_span" class="modalBoard_info">...</span><br>
+                <span id="boardModal_i_max_out"></span><span id="boardModal_i_max_out_span" class="modalBoard_info">...</span><br>
+                <span id="boardModal_i_max3"></span><span id="boardModal_i_max3_span" class="modalBoard_info">...</span><br>
+                <span id="boardModal_i_max_5"></span><span id="boardModal_i_max_5_span" class="modalBoard_info">...</span><br>
+                <span id="boardModal_flash"></span><span id="boardModal_flash_span" class="modalBoard_info">...</span><br>
+                <span id="boardModal_sram"></span><span id="boardModal_sram_span" class="modalBoard_info">...</span><br>
+                <span id="boardModal_eeprom"></span><span id="boardModal_eeprom_span" class="modalBoard_info">...</span><br>
+            </div>
+        </div>
+    </div>
+    <div id="portListModal" class="modal">
+        <div class="modal-content" id="portListModal_content">
+            <div class="modal-header">
+                <em class="fab fa-usb"></em>
+                <span id="portListModalHeader_span"></span>
+                <span class="closeModal" id="closeModalPorts">&times;</span>
+            </div>
+            <div class="modal-body" id="portListModalBody">
+            </div>
+            <div class="modal-footer">
+                <select id="serialMenu">
+                    <option value="none">...</option>
+                </select>
+                <button id="portListModalDialogOkay" class="modalDialogOkay" onclick="Code.setPort()">&#10004;</button>
+            </div>
+        </div>
+    </div>
+    <div id="flowsListModal" class="modal">
+        <div class="modal-content" id="flowsListModal_content">
+            <div class="modal-header">
+                <em class="fab fa-usb"></em>
+                <span id="flowsListModalHeader_span"></span>
+                <span class="closeModal" id="closeModalFlows">&times;</span>
+            </div>
+            <div class="modal-body" id="filesFlowListModalBody">
+                <ul id="filesFlowList">
+                </ul>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+    <div id="ArrowheadServRegConfigurationModal" class="modal">
+        <div class="modal-content" id="ArrowheadServRegConfigurationModal_content">
+            <div class="modal-header">
+                <img src="./S4E/media/arrowheadtools_invert.png" style="width: 30px; height: 30px; vertical-align: middle;">
+                <span id="ArrowheadServRegConfigurationModalHeader_span">Service registry configuration</span>
+                <span class="closeModal" id="closeModalArrowheadServRegConfiguration">&times;</span>
+            </div>
+            <div class="modal-body" id="ArrowheadServRegConfigurationModalBody">
+                <form id="ArrowheadServRegConfigurationModalForm">
+                    <span id="arrowhead_input_ServReg_host_span">Host</span>
+                    <input type="text" class="controlPanelInput" id="arrowhead_input_ServReg_host" name="arrowhead_input_ServReg_host"><br>
+                    <span id="arrowhead_input_ServReg_port_span">Port</span>
+                    <input type="text" class="controlPanelInput" id="arrowhead_input_ServReg_port" name="arrowhead_input_ServReg_port"><br>
+                    <span id="arrowhead_input_ServReg_path_span">Path</span>
+                    <input type="text" class="controlPanelInput" id="arrowhead_input_ServReg_path" name="arrowhead_input_ServReg_path"><br>
+                    <br>
+                    <input type="checkbox" class="" id="arrowhead_input_servreg_tls_useKey" name="arrowhead_input_servreg_tls_useKey">
+                    <span id="arrowhead_input_servreg_tls_useKey_span">Use key and certificates from local files</span><br>
+                    <div class="arrowhead_input_servreg_tls_local_div">
+                        <span id="arrowhead_input_servreg_tls_local_path_span">Certificate path</span>
+                        <input type="text" class="controlPanelInput" id="arrowhead_input_servreg_tls_local_path" name="arrowhead_input_servreg_tls_local_path"><br>
+                        <span id="arrowhead_input_servreg_tls_local_key_span">Private Key path</span>
+                        <input type="text" class="controlPanelInput" id="arrowhead_input_servreg_tls_local_key" name="arrowhead_input_servreg_tls_local_key"><br>
+                        <span id="arrowhead_input_servreg_tls_local_pass_span">Passphrase</span>
+                        <input type="text" class="controlPanelInput" id="arrowhead_input_servreg_tls_local_pass" name="arrowhead_input_servreg_tls_local_pass"><br>
+                        <span id="arrowhead_input_servreg_tls_local_certificate_span">CA Certificate</span>
+                        <input type="text" class="controlPanelInput" id="arrowhead_input_servreg_tls_local_certificate" name="arrowhead_input_servreg_tls_local_certificate"><br>
+                    </div>
+                    <input type="checkbox" class="" id="arrowhead_input_servreg_tls_server" name="arrowhead_input_servreg_tls_server">
+                    <span id="arrowhead_input_servreg_tls_server_span">Verify server certificate</span><br>
+                    <div class="arrowhead_input_servreg_tls_server_div">
+                        <span id="arrowhead_input_servreg_tls_server_name_span">Server name</span>
+                        <input type="text" class="controlPanelInput" id="arrowhead_input_servreg_tls_server_name" name="arrowhead_input_servreg_tls_server_name"><br>
+                        <span id="arrowhead_input_servreg_tls_server_protocol_span">ALPN Protocol</span>
+                        <input type="text" class="controlPanelInput" id="arrowhead_input_servreg_tls_server_protocol" name="arrowhead_input_servreg_tls_server_protocol"><br>
+                    </div>
+                    <div id="ArrowheadServRegConfigurationModalBody_buttons">
+                        <button type="submit" id="ArrowheadServRegConfigurationModal_okay" class="modalDialogOkay">
+                            <em class="far fa-check-circle" style="font-size: 150%;"></em>
+                        </button>
+                        <button id="ArrowheadServRegConfigurationModal_okay_nodejs" class="modalDialogOkay_nodejs">
+                            <em class="far fa-check-circle" style="font-size: 150%;"></em>
+                        </button>
+                        <button id="ArrowheadServRegConfigurationModal_cancel" class="modalDialogCancel" onclick="document.getElementById('ArrowheadServRegConfigurationModalForm').reset()">
+                            <em class="far fa-times-circle" style="font-size: 150%;"></em>
+                        </button>
+                        <button id="ArrowheadServRegConfigurationModal_export" class="iconButtons" onclick="exportArrowheadServRegConfigFile()">
+                            <em class="fas fa-file-download"></em>
+                        </button>
+                        <button id="ArrowheadServRegConfigurationModal_import" class="iconButtons" onclick="importArrowheadServRegConfigFile()">
+                            <em class="fas fa-file-upload"></em>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div id="ArrowheadProviderConfigurationModal" class="modal">
+        <div class="modal-content" id="ArrowheadProviderConfigurationModal_content">
+            <div class="modal-header">
+                <img src="./S4E/media/arrowheadtools_invert.png" style="width: 30px; height: 30px; vertical-align: middle;">
+                <span id="ArrowheadProviderConfigurationModalHeader_span">Service Provider configuration</span>
+                <span class="closeModal" id="closeModalArrowheadProviderConfiguration">&times;</span>
+            </div>
+            <div class="modal-body" id="ArrowheadProviderConfigurationModalBody">
+                <form id="ArrowheadProviderConfigurationModalForm">
+                    <span id="arrowhead_input_Provider_host_span">Host</span>
+                    <input type="text" class="controlPanelInput" id="arrowhead_input_Provider_host" name="arrowhead_input_Provider_host"><br>
+                    <span id="arrowhead_input_Provider_port_span">Port</span>
+                    <input type="text" class="controlPanelInput" id="arrowhead_input_Provider_port" name="arrowhead_input_Provider_port"><br>
+                    <span id="arrowhead_input_Provider_name_span">Name</span>
+                    <input type="text" class="controlPanelInput" id="arrowhead_input_Provider_path" name="arrowhead_input_Provider_path"><br>
+                    <span id="arrowhead_input_Provider_serviceDef_span">Service definition</span>
+                    <input type="text" class="controlPanelInput" id="arrowhead_input_Provider_serviceDef" name="arrowhead_input_Provider_serviceDef"><br>
+                    <span id="arrowhead_input_Provider_servicePath_span">Service path</span>
+                    <input type="text" class="controlPanelInput" id="arrowhead_input_Provider_servicePath" name="arrowhead_input_Provider_servicePath"><br>
+                    <span id="arrowhead_input_Provider_version_span">Version</span>
+                    <input type="text" class="controlPanelInput" id="arrowhead_input_Provider_version" name="arrowhead_input_Provider_version"><br>
+                    <span id="arrowhead_input_Provider_name_span">Authentification info</span>
+                    <input type="text" class="controlPanelInput" id="arrowhead_input_Provider_authInfo" name="arrowhead_input_Provider_authInfo"><br>
+                    <span id="arrowhead_input_Provider_validity_span">End of validity</span>
+                    <input type="text" class="controlPanelInput" id="arrowhead_input_Provider_validity" name="arrowhead_input_Provider_validity"><br>
+                    <span id="arrowhead_input_Provider_interfaces_span">Interfaces</span>
+                    <input type="text" class="controlPanelInput" id="arrowhead_input_Provider_interfaces" name="arrowhead_input_Provider_interfaces"><br>
+                    <div id="ArrowheadProviderConfigurationModalBody_buttons">
+                        <button type="submit" id="ArrowheadProviderConfigurationModal_okay" class="modalDialogOkay">
+                            <em class="far fa-check-circle" style="font-size: 150%;"></em>
+                        </button>
+                        <button id="ArrowheadProviderConfigurationModal_okay_nodejs" class="modalDialogOkay_nodejs">
+                            <em class="far fa-check-circle" style="font-size: 150%;"></em>
+                        </button>
+                        <button id="ArrowheadProviderConfigurationModal_cancel" class="modalDialogCancel" onclick="document.getElementById('ArrowheadProviderConfigurationModalForm').reset()">
+                            <em class="far fa-times-circle" style="font-size: 150%;"></em>
+                        </button>
+                        <button id="ArrowheadProviderConfigurationModal_export" class="iconButtons" onclick="exportArrowheadProviderConfigFile()">
+                            <em class="fas fa-file-download"></em>
+                        </button>
+                        <button id="ArrowheadProviderConfigurationModal_import" class="iconButtons" onclick="importArrowheadProviderConfigFile()">
+                            <em class="fas fa-file-upload"></em>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div id="ArrowheadConsumerConfigurationModal" class="modal">
+        <div class="modal-content" id="ArrowheadConsumerConfigurationModal_content">
+            <div class="modal-header">
+                <img src="./S4E/media/arrowheadtools_invert.png" style="width: 30px; height: 30px; vertical-align: middle;">
+                <span id="ArrowheadConsumerConfigurationModalHeader_span">Consumer Provider configuration</span>
+                <span class="closeModal" id="closeModalArrowheadConsumerConfiguration">&times;</span>
+            </div>
+            <div class="modal-body" id="ArrowheadConsumerConfigurationModalBody">
+                <form id="ArrowheadConsumerConfigurationModalForm">
+                    <span id="arrowhead_input_Consumer_host_span">Host</span>
+                    <input type="text" class="controlPanelInput" id="arrowhead_input_Consumer_host" name="arrowhead_input_Consumer_host"><br>
+                    <span id="arrowhead_input_Consumer_port_span">Port</span>
+                    <input type="text" class="controlPanelInput" id="arrowhead_input_Consumer_port" name="arrowhead_input_Consumer_port"><br>
+                    <span id="arrowhead_input_Consumer_name_span">Name</span>
+                    <input type="text" class="controlPanelInput" id="arrowhead_input_Consumer_path" name="arrowhead_input_Consumer_path"><br>
+                    <span id="arrowhead_input_Consumer_service_span">Service definition</span>
+                    <input type="text" class="controlPanelInput" id="arrowhead_input_Consumer_service" name="arrowhead_input_Consumer_service"><br>
+                    <div id="ArrowheadConsumerConfigurationModalBody_buttons">
+                        <button type="submit" id="ArrowheadConsumerConfigurationModal_okay" class="modalDialogOkay">
+                            <em class="far fa-check-circle" style="font-size: 150%;"></em>
+                        </button>
+                        <button id="ArrowheadConsumerConfigurationModal_okay_nodejs" class="modalDialogOkay_nodejs">
+                            <em class="far fa-check-circle" style="font-size: 150%;"></em>
+                        </button>
+                        <button id="ArrowheadConsumerConfigurationModal_cancel" class="modalDialogCancel" onclick="document.getElementById('ArrowheadConsumerConfigurationModalForm').reset()">
+                            <em class="far fa-times-circle" style="font-size: 150%;"></em>
+                        </button>
+                        <button id="ArrowheadConsumerConfigurationModal_export" class="iconButtons" onclick="exportArrowheadConsumerConfigFile()">
+                            <em class="fas fa-file-download"></em>
+                        </button>
+                        <button id="ArrowheadConsumerConfigurationModal_import" class="iconButtons" onclick="importArrowheadConsumerConfigFile()">
+                            <em class="fas fa-file-upload"></em>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div id="ArrowheadAuthConfigurationModal" class="modal">
+        <div class="modal-content" id="ArrowheadAuthConfigurationModal_content">
+            <div class="modal-header">
+                <img src="./S4E/media/arrowheadtools_invert.png" style="width: 30px; height: 30px; vertical-align: middle;">
+                <span id="ArrowheadAuthConfigurationModalHeader_span">Authorization server configuration</span>
+                <span class="closeModal" id="closeModalArrowheadAuthConfiguration">&times;</span>
+            </div>
+            <div class="modal-body" id="ArrowheadAuthConfigurationModalBody">
+                <form id="ArrowheadAuthConfigurationModalForm">
+                    <span id="arrowhead_input_Auth_host_span">Host</span>
+                    <input type="text" class="controlPanelInput" id="arrowhead_input_Auth_host" name="arrowhead_input_Auth_host"><br>
+                    <span id="arrowhead_input_Auth_port_span">Port</span>
+                    <input type="text" class="controlPanelInput" id="arrowhead_input_Auth_port" name="arrowhead_input_Auth_port"><br>
+                    <span id="arrowhead_input_Auth_name_span">Name</span>
+                    <input type="text" class="controlPanelInput" id="arrowhead_input_Auth_path" name="arrowhead_input_Auth_path"><br>
+                    <br>
+                    <input type="checkbox" class="" id="arrowhead_input_auth_tls_useKey" name="arrowhead_input_auth_tls_useKey">
+                    <span id="arrowhead_input_auth_tls_useKey_span">Use key and certificates from local files</span><br>
+                    <div class="arrowhead_input_auth_tls_local_div">
+                        <span id="arrowhead_input_auth_tls_local_path_span">Certificate path</span>
+                        <input type="text" class="controlPanelInput" id="arrowhead_input_auth_tls_local_path" name="arrowhead_input_auth_tls_local_path"><br>
+                        <span id="arrowhead_input_auth_tls_local_key_span">Private Key path</span>
+                        <input type="text" class="controlPanelInput" id="arrowhead_input_auth_tls_local_key" name="arrowhead_input_auth_tls_local_key"><br>
+                        <span id="arrowhead_input_auth_tls_local_pass_span">Passphrase</span>
+                        <input type="text" class="controlPanelInput" id="arrowhead_input_auth_tls_local_pass" name="arrowhead_input_auth_tls_local_pass"><br>
+                        <span id="arrowhead_input_auth_tls_local_certificate_span">CA Certificate</span>
+                        <input type="text" class="controlPanelInput" id="arrowhead_input_auth_tls_local_certificate" name="arrowhead_input_auth_tls_local_certificate"><br>
+                    </div>
+                    <input type="checkbox" class="" id="arrowhead_input_auth_tls_server" name="arrowhead_input_auth_tls_server">
+                    <span id="arrowhead_input_auth_tls_server_span">Verify server certificate</span><br>
+                    <div class="arrowhead_input_auth_tls_server_div">
+                        <span id="arrowhead_input_auth_tls_server_name_span">Server name</span>
+                        <input type="text" class="controlPanelInput" id="arrowhead_input_auth_tls_server_name" name="arrowhead_input_auth_tls_server_name"><br>
+                        <span id="arrowhead_input_auth_tls_server_protocol_span">ALPN Protocol</span>
+                        <input type="text" class="controlPanelInput" id="arrowhead_input_auth_tls_server_protocol" name="arrowhead_input_auth_tls_server_protocol"><br>
+                    </div>
+                    <div id="ArrowheadAuthConfigurationModalBody_buttons">
+                        <button type="submit" id="ArrowheadAuthConfigurationModal_okay" class="modalDialogOkay">
+                            <em class="far fa-check-circle" style="font-size: 150%;"></em>
+                        </button>
+                        <button id="ArrowheadAuthConfigurationModal_okay_nodejs" class="modalDialogOkay_nodejs">
+                            <em class="far fa-check-circle" style="font-size: 150%;"></em>
+                        </button>
+                        <button id="ArrowheadAuthConfigurationModal_cancel" class="modalDialogCancel" onclick="document.getElementById( 'ArrowheadAuthConfigurationModalForm').reset()">
+                            <em class="far fa-times-circle" style="font-size: 150%;"></em>
+                        </button>
+                        <button id="ArrowheadAuthConfigurationModal_export" class="iconButtons" onclick="exportArrowheadAuthConfigFile()">
+                            <em class="fas fa-file-download"></em>
+                        </button>
+                        <button id="ArrowheadAuthConfigurationModal_import" class="iconButtons" onclick="importArrowheadAuthConfigFile()">
+                            <em class="fas fa-file-upload"></em>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div id="ArrowheadOrchConfigurationModal" class="modal">
+        <div class="modal-content" id="ArrowheadOrchConfigurationModal_content">
+            <div class="modal-header">
+                <img src="./S4E/media/arrowheadtools_invert.png" style="width: 30px; height: 30px; vertical-align: middle;">
+                <span id="ArrowheadOrchConfigurationModalHeader_span">Orchestration server configuration</span>
+                <span class="closeModal" id="closeModalArrowheadOrchConfiguration">&times;</span>
+            </div>
+            <div class="modal-body" id="ArrowheadOrchConfigurationModalBody">
+                <form id="ArrowheadOrchConfigurationModalForm">
+                    <span id="arrowhead_input_orchestrator_span">Arrowhead Orchestrator Info</span><br>
+                    <div class="arrowhead_input_orchestrator_div">
+                        <span id="arrowhead_input_orchestrator_host_span">Host</span>
+                        <input type="text" class="controlPanelInput" id="arrowhead_input_orchestrator_host" name="arrowhead_input_orchestrator_host"><br>
+                        <span id="arrowhead_input_orchestrator_port_span">Port</span>
+                        <input type="text" class="controlPanelInput" id="arrowhead_input_orchestrator_port" name="arrowhead_input_orchestrator_port"><br>
+                        <span id="arrowhead_input_orchestrator_path_span">Path</span>
+                        <input type="text" class="controlPanelInput" id="arrowhead_input_orchestrator_path" name="arrowhead_input_orchestrator_path"><br>
+                        <br>
+                        <input type="checkbox" class="" id="arrowhead_input_orchestrator_tls_useKey" name="arrowhead_input_orchestrator_tls_useKey">
+                        <span id="arrowhead_input_orchestrator_tls_useKey_span">Use key and certificates from local files</span><br>
+                        <div class="arrowhead_input_orchestrator_tls_local_div">
+                            <span id="arrowhead_input_orchestrator_tls_local_path_span">Certificate path</span>
+                            <input type="text" class="controlPanelInput" id="arrowhead_input_orchestrator_tls_local_path" name="arrowhead_input_orchestrator_tls_local_path"><br>
+                            <span id="arrowhead_input_orchestrator_tls_local_key_span">Private Key path</span>
+                            <input type="text" class="controlPanelInput" id="arrowhead_input_orchestrator_tls_local_key" name="arrowhead_input_orchestrator_tls_local_key"><br>
+                            <span id="arrowhead_input_orchestrator_tls_local_pass_span">Passphrase</span>
+                            <input type="text" class="controlPanelInput" id="arrowhead_input_orchestrator_tls_local_pass" name="arrowhead_input_orchestrator_tls_local_pass"><br>
+                            <span id="arrowhead_input_orchestrator_tls_local_certificate_span">CA Certificate</span>
+                            <input type="text" class="controlPanelInput" id="arrowhead_input_orchestrator_tls_local_certificate" name="arrowhead_input_orchestrator_tls_local_certificate"><br>
+                        </div>
+                        <input type="checkbox" class="" id="arrowhead_input_orchestrator_tls_server" name="arrowhead_input_orchestrator_tls_server">
+                        <span id="arrowhead_input_orchestrator_tls_server_span">Verify server certificate</span><br>
+                        <div class="arrowhead_input_orchestrator_tls_server_div">
+                            <span id="arrowhead_input_orchestrator_tls_server_name_span">Server name</span>
+                            <input type="text" class="controlPanelInput" id="arrowhead_input_orchestrator_tls_server_name" name="arrowhead_input_orchestrator_tls_server_name"><br>
+                            <span id="arrowhead_input_orchestrator_tls_server_protocol_span">ALPN Protocol</span>
+                            <input type="text" class="controlPanelInput" id="arrowhead_input_orchestrator_tls_server_protocol" name="arrowhead_input_orchestrator_tls_server_protocol"><br>
+                        </div>
+                    </div>
+                    <div id="ArrowheadOrchConfigurationModalBody_buttons">
+                        <button type="submit" id="ArrowheadOrchConfigurationModal_okay" class="modalDialogOkay">
+                            <em class="far fa-check-circle" style="font-size: 150%;"></em>
+                        </button>
+                        <button id="ArrowheadOrchConfigurationModal_okay_nodejs" class="modalDialogOkay_nodejs">
+                            <em class="far fa-check-circle" style="font-size: 150%;"></em>
+                        </button>
+                        <button id="ArrowheadOrchConfigurationModal_cancel" class="modalDialogCancel" onclick="document.getElementById( 'ArrowheadOrchConfigurationModalForm').reset()">
+                            <em class="far fa-times-circle" style="font-size: 150%;"></em>
+                        </button>
+                        <button id="ArrowheadOrchConfigurationModal_export" class="iconButtons" onclick="exportArrowheadOrchConfigFile()">
+                            <em class="fas fa-file-download"></em>
+                        </button>
+                        <button id="ArrowheadOrchConfigurationModal_import" class="iconButtons" onclick="importArrowheadOrchConfigFile()">
+                            <em class="fas fa-file-upload"></em>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- serial monitor "modal" -->
+    <div id="serialMonitorModalDialog" class="dialog" style="width: 640px; height: 500px; z-index: 100;">
+        <div class="titlebar" id="serialModalTitle_titlebar">
+            <span id="serialModalTitle_titlebar_span" class="modal-header"></span>
+        </div>
+        <button name="serialMonitorModalDialog_close"></button>
+        <div id="serialMonitorModalDialog_button_window" class="Modal_button_window">
+            <button id="serialMonitorModalDialog_maximini" class="iconButtons" onclick="serialMonitorModalDialog_maxi_mini()">
+                <em id="serialMonitorModalDialog_mini" class="fas fa-thumbtack"></em>
+                <span id="serialMonitorModalDialog_maxi" class='fa-stack' style="font-size: .5em; display: none;">
+                    <em class='fas fa-thumbtack fa-stack-1x'></em>
+                    <em class='fas fa-ban fa-stack-2x'></em>
+                </span>
+            </button>
+        </div>
+        <div class="content" id="serialMonitorModalDialogContent">
+            <div id="serialMonitorModalDialogContent">
+                <div class="flex-container-serial">
+                    <input type="text" name="inputTextSerial" id="serialSendBox" class="form-control" />
+                    <input type="button" name="btn_serialSend" id="btn_serialSend" class="inputButtons" />
+                </div>
+                <div class="flex-container-serial column" id="serialVisu">
+                    <div id="serialPeek" class="serialPeek flex-item-serial">
+                        <textarea type="text" name="inputSerialPeek" id="inputSerialPeek"></textarea>
+                    </div>
+                    <div id="serialGraphWindow" class="serialGraphWindow flex-item-serial">
+                        <canvas id="serialGraph" class="serialGraphWindow"> </canvas>
+                    </div>
+                </div>
+                <div class="flex-container-serial ligne">
+                    <div id="serialButtons1" class="serialButtons1 flex-item-serial">
+                        <select id="serialConnectSpeed_Menu"> </select>
+                        <input type="button" name="btn_serialConnect" id="btn_serialConnect" class="inputButtons" />
+                        <input type="button" name="btn_serialPeekClear" id="btn_serialPeekClear" class="inputButtons" />
+                        <input type="checkbox" id="btn_serialAddTimeStamp" />
+                        <span id="btn_serialAddTimeStamp_span"></span>
+                    </div>
+                    <div id="serialButtons2" class="serialButtons2 flex-item-serial">
+                        <input type="button" name="btn_serialChart" id="btn_serialChart" class="inputButtons" />
+                        <input type="button" name="btn_serialChartPause" id="btn_serialChartPause" class="inputButtons" />
+                        <span id="btn_serialChartMin_span"></span>
+                        <input type="text" id="input_serialChartZoomMin" size="10" style="width:50px;" />
+                        <span id="btn_serialChartMax_span"></span>
+                        <input type="text" id="input_serialChartZoomMax" size="10" style="width:50px;" />
+                        <span id="btn_serialChartNb_span"></span>
+                        <input type="text" id="input_serialChartZoomLength" size="10" style="width:50px;" value="60" />
+                    </div>
+                    <div id="serialButtons3" class="serialButtons3 flex-item-serial">
+                        <input type="button" name="btn_serialPeekCSV" id="btn_serialPeekCSV" class="inputButtons" />
+                        <span id="input_serialChartJSONheaders_span"></span>
+                        <input type="text" id="input_serialChartJSONheaders" size="8" style="width:100px;" />
+                        <input type="button" name="btn_serialPeekJSON" id="btn_serialPeekJSON" class="inputButtons" />
+                    </div>
                 </div>
             </div>
         </div>
-    </body>
+        <div class="buttonpane"></div>
+    </div>
+    <!-- convert bin <-> text"modal" -->
+    <div id="convertModalDialog" class="dialog" style="min-width: 645px; min-height: 165px;">
+        <div class="titlebar UIText" id="convertModalDialog_titlebar">Conversion</div>
+        <button name="convertModalDialog_close"></button>
+        <div class="content">
+            <input id="ti1" value="TEST" />
+            <button name="text2bin" onclick="text2bin();" class="iconButtons">
+                <span id="span_txt2bin" class="fas fa-exchange-alt"></span>
+            </button>
+            <input id="ti2" />
+            <button name="text2binCopy" onclick="text2binCopy();" class="iconButtons">
+                <span id="span_txt2binCopy" class="far fa-copy"></span>
+            </button>
+            <br />
+            <input id="ti3" value="01010101" />
+            <button name="bin2text" onclick="bin2text();" class="iconButtons">
+                <span id="span_bin2txt" class="fas fa-exchange-alt"> </span>
+            </button>
+            <input id="ti4" />
+            <button name="bin2textCopy" onclick="bin2textCopy();" class="iconButtons">
+                <span id="span_txt2binCopy" class="far fa-copy"> </span>
+            </button>
+        </div>
+        <div class="buttonpane"></div>
+    </div>
+    <!-- convert colors <-> values"modal" -->
+    <div id="colorsModalDialog" class="dialog" style="min-width: 505px; min-height: 605px;">
+        <div class="titlebar UIText">Conversion</div>
+        <button name="colorsModalDialog_close"></button>
+        <div class="content" id="colorsModalDialogContent"></div>
+    </div>
     <!-- Blockly libraries -->
     <script src="./@blockly/blockly_compressed.js"></script>
-    <script src="./@blockly/blocks_compressed.js"></script>
     <script src="./@blockly/closure/goog/base.js"></script>
+    <!-- needed for automatic variable typing -->
+    <script src="js/typing_variables/type.js"></script>
+    <script src="js/typing_variables/types.js"></script>
+    <script src="js/typing_variables/static_typing.js"></script>
+    <script src="js/typing_variables/instances.js"></script>
+    <script src="js/typing_variables/field_instance.js"></script>
+    <script src="js/typing_variables/block_instance.js"></script>
     <!-- Blockly libraries for themes and renderers -->
-    <script src="./@blockly/core/workspace_comment.js" async></script>
-    <script src="./@blockly/core/workspace_comment_svg.js" async></script>
-    <script src="./@blockly/core/workspace_comment_render_svg.js" async></script>
+    <script src="./@blockly/core/workspace_comment.js"></script>
+    <script src="./@blockly/core/workspace_comment_svg.js"></script>
+    <script src="./@blockly/core/workspace_comment_render_svg.js"></script>
     <script src="./@blockly/core/renderers/minimalist/info.js" async></script>
     <script src="./@blockly/core/renderers/minimalist/constants.js" async></script>
     <script src="./@blockly/core/renderers/minimalist/drawer.js" async></script>
     <script src="./@blockly/core/renderers/minimalist/renderer.js" async></script>
-    <script src="./@blockly/core/theme/modern.js" async></script>
     <script src="./@blockly/core/theme/zelos.js" async></script>
+    <!-- Blockly plugins -->
+    <script src="./@blockly/plugins/disable-top-blocks/index.js"></script>
+    <script src="./@blockly/plugins/field-date/date_compressed.js"></script>
+    <script src="./@blockly/plugins/field-grid-dropdown/index.js"></script>
+    <script src="./@blockly/plugins/field-slider/index.js"></script>
+    <script src="./@blockly/plugins/keyboard-navigation/index.js"></script>
+    <script src="./@blockly/plugins/theme-dark/index.js"></script>
+    <script src="./@blockly/plugins/theme-modern/index.js"></script>
+    <script src="./@blockly/plugins/workspace-backpack/index.js"></script>
+    <script src="./@blockly/plugins/workspace-content-highlight/index.js"></script>
+    <script src="./@blockly/plugins/workspace-search/index.js"></script>
+    <script src="./@blockly/plugins/zoom-to-fit/index.js"></script>
     <!-- Blockly libraries of function, from different demos -->
     <script src="./@blockly/demos/code/code.js"></script>
-    <script src="./@blockly/demos/keyboard_nav/line_cursor.js" async></script>
     <script src="./@blockly/tests/playgrounds/screenshot.js" async></script>
     <!-- S4E external toolbox hacked -->
+    <script src="./S4E/categories/arrowheadframework/arrowheadframework.toolbox"></script>
     <script src="./S4E/categories/board/board.toolbox"></script>
     <script src="./S4E/categories/ds18b20/ds18b20.toolbox"></script>
+    <script src="./S4E/categories/DHT/DHT.toolbox"></script>
+    <script src="./S4E/categories/seeed/grove.toolbox"></script>
     <script src="./S4E/categories/relay/relay.toolbox"></script>
     <script src="./S4E/categories/servo/servo.toolbox"></script>
     <script src="./S4E/categories/blockly/blockly.toolbox"></script>
     <script src="./S4E/categories/X-NUCLEO-IKS01A3/X-NUCLEO-IKS01A3.toolbox"></script>
     <!-- Blockly libraries of function, hacked from different demos -->
-    <script src="./js/blockly/keyboard_nav.js"></script>
-    <script src="./js/blockly/playground.js"></script>
+    <!-- <script src="./js/blockly/keyboard_nav.js"></script> -->
+    <script src="./js/minimap.js"></script>
+    <script src="./js/blockly_playground.js"></script>
+    <script src="./js/keyboard_nav.js"></script>
     <script src="./js/init.js"></script>
     <script src="./js/typed_variable.js"></script>
     <script src="./js/buttons_functions.js"></script>
     <script src="./js/dialog.js"></script>
     <script src="./js/renderingConstant.js"></script>
+    <script src="./js/serialMonitor.js"></script>
     <script src="./js/toolbox.js"></script>
     <script src="./@blockly/demos/custom-dialogs/custom-dialog.js"></script>
     <!-- S4E libraries of external functions -->
-    <script src="./js/ace/ace.js" charset="utf-8"></script>
-    <script src="./js/ace/ext-language_tools.js"></script>
+    <script src="./js/lib/chart.min.js"></script>
+    <script src="./js/lib/diff.js"></script>
+    <script src="./js/lib/draggable-resizable-dialog.js"></script>
+    <script src="./js/lib/iro.min.js"></script>
+    <script src="./js/prettify/prettify.js"></script>
+    <link rel="stylesheet" href="./js/prettify/prettify.css">
+    <script src="./js/custom-color-field.js"></script>
     <!-- S4E libraries of specific funtions definition -->
     <script src="./S4E/js/arrowhead.js"></script>
     <script src="./S4E/js/override_toolbox.js"></script>
-    <!-- S4E libraries of boards definition -->
-    <script src="./S4E/js/boards.json"></script>
-    <script src="./S4E/js/boards.js"></script>
-    <!-- S4E specific: block design -->
-    <script src="./S4E/categories/blockly/logic.blocks" async></script>
-    <script src="./S4E/categories/blockly/math.blocks" async></script>
-    <script src="./S4E/categories/blockly/typed_variable.blocks" async></script>
-    <script src="./S4E/categories/board/board_base.blocks" async></script>
-    <script src="./S4E/categories/board/board_iot.blocks" async></script>
-    <script src="./S4E/categories/board/board_serial.blocks" async></script>
-    <script src="./S4E/categories/ds18b20/ds18b20.blocks" async></script>
-    <script src="./S4E/categories/relay/relay.blocks" async></script>
-    <script src="./S4E/categories/servo/servo.blocks" async></script>
-    <script src="./S4E/categories/X-NUCLEO-IKS01A3/X-NUCLEO-IKS01A3.blocks" async></script>
-    <!-- S4E specific: common generator code -->
-    <script src="./generators/arduino_generator.js"></script>
-    <script src="./S4E/categories/blockly/colour.arduino" async></script>
-    <script src="./S4E/categories/blockly/lists.arduino" async></script>
-    <script src="./S4E/categories/blockly/logic.arduino" async></script>
-    <script src="./S4E/categories/blockly/loops.arduino" async></script>
-    <script src="./S4E/categories/blockly/math.arduino" async></script>
-    <script src="./S4E/categories/blockly/procedures.arduino" async></script>
-    <script src="./S4E/categories/blockly/text.arduino" async></script>
-    <!-- S4E specific: addon generator code -->
-    <script src="./S4E/categories/blockly/typed_variable.arduino" async></script>
-    <script src="./S4E/categories/board/board_base.arduino" async></script>
-    <script src="./S4E/categories/board/board_iot.arduino" async></script>
-    <script src="./S4E/categories/board/board_serial.arduino" async></script>
-    <script src="./S4E/categories/ds18b20/ds18b20.arduino" async></script>
-    <script src="./S4E/categories/relay/relay.arduino" async></script>
-    <script src="./S4E/categories/servo/servo.arduino" async></script>
-    <script src="./S4E/categories/X-NUCLEO-IKS01A3/X-NUCLEO-IKS01A3.arduino" async></script>
-    <!-- S4E specific -->
     <!-- Blockly themes added -->
     <script src="./S4E/themes/bw.js" async></script>
     <script src="./S4E/themes/themes_blocks.js" async></script>
     <script src="./S4E/themes/themes_categories.js" async></script>
     <script src="./S4E/themes/themes_components_override.js" async></script>
+    <!-- S4E libraries of boards definition -->
+    <script src="./S4E/js/boards.json"></script>
+    <script src="./S4E/js/boards.js"></script>
+    <!-- S4E specific: block design -->
+    <script src="./S4E/categories/blockly/variables.blocks"></script>
+    <script src="./S4E/categories/blockly/colour.blocks"></script>
+    <script src="./S4E/categories/blockly/array.blocks"></script>
+    <script src="./S4E/categories/blockly/logic.blocks"></script>
+    <script src="./S4E/categories/blockly/loops.blocks"></script>
+    <script src="./S4E/categories/blockly/math.blocks"></script>
+    <script src="./S4E/categories/blockly/text.blocks"></script>
+    <!-- need to overwite mutator with plugin plus-minus -->
+    <script src="./@blockly/plugins/block-plus-minus/index.js"></script>
+    <!-- need to overwite plugin plus-minus for argument typing -->
+    <script src="./S4E/categories/blockly/procedures.blocks"></script>
+    <!-- S4E specific: wait for block design loaded before typing blocks-->
+    <script src="./S4E/categories/blockly/blockly.types"></script>
+    <script src="./S4E/categories/board/board_base.blocks"></script>
+    <script src="./S4E/categories/board/board_iot.blocks"></script>
+    <script src="./S4E/categories/board/board_serial.blocks"></script>
+    <script src="./S4E/categories/board/board.types"></script>
+    <script src="./S4E/categories/arrowheadframework/arrowheadframework.blocks"></script>
+    <script src="./S4E/categories/arrowheadframework/arrowheadframework.types"></script>
+    <script src="./S4E/categories/ds18b20/ds18b20.blocks"></script>
+    <script src="./S4E/categories/ds18b20/ds18b20.types"></script>
+    <script src="./S4E/categories/DHT/DHT.blocks"></script>
+    <script src="./S4E/categories/DHT/DHT.types"></script>
+    <script src="./S4E/categories/relay/relay.blocks"></script>
+    <script src="./S4E/categories/relay/relay.types"></script>
+    <script src="./S4E/categories/seeed/grove_dht_sensor/grove_dht_sensor.blocks"></script>
+    <script src="./S4E/categories/seeed/grove_dht_sensor/grove_dht_sensor.types"></script>
+    <script src="./S4E/categories/seeed/grove_led_bar/grove_led_bar.blocks"></script>
+    <script src="./S4E/categories/seeed/grove_led_bar/grove_led_bar.types"></script>
+    <script src="./S4E/categories/seeed/grove_uart_wifi/grove_uart_wifi.blocks"></script>
+    <script src="./S4E/categories/seeed/grove_uart_wifi/grove_uart_wifi.types"></script>
+    <script src="./S4E/categories/servo/servo.blocks"></script>
+    <script src="./S4E/categories/servo/servo.types"></script>
+    <script src="./S4E/categories/X-NUCLEO-IKS01A3/X-NUCLEO-IKS01A3.blocks"></script>
+    <script src="./S4E/categories/X-NUCLEO-IKS01A3/X-NUCLEO-IKS01A3.types"></script>
+    <!-- S4E specific: common generator code -->
+    <script src="./generators/arduino_generator.js"></script>
+    <script src="./S4E/categories/blockly/colour.arduino"></script>
+    <script src="./S4E/categories/blockly/array.arduino"></script>
+    <script src="./S4E/categories/blockly/logic.arduino"></script>
+    <script src="./S4E/categories/blockly/loops.arduino"></script>
+    <script src="./S4E/categories/blockly/math.arduino"></script>
+    <script src="./S4E/categories/blockly/procedures.arduino"></script>
+    <script src="./S4E/categories/blockly/text.arduino"></script>
+    <script src="./S4E/categories/blockly/variables.arduino"></script>
+    <!-- S4E specific: addon generator code -->
+    <script src="./S4E/categories/board/board_base.arduino"></script>
+    <script src="./S4E/categories/board/board_iot.arduino"></script>
+    <script src="./S4E/categories/board/board_serial.arduino"></script>
+    <script src="./S4E/categories/arrowheadframework/arrowheadframework.arduino"></script>
+    <script src="./S4E/categories/ds18b20/ds18b20.arduino"></script>
+    <script src="./S4E/categories/DHT/DHT.arduino"></script>
+    <script src="./S4E/categories/relay/relay.arduino"></script>
+    <script src="./S4E/categories/seeed/grove_dht_sensor/grove_dht_sensor.arduino"></script>
+    <script src="./S4E/categories/seeed/grove_led_bar/grove_led_bar.arduino"></script>
+    <script src="./S4E/categories/seeed/grove_uart_wifi/grove_uart_wifi.arduino"></script>
+    <script src="./S4E/categories/servo/servo.arduino"></script>
+    <script src="./S4E/categories/X-NUCLEO-IKS01A3/X-NUCLEO-IKS01A3.arduino"></script>
     <script>
-        ace.require("ace/ext/language_tools");
-        var editor = ace.edit("content_code");
-        editor.setTheme("ace/theme/sqlserver");
-        editor.session.setMode("ace/mode/c_cpp");
-        editor.setShowPrintMargin(false);
-        editor.setOptions({
-            autoScrollEditorIntoView: false,
-            readOnly: false,
-            highlightGutterLine: true,
-            animatedScroll: true,
-            enableBasicAutocompletion: true,
-            enableSnippets: true,
-            enableLiveAutocompletion: true
-        });
-        editor.find('needle', {
-            backwards: false,
-            wrap: false,
-            caseSensitive: false,
-            wholeWord: false,
-            regExp: false
-        });
-        editor.findNext();
-        editor.findPrevious();
-        require('../resources/app.asar/renderer.js');
-        require('../resources/app.asar/menu_functions.js');
-        require('../resources/app.asar/menu_CLI_functions.js');
-        require('../resources/app.asar/menu_IDE_functions.js');
+        var require = {
+            paths: {
+                'vs': './tools/vs'
+            }
+        };
     </script>
+    <script src="./tools/vs/loader.js"></script>
+    <script src="./tools/vs/editor/editor.main.nls.js"></script>
+    <script src="./tools/vs/editor/editor.main.js"></script>
+
+    <script>
+        // require('../resources/app.asar/Arrowhead.js');
+        // require('../resources/app.asar/renderer.js');
+        // require('../resources/app.asar/menu_functions.js');
+        // require('../resources/app.asar/menu_CLI_functions.js');
+        // require('../resources/app.asar/menu_IDE_functions.js');
+        // require('./Arrowhead.js');
+        // require('./renderer.js');
+        // require('./menu_functions.js');
+        // require('./menu_CLI_functions.js');
+        // require('./menu_IDE_functions.js');
+    </script>
+    <script type="text/javascript">
+        window.onload = function() {
+            if (document.readyState === 'complete') {
+                let x1 = (window.innerWidth - img1.width) / 2;
+                let y1 = (window.innerHeight - img1.height) / 2;
+                let x2 = (window.innerWidth - img2.width) / 2;
+                let y2 = (window.innerHeight - img2.height) / 2;
+                var alpha = 1.0;
+
+                function fadeOut() {
+                    if (alpha <= 0) {
+                        return;
+                    }
+                    requestAnimationFrame(fadeOut);
+                    context.clearRect(0, 0, canvas.width, canvas.height);
+                    context.globalAlpha = alpha;
+                    2
+                    context.drawImage(img1, x1, y1);
+                    context.drawImage(img2, x2, y2);
+                    alpha += -0.01;
+                }
+                fadeOut();
+            }
+        }
+    </script>
+
+</body>
+
 </HTML>

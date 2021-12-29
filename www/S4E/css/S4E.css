@@ -6,144 +6,290 @@
 
 .blocklyToolboxDiv {
     box-shadow: 5px 5px 5px gray !important;
+    overflow-x: hidden;
 }
+
 .UIText {
     vertical-align: middle;
     color: #FFFFFF;
     font-weight: bold;
 }
+
 .UITextSmall {
     vertical-align: middle;
     color: #FFFFFF;
     font-size: large;
     font-weight: bold;
 }
-.iconButtons{
+
+.iconWorkspaceButtons {
+    position: absolute;
+    z-index: 10;
+    right: 33px;
+    background: none;
+    box-shadow: none;
+    border: 2px solid;
+    border-radius: 50%;
+    padding: 2px;
+    line-height: 0;
+    color: #898989;
+    font-size: 1.5em;
+    width: 35px;
+}
+
+.iconButtons {
     border: 0;
     background: none;
     box-shadow: none;
     border-radius: 0px;
-    padding:2px;
-    line-height:0;
+    padding: 2px;
+    line-height: 0;
     vertical-align: middle;
     background: #03234b;
     color: #FFFFFF;
     font-size: 1.5em;
-    width: 35px;
+    min-width: 35px;
 }
-.iconButtons:hover{
+
+.iconButtons:hover {
     background: #FFFFFF;
     color: #03234b;
-    cursor : pointer;
+    cursor: pointer;
     transition: 0.5s ease;
 }
-.iconButtons:active{
+
+.iconButtons:active {
     background: #FFCC00;
 }
+
 .iconButtons:active::after {
     transition-property: background;
     transition-duration: 10s;
 }
-.iconButtons:disabled{
+
+.iconButtons:disabled {
     background: #F3F1EF;
     color: #03234B;
-    cursor : not-allowed;
+    cursor: not-allowed;
 }
-.iconButtonsClicked{
+
+.iconButtonsTop {
     border: 0;
     background: none;
     box-shadow: none;
     border-radius: 0px;
-    padding:2px;
-    line-height:0;
+    padding: 2px;
+    line-height: 0;
+    vertical-align: middle;
+    background: #FFFFFF;
+    color: #03234b;
+    font-size: 1.5em;
+    width: 35px;
+}
+
+.iconButtonsTop:hover {
+    background: #03234b;
+    color: #FFFFFF;
+    cursor: pointer;
+    transition: 0.5s ease;
+}
+
+.iconButtonsTop:active {
+    background: #FFCC00;
+}
+
+.iconButtonsTop:active::after {
+    transition-property: background;
+    transition-duration: 10s;
+}
+
+.iconButtonsTop:disabled {
+    background: #03234B;
+    color: #F3F1EF;
+    cursor: not-allowed;
+}
+
+.iconButtonsClicked {
+    border: 0;
+    background: none;
+    box-shadow: none;
+    border-radius: 0px;
+    padding: 2px;
+    line-height: 0;
     vertical-align: middle;
     background: #FFCC00;
     color: #03234B;
     font-size: x-large;
     width: 32px;
 }
+
 .CLI {
     margin: 5px;
 }
+
+
 /* surcharger .iconButton */
-#boardMenu, #serialMenu{
+
+#boardMenu,
+#serialMenu {
     color: #000000;
-    font-size:large;
+    font-size: large;
     border: none;
     -webkit-border-radius: 5px;
     -o-border-radius: 5px;
     border-radius: 5px;
+    vertical-align: middle;
 }
-#barre_h{
-    background-color : #00abdf;
+
+#resizer_v {
+    background-color: #00abdf;
     display: flex;
     flex-wrap: nowrap;
     justify-content: space-between;
-    align-items:center;
+    align-items: center;
 }
 
+
 /* boutons classiques */
+
 #verifyButton,
 #uploadButton,
-#serialMonitorButton
-{
+#serialMonitorButton {
     border-radius: 50%;
 }
-#resetButton{
+
+#resetButton {
     background: #FF0000;
 }
-#resetButton:hover{
+
+#resetButton:hover {
     background: #FFFFFF;
-    cursor: no-drop;
+    cursor: url('../../media/danger_icon.png'), pointer;
 }
-#btn_fake_close{
-}
-#btn_fake_close:hover{
+
+#btn_fake_close:hover {
     background: #FF0000;
     color: #FFFFFF;
 }
-#helpButton{
+
+#helpButton {
     border-radius: 5px;
     cursor: help;
 }
-#copyCodeButton{
+
+#openCodeButton,
+#copyCodeButton,
+#saveCodeButton {
+    border-radius: 5px;
+    margin: 5px;
+}
+
+#content_code_buttons {
     visibility: hidden;
     position: absolute;
-    top: 85px;
+    top: 80px;
     right: 5px;
-    border-radius: 5px;
+    width: 40px;
     z-index: 5;
 }
+
+
 /*****************/
+
+
 /*  Sketch name  */
+
+
 /*****************/
+
 .sketch_name_wrapper {
-  display: inline-block;
-  padding-left: 5px;
+    display: inline-block;
+    padding-left: 5px;
 }
+
 .sketch_name_icon {
     border: 0;
+    font-size: 1.5em;
     background: none;
     box-shadow: none;
     border-radius: 0px;
-    padding:2px;
-    line-height:0;
+    padding: 2px;
+    line-height: 0;
     vertical-align: middle;
     background: #03234b;
     color: #FFFFFF;
-    font-size: 1.5em;
-    width: 32px;
     -webkit-transform: scaleX(-1);
     transform: scaleX(-1);
 }
+
 .sketch_name {
-  width: auto !important;
-  color: #FFFFFF;
-  max-width: 400px;
-  line-height: 64px;
-  height: 2rem !important;
-  font-size: 1.5rem !important;
-  border-bottom: 0px solid #EEE !important;
-  font-style: italic;background: transparent;
-  border: none;
+    width: auto !important;
+    color: #FFFFFF;
+    max-width: 400px;
+    line-height: 64px;
+    height: 2rem !important;
+    font-size: 1.5rem !important;
+    border-bottom: 0px solid #EEE !important;
+    font-style: italic;
+    background: transparent;
+    border: none;
+}
+
+
+/***********************/
+
+
+/*  Filter categories  */
+
+
+/***********************/
+
+#categories_search_wrapper {
+    display: inline-block;
+    width: 100%;
+}
+
+#categories_search {
+    background-image: url('../media/searchicon.png');
+    background-position: 10px 6px;
+    background-repeat: no-repeat;
+    width: 80% !important;
+    color: #000000;
+    max-width: 400px;
+    line-height: 64px;
+    height: 2rem !important;
+    /* font-size: 1.5rem !important; */
+    border: 1px solid #EEE !important;
+    font-style: italic;
+    /* background: transparent;   */
+    padding-left: 40px;
+}
+
+#categoriesSelectList {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+#categories_content_filter_button {
+    position: relative;
+    left: 122px;
+}
+
+
+/*****************/
+
+
+/* Arrowhead specific  */
+
+
+/*****************/
+
+#ArrowheadConfigurationModalBody_buttons {
+    font-size: 150%;
+    text-align: center;
+}
+
+#ArrowheadConfigurationModalFooter_buttons {
+    text-align: center;
 }

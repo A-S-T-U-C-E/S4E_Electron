@@ -1,0 +1,22 @@
+{
+    "arrowhead_input_orchestrator_host": "137.204.57.93",
+    "arrowhead_input_orchestrator_port": "8441",
+    "arrowhead_input_orchestrator_path": "/orchestrator",
+    "arrowhead_input_orchestrator_tls_useKey": [
+        "off"
+    ],
+    "arrowhead_input_orchestrator_tls_local_path": "certificate",
+    "arrowhead_input_orchestrator_tls_local_key": "certificate",
+    "arrowhead_input_orchestrator_tls_local_pass": "123456",
+    "arrowhead_input_orchestrator_tls_local_certificate": "studio4education.p12",
+    "arrowhead_input_orchestrator_consum_name": "s4e_c",
+    "arrowhead_input_orchestrator_consum_host": "91.161.102.110",
+    "arrowhead_input_orchestrator_consum_port": "8885",
+    "arrowhead_input_orchestrator_provider_name": "s4e_p",
+    "arrowhead_input_serviceregistry_host": "137.204.57.93",
+    "arrowhead_input_serviceregistry_port": "8443",
+    "arrowhead_input_serviceregistry_path": "/serviceregistry",
+    "arrowhead_input_authorization_host": "137.204.57.93",
+    "arrowhead_input_authorization_port": "8445",
+    "arrowhead_input_authorization_path": "/authorization"
+}

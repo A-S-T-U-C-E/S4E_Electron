@@ -6,7 +6,6 @@
 
 var MSG = {
     title: "S4E",
-    appName: "udio4Education",
     btnMinimize: "minimize",
     btnMaximize: "maximize",
     btnClose: "close application",
@@ -26,25 +25,32 @@ var MSG = {
     xmlError: "保存されたファイルを読み込めませんでした。別のバージョンのブロックリーで作成された可能性があります。",
     badXml: "XML のエラーです:\n%1\n\nXML の変更をやめるには「OK」、編集を続けるには「キャンセル」を選んでください。",
     languageSpan: "choose language",
+    levelSpan: "skill level",
+    skill1_menu_span: "novice (padawan)",
+    skill2_menu_span: "skilled (knight)",
+    skill3_menu_span: "expert (master)",
     interfaceColorSpan: "interface theme",
     codeEditorColorSpan: "code editor theme",
     themeSpan: "choose  theme",
     renderSpan: "choose renderer",
     fullScreenButton_span: "full screen",
+    fullToolboxButton_span: "shrink/expand toolbox",
+    blocksPictureButton_span: "show/hide pictures in blocks",
     undoButton_span: "Undo",
     redoButton_span: "Redo",
     boardButtonSpan: "list boards",
-    verifyButton_span: "Verify code",
+    verifyButton_span: "verify code",
     serialButtonSpan: "list COM port",
-    uploadButton_span: "Upload",
+    uploadButton_span: "upload",
     serialConnectButton_span: "monitoring & control",
     serialMonitorButton_span: "Serial monitor",
     nodeRedFlowButton_span: "node-Red flows",
     supervisionButton_span: "supervision",
     saveCodeButton_span: "Export Code",
+    menuButton_span: "File menu",
     newButton_span: "New project",
     save_span: "Save file name?",
-    sketch_name_default: "sketch_name",
+    sketch_name_default: "sketch name",
     sketch_name_wrapper: "project sketch name",
     saveXMLButton_span: "Save to S4E file",
     loadXMLfakeButton_span: "Load S4E file",
@@ -53,28 +59,20 @@ var MSG = {
     resetButton_span: "Reset S4E",
     resetQuestion_span: "Reset S4E and",
     helpButton_span: "About",
-    helpModalSpan_title: "Help - About",
-    helpModalSpan_text:
-        '<table>' +
-        '<tbody>' +
-        '<tr>' +
-        '<td style="width: 142px;"><img src="./media/logo_only.png" alt="" width="129" height="144" /></td>' +
-        '<td>' +
-        '<p style="text-align: left;"><strong>STudio4Education</strong></p>' +
-        '<p style="text-align: left;">Designed for <strong>Arrowhead</strong> Tools Project (<a href="https://www.arrowhead.eu/arrowheadtools" rel="nofollow">https://www.arrowhead.eu/arrowheadtools</a>), STudio4Education is a <strong>web-based visual programming editor for <a href="https://www.st.com" rel="nofollow">ST microelectronics</a></strong> boards, thanks to <a href="https://developers.google.com/blockly/" rel="nofollow">Blockly</a>, the web-based, graphical programming editor.</p>' +
+    helpModalSpan_title: "Help / About",
+    helpModalSpan_text: '<img src="./S4E/media/logo_only.png" alt="" style="height:100px; float:left; margin: 0 10px 10px 0;" />' +
+        '<p style="text-align: left;">Designed for <a href="https://www.arrowhead.eu/arrowheadtools" rel="nofollow"><strong>Arrowhead</strong> Tools Project</a>, S4E is a <strong>web-based visual programming editor for <a href="https://www.st.com" rel="nofollow">STmicroelectronics</a></strong> boards, thanks to <a href="https://developers.google.com/blockly/" rel="nofollow">Blockly</a>, the web-based, graphical programming editor.</p>' +
         '<p style="text-align: left;">STudio4Education provides static type language blocks and code generators for simple C programming.</p>' +
-        '</td>' +
-        '</tr>' +
-        '</tbody>' +
-        '</table>' +
-        '<p style="text-align: left;">Accessibility: <a href="https://github.com/A-S-T-U-C-E/STudio4Education#accessibility">online documentation</a>.</p>' +
-        '<p style="text-align: left;">Blockly official documentation: <a href="https://developers.google.com/blockly/guides/configure/web/keyboard-nav" rel="nofollow">Blockly developers</a>.</p>' +
-        '<p style="text-align: left;">Wiki : <a href="https://github.com/A-S-T-U-C-E/STudio4Education/wiki">on Github</a>.</p>' +
-        '<p style="text-align: left;">A bug? Post it here: <a href="https://github.com/A-S-T-U-C-E/STudio4Education/issues">on Github</a>.</p>' +
-        '<p style="text-align: center;">v0.8.0 - BSD3 license - Sébastien CANET',
+        '<p style="text-align: left;">Accessibility: <a href="https://github.com/A-S-T-U-C-E/STudio4Education#accessibility">online documentation</a>.</br>' +
+        'Wiki : <a href="https://github.com/A-S-T-U-C-E/STudio4Education/wiki">on Github</a>.</br>' +
+        'A bug? Post it here: <a href="https://github.com/A-S-T-U-C-E/STudio4Education/issues">on Github</a>.</br>' +
+        'Thanks & libraries: <a href="https://github.com/A-S-T-U-C-E/STudio4Education/wiki/Thanks">on Github</a>.</p>' +
+        '<p style="text-align: center;">v0.9.0 - BSD3 license - Sébastien CANET' +
+        '<p style="text-align: center;"><a href = (https://www.paypal.com/fr/cgi-bin/webscr?cmd=_flow&SESSION=o8z3KNFl16Tjlxhk1mBekCcRsG_3_NDe0CfWh8b1vfSYIbMxJnwa92YwM3y&dispatch=5885d80a13c0db1f8e263663d3faee8d4fe1dd75ca3bd4f11d72275b28239088">Thanks for donation with Paypal to help me improve this software.</br><img src="https://www.paypalobjects.com/fr_FR/FR/i/btn/btn_donateCC_LG.gif" alt="Paypal"/></a></p>',
     //menu tools
     toolsButton_span: "tools",
     wiringButton_span: "wiring",
+    circuitjsButton_span: "circuitJS simulator",
     factoryButton_span: "block factory",
     htmlButton_span: "HTML factory",
     colorConversionButton_span: "colors encoding",
@@ -84,13 +82,27 @@ var MSG = {
     launchRedServer_span: "Node-RED server",
     launchWebServer_span: "local server",
     papyrusConnect_span: "Papyrus connect",
-    registerToOrchestrator_span: "Arrowhead connect",
+    papyrusConnect_helper_span: "Papyrus configuration",
+    papyrusConfiguration_id_span: "ID of download service",
+    papyrusConfiguration_name_span: "name of config file",
+    papyrusConfiguration_save_span: "save information",
+    ArrowheadConfiguration_helper_span: "Arrowhead configuration",
+    ArrowheadConfiguration_span: "connect as provider to Arrowhead cloud",
+    ArrowheadConfiguration_span_menu: "Arrowhead connect",
+    ArrowheadConfiguration_ServReg_span: "Configure service registry",
+    ArrowheadConfiguration_provider_span: "Configure provider",
+    ArrowheadConfiguration_consumer_span: "Configure consumer",
+    ArrowheadConfiguration_auth_span: "Define authorization server",
+    ArrowheadConfiguration_orch_span: "Define orchestrator server",
     blynkConnect_span: "Blynk connect",
     serialConnectIOT_span: "connect serial to IoT",
-    //ace editor
-    editorReadOnlyToggle_span: "code editor writable or read-only",
-    copyCodeButton_span: "copy code to clipboard",
+    //monaco code editor
+    editorDiffToggle_span: "compare code modifications",
+    copyCodeButton_span: "Copia código a  portapapeles",
+    openCodeButton_span: "Open code editor",
     //lateral panel
+    highlightSpan: "highlights the content on the workspace",
+    minimapSpan: "(de)activate minimap",
     accessibilitySpan: "Enable Accessibility Mode",
     defaultCursorSpan: "Default Cursor",
     basicCursorSpan: "Basic Cursor",
@@ -134,6 +146,7 @@ var MSG = {
     fontSpan: "font choice",
     fontSizeSpan: "rendering",
     optionFontSizeBlocks: "Blocks Font Size",
+    optionFontSizeEditor: "Editor Font Size",
     optionFontSizePage: "Page Font Size",
     optionFontSpacingPage: "Page Font Spacing",
     //CLI_functions.js
@@ -157,8 +170,11 @@ var MSG = {
     installLibButton_span: "install this library",
     //categories panel
     categories_title_span: "categories choice",
-    //arrowhead panel
+    categories_content_selectAll_span: "ALL / NONE",
+    categories_search_placeholder: "Search for category...",
+    //IoT panel
     iot_title_span: "IoT control",
+    ArrowheadConfiguration_helper_span: "Arrowhead configuration",
     //modals
     boardListModalHeader_span: "Boards list",
     boardListModalButton_span: "Details",
@@ -178,6 +194,15 @@ var MSG = {
     boardModal_sram: "SRAM memory",
     boardModal_eeprom: "EEPROM",
     portListModalHeader_span: "COMM port list",
+    editorMonacoModal_titlebar: "Code editor",
+    editorMonacoModal_undo_span: "undo code modifications",
+    editorMonacoModal_redo_span: "redo code modifications",
+    editorMonacoModal_diff_span: "open difference pane with original code",
+    editorMonacoModal_ok_span: "validate modification to code",
+    editorMonacoModal_cancel_span: "reset code panel with original code",
+    circuitJSmodalTitle_titlebar: "electronic circuit simulator",
+    circuitJSmodal_run: "compile and run code simulation",
+    circuitJSmodal_stop: "stop simulation",
     //IDE_functions.js
     IDE_connect: 'Connect to port ',
     IDE_select_port: 'Select a port !',
@@ -186,18 +211,22 @@ var MSG = {
     IDE_verif_ok: '\nVerification: OK',
     IDE_upload1: 'Board ',
     IDE_upload2: ' on port ',
-    IDE_upload3: '\nUpload: in progress...\n<i class="fa fa-spinner fa-pulse fa-1_5x fa-fw"></i>',
-    IDE_upload_ok: '\nUpload: OK',
-    serial_btn_start: "<span class='fa fa-play'></span> Start",
-    serial_info_stop: 'stop<br>',
-    serial_btn_stop: "<span class='fas fa-stop'></span> Stop",
-    serial_info_start: 'communication starting<br>',
-    serial_CSV: 'Export data to CSV',
+    IDE_upload3: '\nupload: in progress...\n<i class="fa fa-spinner fa-pulse fa-1_5x fa-fw"></i>',
+    IDE_upload_ok: '\nupload: OK',
+    serialModalTitle_titlebar_span: 'Serial monitor',
     inputTextSerial: 'Text',
     btn_serialSend_span: 'Send',
     btn_serialConnect_span: 'Start',
+    btn_serialStop_span: "Stop",
     btn_serialPeekClear_span: 'Clean',
-    btn_serialPeekCSV_span: 'Export',
+    btn_serialAddTimeStamp_span: 'Timestamp',
+    btn_serialPeekCSV_span: 'Export CSV',
+    btn_serialPeekJSON_span: 'Export JSON',
     btn_serialChart_span: 'Graph',
-    btn_serialChartPause_span: 'Start'
+    btn_serialChartPause_span: 'Pause',
+    btn_serialChartStart_span: 'Restart',
+    btn_serialChartMin_span: 'Min.',
+    btn_serialChartMax_span: 'Max.',
+    btn_serialChartNb_span: 'Nb.',
+    input_serialChartJSONheaders_span: 'JSON headers (;)'
 };

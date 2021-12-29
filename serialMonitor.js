@@ -84,13 +84,14 @@ window.addEventListener('load', function load(event) {
         const Readline = require('@serialport/parser-readline');
         const db = require('../../nodejs/js/dbservice');
         var baud = parseInt(document.getElementById('serialConnectSpeed_Menu').value);
+        console.log(baud);
         var comPortToUse = localStorage.getItem("comPort");
         let SerialPortToMonitor = new SerialPort(comPortToUse, {
             autoOpen: false,
             baudRate: baud
         });
         var parser = SerialPortToMonitor.pipe(new Readline({
-                    delimiter: '\n'
+                    delimiter: '\r\n'
                 }));
         if (!serialConnected) {
             document.getElementById('btn_serialConnect').innerHTML = MSG['serial_btn_stop'];
@@ -137,7 +138,7 @@ window.addEventListener('load', function load(event) {
                             dataset.data.push(dataToDraw); //Insert latest temp data
                         });
                     }
-                    chart.update(); //Update the graph.                
+                    chart.update();
                     if (document.getElementById('btn_serialAddTimeStamp').checked) {
                         document.getElementById('serialPeek').innerHTML += getDateString() + "<br>";
                     }

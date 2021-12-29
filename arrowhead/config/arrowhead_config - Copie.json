@@ -1,0 +1,50 @@
+{
+    "orchestrator": [{
+        "arrowhead_input_orchestrator_host": "https://137.204.57.93",
+        "arrowhead_input_orchestrator_port": "8441",
+        "arrowhead_input_orchestrator_path": "/orchestrator",
+        "arrowhead_input_orchestrator_tls_useKey": [
+            "on"
+        ],
+        "arrowhead_input_orchestrator_tls_local_path": "certificate",
+        "arrowhead_input_orchestrator_tls_local_key": "certificate",
+        "arrowhead_input_orchestrator_tls_local_pass": "123456",
+        "arrowhead_input_orchestrator_tls_local_certificate": "studio4education.p12",
+        "arrowhead_input_orchestrator_consum_name": "s4e_c",
+        "arrowhead_input_orchestrator_consum_host": "91.161.102.110",
+        "arrowhead_input_orchestrator_consum_port": "8885",
+        "arrowhead_input_orchestrator_consum_def": "s4e_p"
+    }],
+    "serviceRegistry": [{
+        "arrowhead_input_serviceRegistry_host": "https://137.204.57.93",
+        "arrowhead_input_serviceRegistry_port": "8443",
+        "arrowhead_input_serviceRegistry_path": "/serviceRegistry",
+        "arrowhead_input_serviceRegistry_tls_useKey": [
+            "on"
+        ],
+        "arrowhead_input_serviceRegistry_tls_local_path": "certificate",
+        "arrowhead_input_serviceRegistry_tls_local_key": "certificate",
+        "arrowhead_input_serviceRegistry_tls_local_pass": "123456",
+        "arrowhead_input_serviceRegistry_tls_local_certificate": "studio4education.p12",
+        "arrowhead_input_serviceRegistry_consum_name": "s4e_c",
+        "arrowhead_input_serviceRegistry_consum_host": "91.161.102.110",
+        "arrowhead_input_serviceRegistry_consum_port": "8885",
+        "arrowhead_input_serviceRegistry_consum_def": "s4e_p"
+    }],
+    "coreSystem": [{
+        "arrowhead_input_coreSystem_host": "https://137.204.57.93",
+        "arrowhead_input_coreSystem_port": "8445",
+        "arrowhead_input_coreSystem_path": "/authorization",
+        "arrowhead_input_coreSystem_tls_useKey": [
+            "on"
+        ],
+        "arrowhead_input_coreSystem_tls_local_path": "certificate",
+        "arrowhead_input_coreSystem_tls_local_key": "certificate",
+        "arrowhead_input_coreSystem_tls_local_pass": "123456",
+        "arrowhead_input_coreSystem_tls_local_certificate": "studio4education.p12",
+        "arrowhead_input_coreSystem_consum_name": "s4e_c",
+        "arrowhead_input_coreSystem_consum_host": "91.161.102.110",
+        "arrowhead_input_coreSystem_consum_port": "8885",
+        "arrowhead_input_coreSystem_consum_def": "s4e_p"
+    }]
+}

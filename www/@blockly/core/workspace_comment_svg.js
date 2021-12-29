@@ -14,10 +14,14 @@ goog.provide('Blockly.WorkspaceCommentSvg');
 
 goog.require('Blockly.Css');
 goog.require('Blockly.Events');
+/** @suppress {extraRequire} */
 goog.require('Blockly.Events.CommentCreate');
+/** @suppress {extraRequire} */
 goog.require('Blockly.Events.CommentDelete');
+/** @suppress {extraRequire} */
 goog.require('Blockly.Events.CommentMove');
-goog.require('Blockly.Events.Ui');
+/** @suppress {extraRequire} */
+goog.require('Blockly.Events.Selected');
 goog.require('Blockly.utils');
 goog.require('Blockly.utils.Coordinate');
 goog.require('Blockly.utils.dom');
@@ -29,6 +33,7 @@ goog.require('Blockly.WorkspaceComment');
 goog.requireType('Blockly.IBoundedElement');
 goog.requireType('Blockly.IBubble');
 goog.requireType('Blockly.ICopyable');
+
 
 /**
  * Class for a workspace comment's SVG representation.
@@ -48,14 +53,14 @@ Blockly.WorkspaceCommentSvg = function(
     workspace, content, height, width, opt_id) {
   /**
    * Mouse up event data.
-   * @type {?Blockly.EventData}
+   * @type {?Blockly.browserEvents.Data}
    * @private
    */
   this.onMouseUpWrapper_ = null;
 
   /**
    * Mouse move event data.
-   * @type {?Blockly.EventData}
+   * @type {?Blockly.browserEvents.Data}
    * @private
    */
   this.onMouseMoveWrapper_ = null;
@@ -127,7 +132,8 @@ Blockly.WorkspaceCommentSvg.prototype.dispose = function() {
   }
 
   if (Blockly.Events.isEnabled()) {
-    Blockly.Events.fire(new Blockly.Events.CommentDelete(this));
+    Blockly.Events.fire(
+        new (Blockly.Events.get(Blockly.Events.COMMENT_DELETE))(this));
   }
 
   Blockly.utils.dom.removeNode(this.svgGroup_);
@@ -145,16 +151,19 @@ Blockly.WorkspaceCommentSvg.prototype.dispose = function() {
 /**
  * Create and initialize the SVG representation of a workspace comment.
  * May be called more than once.
+ *
+ * @param {boolean=} opt_noSelect Text inside text area will be selected if false
+ *
  * @package
  */
-Blockly.WorkspaceCommentSvg.prototype.initSvg = function() {
+Blockly.WorkspaceCommentSvg.prototype.initSvg = function(opt_noSelect) {
   if (!this.workspace.rendered) {
     throw TypeError('Workspace is headless.');
   }
   if (!this.workspace.options.readOnly && !this.eventsInit_) {
-    Blockly.bindEventWithChecks_(
+    Blockly.browserEvents.conditionalBind(
         this.svgRectTarget_, 'mousedown', this, this.pathMouseDown_);
-    Blockly.bindEventWithChecks_(
+    Blockly.browserEvents.conditionalBind(
         this.svgHandleTarget_, 'mousedown', this, this.pathMouseDown_);
   }
   this.eventsInit_ = true;
@@ -162,6 +171,10 @@ Blockly.WorkspaceCommentSvg.prototype.initSvg = function() {
   this.updateMovable();
   if (!this.getSvgRoot().parentNode) {
     this.workspace.getBubbleCanvas().appendChild(this.getSvgRoot());
+  }
+
+  if (!opt_noSelect && this.textarea_) {
+    this.textarea_.select();
   }
 };
 
@@ -217,8 +230,8 @@ Blockly.WorkspaceCommentSvg.prototype.select = function() {
       Blockly.Events.enable();
     }
   }
-  var event = new Blockly.Events.Ui(null, 'selected', oldId, this.id);
-  event.workspaceId = this.workspace.id;
+  var event = new (Blockly.Events.get(Blockly.Events.SELECTED))(oldId, this.id,
+      this.workspace.id);
   Blockly.Events.fire(event);
   Blockly.selected = this;
   this.addSelect();
@@ -232,8 +245,8 @@ Blockly.WorkspaceCommentSvg.prototype.unselect = function() {
   if (Blockly.selected != this) {
     return;
   }
-  var event = new Blockly.Events.Ui(null, 'selected', this.id, null);
-  event.workspaceId = this.workspace.id;
+  var event = new (Blockly.Events.get(Blockly.Events.SELECTED))(this.id, null,
+      this.workspace.id);
   Blockly.Events.fire(event);
   Blockly.selected = null;
   this.removeSelect();
@@ -326,7 +339,7 @@ Blockly.WorkspaceCommentSvg.prototype.getRelativeToSurfaceXY = function() {
  * @package
  */
 Blockly.WorkspaceCommentSvg.prototype.moveBy = function(dx, dy) {
-  var event = new Blockly.Events.CommentMove(this);
+  var event = new (Blockly.Events.get(Blockly.Events.COMMENT_MOVE))(this);
   // TODO: Do I need to look up the relative to surface XY position here?
   var xy = this.getRelativeToSurfaceXY();
   this.translate(xy.x + dx, xy.y + dy);
@@ -581,7 +594,7 @@ Blockly.WorkspaceCommentSvg.fromXml = function(
     var comment = new Blockly.WorkspaceCommentSvg(
         workspace, info.content, info.h, info.w, info.id);
     if (workspace.rendered) {
-      comment.initSvg();
+      comment.initSvg(true);
       comment.render(false);
     }
     // Position the comment correctly, taking into account the width of a

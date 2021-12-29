@@ -9,20 +9,26 @@
  * @author scanet@libreduc.cc (Sébastien CANET)
  */
 
-const {
+// const startArrowhead = require('./Arrowhead');
+// const startArrowhead = require('../../arrowhead');
+
+let {
     app,
     BrowserWindow,
-    electron,
     ipcMain,
     globalShortcut,
     dialog,
     Tray
 } = require('electron');
 
-const {
-    exec
+let {
+    exec,
+    processToFork
 } = require('child_process');
-const processToFork = require('child_process');
+let path = require('path');
+let fs = require('fs-extra');
+
+// const axios = require("axios");
 
 let BlocklyWindow = null;
 let SerialWindow = null;
@@ -30,10 +36,11 @@ let FactoryWindow = null;
 let devtools = null;
 let tray = null;
 //for settings file or argument from Arrowhead
-const fs = require('fs-extra');
-var fileSettings = "./STudio4Education.json";
-var papyrusSettings = "./PapyrusST4Econfig.json";
-var Settings = '';
+let fileSettings = "./STudio4Education.json";
+let papyrusSettings = "./PapyrusS4Econfig.json";
+let Settings = '';
+
+require('@electron/remote/main').initialize();
 
 function createBlocklyWindow() {
     let BlocklyWindow = new BrowserWindow({
@@ -41,14 +48,16 @@ function createBlocklyWindow() {
         height: 700,
         frame: false,
         webPreferences: {
+            preload: path.join(__dirname, 'preload.js'),
             nodeIntegration: true,
-            enableRemoteModule: true
+            enableRemoteModule: true,
+            contextIsolation: false
         },
-        // icon: __dirname + '/www/S4E/media/icon.ico'
-        icon: __dirname + '../../../www/S4E/media/icon.ico'
+        icon: __dirname + '/www/S4E/media/icon.ico'
+            // icon: __dirname + '../../../www/S4E/media/icon.ico'
     });
-    // var url = '/www/index.html';
-    var url = '../../../www/index.html';
+    var url = '/www/index.html';
+    // var url = '../../../www/index.html';
     if (process.platform === 'win32' && process.argv.length >= 2) {
         url = url + process.argv[1];
     }
@@ -81,7 +90,7 @@ function createBlocklyWindow() {
             }
             console.log("The file Settings is : " + Settings);
         })
-            var idsCategories = JSON.parse(Settings);
+        var idsCategories = JSON.parse(Settings);
         var toolboxidsList = "";
         for (let i = 0; i < idsCategories.components.length; i++)
             toolboxidsList += idsCategories.components[i].id + ',';
@@ -98,7 +107,7 @@ function createBlocklyWindow() {
     // BlocklyWindow.loadURL(`file://${__dirname}` + url + '?' + idsCategories.arguments + '&toolboxids=' + idsCategories.components[0].id + ',' + idsCategories.components[1].id);
     // fs.writeFileSync(fileSettings, `file://${__dirname}` + url + '?' + idsCategories.arguments + '&toolboxids=' + idsCategories.components[0].id + ',' + idsCategories.components[1].id);
     BlocklyWindow.setMenu(null);
-    BlocklyWindow.on('closed', function () {
+    BlocklyWindow.on('closed', function() {
         BlocklyWindow = null;
         SerialWindow = null;
     });
@@ -115,7 +124,8 @@ function createSerialWindow(argLangChoice) {
         height: 560,
         'parent': BlocklyWindow,
         webPreferences: {
-            nodeIntegration: true
+            nodeIntegration: true,
+            contextIsolation: false
         },
         resizable: true,
         // icon: __dirname + '/src/icon.ico'
@@ -127,7 +137,7 @@ function createSerialWindow(argLangChoice) {
         url = url + '?lang=' + argLangChoice;
     SerialWindow.loadURL(`file://${__dirname}` + url);
     SerialWindow.setMenu(null);
-    SerialWindow.on('closed', function () {
+    SerialWindow.on('closed', function() {
         SerialWindow = null;
         // BlocklyWindow.document.getElementById('serialConnectButton').className = 'iconButtons';
     });
@@ -145,7 +155,8 @@ function createHackCableWindow(argLangChoice) {
         height: 640,
         'parent': BlocklyWindow,
         webPreferences: {
-            nodeIntegration: true
+            nodeIntegration: true,
+            contextIsolation: false
         },
         resizable: true,
         icon: __dirname + '../../../www/S4E/media/icon.ico'
@@ -155,7 +166,7 @@ function createHackCableWindow(argLangChoice) {
         url = url + '?lang=' + argLangChoice;
     HackCableWindow.loadURL(`file://${__dirname}` + url);
     HackCableWindow.setMenu(null);
-    HackCableWindow.on('closed', function () {
+    HackCableWindow.on('closed', function() {
         HackCableWindow = null;
     });
 };
@@ -166,7 +177,8 @@ function createFactoryWindow(argLangChoice) {
         height: 640,
         'parent': BlocklyWindow,
         webPreferences: {
-            nodeIntegration: true
+            nodeIntegration: true,
+            contextIsolation: false
         },
         resizable: true,
         icon: __dirname + '../../../www/S4E/media/icon.ico'
@@ -176,7 +188,7 @@ function createFactoryWindow(argLangChoice) {
         url = url + '?lang=' + argLangChoice;
     FactoryWindow.loadURL(`file://${__dirname}` + url);
     FactoryWindow.setMenu(null);
-    FactoryWindow.on('closed', function () {
+    FactoryWindow.on('closed', function() {
         FactoryWindow = null;
     });
 };
@@ -187,7 +199,8 @@ function createBlocklyHtmlWindow(argLangChoice) {
         height: 640,
         'parent': BlocklyWindow,
         webPreferences: {
-            nodeIntegration: true
+            nodeIntegration: true,
+            contextIsolation: false
         },
         resizable: true,
         icon: __dirname + '../../../www/S4E/media/icon.ico'
@@ -197,7 +210,7 @@ function createBlocklyHtmlWindow(argLangChoice) {
         url = url + '?lang=' + argLangChoice;
     BlocklyHtmlWindow.loadURL(`file://${__dirname}` + url);
     BlocklyHtmlWindow.setMenu(null);
-    BlocklyHtmlWindow.on('closed', function () {
+    BlocklyHtmlWindow.on('closed', function() {
         BlocklyHtmlWindow = null;
     });
 };
@@ -209,7 +222,8 @@ function createNodeRedWindow(argLangChoice) {
         'parent': BlocklyWindow,
         webPreferences: {
             //needed for jQuery use inside Node-RED
-            nodeIntegration: false
+            nodeIntegration: false,
+            contextIsolation: false
         },
         resizable: true,
         icon: __dirname + '../../../www/S4E/media/icon.ico'
@@ -219,7 +233,7 @@ function createNodeRedWindow(argLangChoice) {
         url = url + '?lang=' + argLangChoice;
     NodeRedWindow.loadURL('http://localhost:8000/red/');
     NodeRedWindow.setMenu(null);
-    NodeRedWindow.on('closed', function () {
+    NodeRedWindow.on('closed', function() {
         NodeRedWindow = null;
     });
     // const $ = require( "jquery" )( NodeRedWindow );
@@ -235,9 +249,10 @@ function refresh(BlocklyWindow = BrowserWindow.getFocusedWindow()) {
     BlocklyWindow.webContents.reloadIgnoringCache();
 };
 //need to be deleted at next serialport upgrade > 9.0.0
-app.allowRendererProcessReuse = false;
+app.allowRendererProcessReuse = true;
 
 app.whenReady().then(() => {
+    // app.allowRendererProcessReuse = true;
     createBlocklyWindow();
     globalShortcut.register('F8', openDevTools);
     globalShortcut.register('F5', refresh);
@@ -245,12 +260,12 @@ app.whenReady().then(() => {
     tray.setToolTip('S4E');
 });
 
-app.on('activate', function () {
+app.on('activate', function() {
     if (BrowserWindow.getAllWindows().length === 0)
         createBlocklyWindow();
 });
 
-app.on('window-all-closed', function () {
+app.on('window-all-closed', function() {
     if (process.platform !== 'darwin')
         app.quit();
 });
@@ -275,10 +290,10 @@ ipcMain.on('launch_local_webserver', (event, argLangChoice, state) => {
     };
     if (state) {
         localWebServer.use(express.static(`${__dirname}` + "../../../www"));
-        localWebServer.get('/', function (req, res) {
+        localWebServer.get('/', function(req, res) {
             res.sendFile(path.join(`${__dirname}`, "../../../www", 'index.html'));
         });
-        truc.server = localWebServer.listen(port, function () {
+        truc.server = localWebServer.listen(port, function() {
             dialog.showMessageBox({
                 title: 'Launch',
                 type: 'info',
@@ -308,47 +323,14 @@ ipcMain.on('launch_local_webserver', (event, argLangChoice, state) => {
         });
     }
 });
-ipcMain.on('launch_papyrus_connection', (event, argLangChoice) => {
+ipcMain.on('launch_with_papyrus_configuration', (event) => {
     dialog.showMessageBox({
         title: 'Launch',
         type: 'info',
-        message: 'Papyrus launched'
+        message: 'Press ok to restart'
     });
-});
-ipcMain.on('registerToArrowhead', (event, argLangChoice, registerToOrchestrator_autoLaunched) => {
-    // run_script("npm run nodemon", [""], null);
-});
-ipcMain.on('registerToArrowheadOld', (event) => {
-    var sh = require('child_process');
-    const os = require('os');
-    var toLaunch;
-    if (os.platform() === 'win32')
-        toLaunch = 'arrowhead\launcher_script.cmd';
-    else
-        toLaunch = './arrowhead/launcher_script.sh';
-    // var cmdObj = shExec.exec('./arrowhead/launcher_script.sh', {silent: false});
-    // var child = sh.exec('echo test> zzz.txt', {async:true, silent:true});
-    var child = sh.exec(toLaunch, function (code, stdout, stderr) {
-        // exec('echo "cool" > ../../xxx.txt', {async:true, silent:false});
-        console.log('Exit code:', code);
-        // sh.echo(`exit code ${code}`);
-        sh.exec('echo "exit code" + ${code} > ../../yyy.txt');
-        console.log('Program output:', stdout);
-        // sh.echo(`Program output: ${stdout}`);
-        sh.exec('echo "Program output: " + ${stdout} > ../../yyy.txt');
-        console.log('Program error:', stderr);
-        // sh.echo(`Program error: ${stderr}`);
-        sh.exec('echo "Program error: " + ${stderr} > ../../yyy.txt');
-        fs.writeFileSync(fileSettings, `${stderr}`);
-    });
-    // var child = sh.exec('npm exec cross-env ./resources/app.asar/node_modules/nodemon/bin/nodemon.js --config nodemon.json --exec npm exec NODE_ENV=development node ./arrowhead/bin/dev', function(code, stdout, stderr) {
-    // console.log('Exit code:', code);
-    // sh.exec('echo ' + code + '> ../../xxx.txt', {async:true, silent:false});
-    // console.log('Program output:', stdout);
-    // sh.exec('echo ' + stdout + '> ../../yyy.txt', {async:true, silent:false});
-    // console.log('Program stderr:', stderr);
-    // sh.exec('echo ' + stderr + '> ../../zzz.txt', {async:true, silent:false});
-    // });
+    app.relaunch();
+    app.exit();
 });
 ipcMain.on('launch_Blynk_server', (event, argLangChoice) => {
     // run_script("java -jar ./nodejs/blynk/server.jar -dataFolder ./nodejs/blynk", [""], null);
@@ -361,10 +343,9 @@ ipcMain.on('save-csv', (event) => {
         title: 'Export CSV',
         defaultPath: './',
         filters: [{
-                name: 'data',
-                extensions: ['csv']
-            }
-        ]
+            name: 'data',
+            extensions: ['csv']
+        }]
     }).then(result => {
         event.sender.send('saved-csv', result.filePath)
     });
@@ -374,10 +355,9 @@ ipcMain.on('save-json', (event) => {
         title: 'Save JSON',
         defaultPath: './',
         filters: [{
-                name: 'data',
-                extensions: ['json']
-            }
-        ]
+            name: 'data',
+            extensions: ['json']
+        }]
     }).then(result => {
         event.sender.send('saved-json', result.filePath)
     });
@@ -387,21 +367,21 @@ ipcMain.on('serialConnectIOT_launch_websocket', (event, argLangChoice, comPortTo
     const SerialPort = require('serialport');
     const Readline = require('@serialport/parser-readline');
     const portToOpen = new SerialPort(comPortToUse, {
-            autoOpen: false,
-            baudRate: 9600
-        });
+        autoOpen: false,
+        baudRate: 9600
+    });
     const parser = portToOpen.pipe(new Readline({
-                    delimiter: '\n'
-                }));
-    var express     = require('express'),
-        app         = express(),
-        server      = require('http').Server(app),
-        io          = require('socket.io')(server),
-        serverPort  = 8888;
+        delimiter: '\n'
+    }));
+    var express = require('express'),
+        app = express(),
+        server = require('http').Server(app),
+        io = require('socket.io')(server),
+        serverPort = 8888;
     server.listen(serverPort, () => console.log('Server listening on port' + serverPort))
-    //useful only to get directly webpage & websocket on it
-    app.get('*', function (req, res) {
-        fs.readFile(__dirname + '../../../nodejs/js/index.html', 'utf8', function (err, data) {
+        //useful only to get directly webpage & websocket on it
+    app.get('*', function(req, res) {
+        fs.readFile(__dirname + '../../../nodejs/socket/index.html', 'utf8', function(err, data) {
             if (err) {
                 res.writeHead(500);
                 return res.end('Error loading index.html');
@@ -416,7 +396,7 @@ ipcMain.on('serialConnectIOT_launch_websocket', (event, argLangChoice, comPortTo
     io.on('connection', (socket) => {
         socket.emit('connected');
         //verify if message is sended from HTML page
-        socket.on('send', function (data) {
+        socket.on('send', function(data) {
             console.log(data);
             portToOpen.write(data.data);
         });
@@ -427,13 +407,13 @@ ipcMain.on('serialConnectIOT_launch_websocket', (event, argLangChoice, comPortTo
         });
     });
     // JAMAIS LANCE ???
-    portToOpen.on('open', function () {
+    portToOpen.on('open', function() {
         dialog.showMessageBox({
             title: 'Launch',
             type: 'info',
             message: 'launching on port ' + comPortToUse
         });
-        parser.on('open', function () {
+        parser.on('open', function() {
             dialog.showMessageBox({
                 title: 'Launch',
                 type: 'info',
@@ -442,21 +422,21 @@ ipcMain.on('serialConnectIOT_launch_websocket', (event, argLangChoice, comPortTo
         });
     });
     // portToOpen.on('open', () => {
-      // console.log('Serial Port Opened');
-      // io.on('connection', (socket) => {
-        // socket.emit('connected')
-        // parser.on('data', data => {
-            // console.log(data);
-            // socket.emit('data', {
-                // data: data
-            // });
-        // })
-      // })
+    // console.log('Serial Port Opened');
+    // io.on('connection', (socket) => {
+    // socket.emit('connected')
+    // parser.on('data', data => {
+    // console.log(data);
+    // socket.emit('data', {
+    // data: data
+    // });
+    // })
+    // })
     // })
     // portToOpen.on('error', function (err) {
-        // console.log('Error: ', err.message)
+    // console.log('Error: ', err.message)
     // })
-    parser.on('data', function (data) {
+    parser.on('data', function(data) {
         console.log(data);
         io.emit('data', {
             data: data
@@ -475,8 +455,8 @@ ipcMain.on('launchNodeRed', (event) => {
     var settings = {
         httpAdminRoot: "/red",
         httpNodeRoot: "/api",
-        // userDir: __dirname + "/nodejs/nodered",
-        userDir: "./nodejs/nodered",
+        userDir: __dirname + "/nodejs/nodered",
+        // userDir: "./nodejs/nodered",
         functionGlobalContext: {},
         logging: {
             console: {
@@ -486,14 +466,14 @@ ipcMain.on('launchNodeRed', (event) => {
         editorTheme: {
             page: {
                 title: "STudio4Education - Node-RED"
-                // favicon: "/absolute/path/to/theme/icon",
-                // css: "/absolute/path/to/custom/css/file",
-                // scripts: "/absolute/path/to/custom/js/file"  // As of 0.17
+                    // favicon: "/absolute/path/to/theme/icon",
+                    // css: "/absolute/path/to/custom/css/file",
+                    // scripts: "/absolute/path/to/custom/js/file"  // As of 0.17
             },
             header: {
                 title: "STudio4Education - Node-RED"
-                // image: "/absolute/path/to/header/image", // or null to remove image
-                // url: "http://nodered.org" // optional url to make the header text/image a link to this url
+                    // image: "/absolute/path/to/header/image", // or null to remove image
+                    // url: "http://nodered.org" // optional url to make the header text/image a link to this url
             }
 
             // deployButton: {
@@ -528,7 +508,7 @@ ipcMain.on('launchNodeRed', (event) => {
     appLaunchNodeRed.use(settings.httpAdminRoot, RED.httpAdmin);
     appLaunchNodeRed.use(settings.httpNodeRoot, RED.httpNode);
     // serverLaunchNodeRed.listen(8000);
-    serverLaunchNodeRed.listen(8000, 'localhost', function () {
+    serverLaunchNodeRed.listen(8000, 'localhost', function() {
         console.log(
             "Express 4 https server listening on http%s://%s:%d%s, serving node-red",
             serverLaunchNodeRed.address().address.replace("0.0.0.0", "localhost"),

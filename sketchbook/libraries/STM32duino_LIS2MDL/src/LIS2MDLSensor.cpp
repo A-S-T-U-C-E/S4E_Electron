@@ -47,40 +47,14 @@
  * @param i2c object of an helper class which handles the I2C peripheral
  * @param address the address of the component's instance
  */
-LIS2MDLSensor::LIS2MDLSensor(TwoWire *i2c, uint8_t address) : dev_i2c(i2c), address(address)
+LIS2MDLSensor::LIS2MDLSensor(TwoWire *i2c) : dev_i2c(i2c)
 {
   dev_spi = NULL;
   reg_ctx.write_reg = LIS2MDL_io_write;
   reg_ctx.read_reg = LIS2MDL_io_read;
   reg_ctx.handle = (void *)this;
-
-  /* Enable BDU */
-  if (lis2mdl_block_data_update_set(&(reg_ctx), PROPERTY_ENABLE) != LIS2MDL_OK)
-  {
-    return ;
-  }
-
-  /* Operating mode selection - power down */
-  if (lis2mdl_operating_mode_set(&(reg_ctx), LIS2MDL_POWER_DOWN) != LIS2MDL_OK)
-  {
-    return ;
-  }
-
-  /* Output data rate selection */
-  if (lis2mdl_data_rate_set(&(reg_ctx), LIS2MDL_ODR_100Hz) != LIS2MDL_OK)
-  {
-    return ;
-  }
-
-  /* Self Test disabled. */
-  if (lis2mdl_self_test_set(&(reg_ctx), PROPERTY_DISABLE) != LIS2MDL_OK)
-  {
-    return ;
-  }
-
-  mag_is_enabled = 0;
-
-  return;
+  address = LIS2MDL_I2C_ADD;
+  mag_is_enabled = 0U;
 }
 
 /** Constructor
@@ -93,47 +67,91 @@ LIS2MDLSensor::LIS2MDLSensor(SPIClass *spi, int cs_pin, uint32_t spi_speed) : de
   reg_ctx.write_reg = LIS2MDL_io_write;
   reg_ctx.read_reg = LIS2MDL_io_read;
   reg_ctx.handle = (void *)this;
-
-  // Configure CS pin
-  pinMode(cs_pin, OUTPUT);
-  digitalWrite(cs_pin, HIGH); 
   dev_i2c = NULL;
-  address = 0;
-  
-  uint8_t data = 0x34;
+  address = 0U;
+  mag_is_enabled = 0U;
+}
 
-  if (WriteReg(LIS2MDL_CFG_REG_C, data) != LIS2MDL_OK)
+/**
+ * @brief  Configure the sensor in order to be used
+ * @retval 0 in case of success, an error code otherwise
+ */
+LIS2MDLStatusTypeDef LIS2MDLSensor::begin()
+{
+  if(dev_spi)
   {
-    return;
+    // Configure CS pin
+    pinMode(cs_pin, OUTPUT);
+    digitalWrite(cs_pin, HIGH);
+
+    uint8_t data = 0x34;
+
+    if (WriteReg(LIS2MDL_CFG_REG_C, data) != LIS2MDL_OK)
+    {
+      return LIS2MDL_ERROR;
+    }
   }
 
   /* Enable BDU */
   if (lis2mdl_block_data_update_set(&(reg_ctx), PROPERTY_ENABLE) != LIS2MDL_OK)
   {
-    return ;
+    return LIS2MDL_ERROR;
   }
 
   /* Operating mode selection - power down */
   if (lis2mdl_operating_mode_set(&(reg_ctx), LIS2MDL_POWER_DOWN) != LIS2MDL_OK)
   {
-    return ;
+    return LIS2MDL_ERROR;
   }
 
   /* Output data rate selection */
   if (lis2mdl_data_rate_set(&(reg_ctx), LIS2MDL_ODR_100Hz) != LIS2MDL_OK)
   {
-    return ;
+    return LIS2MDL_ERROR;
   }
 
   /* Self Test disabled. */
   if (lis2mdl_self_test_set(&(reg_ctx), PROPERTY_DISABLE) != LIS2MDL_OK)
   {
-    return ;
+    return LIS2MDL_ERROR;
   }
 
   mag_is_enabled = 0;
 
-  return;
+  return LIS2MDL_OK;  
+}
+
+/**
+ * @brief  Disable the sensor and relative resources
+ * @retval 0 in case of success, an error code otherwise
+ */
+LIS2MDLStatusTypeDef LIS2MDLSensor::end()
+{
+  /* Disable mag */
+  if (Disable() != LIS2MDL_OK)
+  {
+    return LIS2MDL_ERROR;
+  }
+
+  /* Reset CS configuration */
+  if(dev_spi)
+  {
+    uint8_t data = 0x10;
+
+    // Configure CS pin if begin was not called before
+    pinMode(cs_pin, OUTPUT);
+    digitalWrite(cs_pin, HIGH);
+
+    if (WriteReg(LIS2MDL_CFG_REG_C, data) != LIS2MDL_OK)
+    {
+      return LIS2MDL_ERROR;
+    }
+
+    // Configure CS pin
+    pinMode(cs_pin, INPUT); 
+  }
+
+  return LIS2MDL_OK;
 }
 
 /**
@@ -170,7 +188,7 @@ LIS2MDLStatusTypeDef LIS2MDLSensor::Enable()
     return LIS2MDL_ERROR;
   }
 
-  mag_is_enabled = 1;
+  mag_is_enabled = 1U;
 
   return LIS2MDL_OK;
 }
@@ -193,7 +211,7 @@ LIS2MDLStatusTypeDef LIS2MDLSensor::Disable()
     return LIS2MDL_ERROR;
   }
 
-  mag_is_enabled = 0;
+  mag_is_enabled = 0U;
 
   return LIS2MDL_OK;
 }

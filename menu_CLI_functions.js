@@ -8,13 +8,13 @@
  * @fileoverview Arduino CLI control.
  * @author scanet@libreduc.cc (Sébastien CANET)
  */
- 
-const {ipcRenderer} = require('electron');
-const {exec} = require('child_process');
+
+// const {ipcRenderer} = require('electron');
+let { exec } = require('child_process');
 const fs = require('fs-extra');
 
 window.addEventListener('load', function load(event) {
-    document.getElementById('coreUpdateButton').onclick = function (event) {
+    document.getElementById('coreUpdateButton').onclick = function(event) {
         document.getElementById('content_serial').style.color = '#00FF00';
         document.getElementById('content_serial').innerHTML = MSG['coreUpdateButton_msg'];
         var cmd = 'arduino-cli.exe core update-index';
@@ -30,7 +30,7 @@ window.addEventListener('load', function load(event) {
             document.getElementById('content_serial').innerHTML = stdout;
         });
     };
-    document.getElementById('cleanCLIcacheButton').onclick = function (event) {
+    document.getElementById('cleanCLIcacheButton').onclick = function(event) {
         var file_path = '.\\tmp';
         document.getElementById('content_serial').style.color = '#00FF00';
         document.getElementById('content_serial').innerHTML = MSG['cleanCLIcacheButton_msg'];
@@ -47,7 +47,7 @@ window.addEventListener('load', function load(event) {
             }
         });
     };
-    document.getElementById('listBoardsButton').onclick = function (event) {
+    document.getElementById('listBoardsButton').onclick = function(event) {
         var cmd = 'arduino-cli.exe board list';
         document.getElementById('content_serial').style.color = '#00FF00';
         document.getElementById('content_serial').innerHTML = MSG['listBoardsButton_msg'];
@@ -65,7 +65,7 @@ window.addEventListener('load', function load(event) {
             document.getElementById('content_serial').scrollTop = stdout.offsetHeight + stdout.offsetTop;
         });
     };
-    document.getElementById('installBoardsButton').onclick = function (event) {
+    document.getElementById('installBoardsButton').onclick = function(event) {
         var cmd = 'arduino-cli.exe core install "' + document.getElementById("installBoardsInput").value + '"';
         document.getElementById('content_serial').style.color = '#00FF00';
         document.getElementById('content_serial').innerHTML = MSG['installBoardsButton_msg'];
@@ -83,7 +83,7 @@ window.addEventListener('load', function load(event) {
             document.getElementById('content_serial').scrollTop = stdout.offsetHeight + stdout.offsetTop;
         });
     };
-    document.getElementById('searchlLibButton').onclick = function (event) {
+    document.getElementById('searchlLibButton').onclick = function(event) {
         var cmd = 'arduino-cli.exe lib search "' + document.getElementById("searchlLibInput").value + '"';
         document.getElementById('content_serial').style.color = '#00FF00';
         document.getElementById('content_serial').innerHTML = MSG['searchlLibButton_msg'];
@@ -101,7 +101,7 @@ window.addEventListener('load', function load(event) {
             document.getElementById('content_serial').scrollTop = stdout.offsetHeight + stdout.offsetTop;
         });
     };
-    document.getElementById('installLibButton').onclick = function (event) {
+    document.getElementById('installLibButton').onclick = function(event) {
         var cmd = 'arduino-cli.exe lib install "' + document.getElementById("installLibInput").value + '"';
         document.getElementById('content_serial').style.color = '#00FF00';
         document.getElementById('content_serial').innerHTML = MSG['installLibButton_msg'];

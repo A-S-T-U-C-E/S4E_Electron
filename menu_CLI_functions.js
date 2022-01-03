@@ -9,9 +9,9 @@
  * @author scanet@libreduc.cc (Sébastien CANET)
  */
 
-// const {ipcRenderer} = require('electron');
 let { exec } = require('child_process');
 const fs = require('fs-extra');
+let _coreToInstall = '';
 
 window.addEventListener('load', function load(event) {
     document.getElementById('coreUpdateButton').onclick = function(event) {
@@ -37,10 +37,9 @@ window.addEventListener('load', function load(event) {
         fs.remove(file_path, err => {
             recursive: true;
             if (err) {
-                return console.log(err);
                 document.getElementById('content_serial').style.color = '#FF0000';
                 document.getElementById('content_serial').innerHTML = MSG['cleanCLIcacheButton_error_msg'];
-
+                return console.log(err);
             } else {
                 document.getElementById('content_serial').style.color = '#00FF00';
                 document.getElementById('content_serial').innerHTML = MSG['cleanCLIcacheButton_success_msg'];
@@ -65,8 +64,43 @@ window.addEventListener('load', function load(event) {
             document.getElementById('content_serial').scrollTop = stdout.offsetHeight + stdout.offsetTop;
         });
     };
-    document.getElementById('installBoardsButton').onclick = function(event) {
-        var cmd = 'arduino-cli.exe core install "' + document.getElementById("installBoardsInput").value + '"';
+    document.getElementById('installSTBoards').onclick = function() {
+        _coreToInstall = 'ST';
+        document.getElementById('installBoardsButton').click();
+    }
+    document.getElementById('installArduinoBoards').onclick = function() {
+        _coreToInstall = 'Arduino';
+        document.getElementById('installBoardsButton').click();
+    }
+    document.getElementById('installEspBoards').onclick = function() {
+        _coreToInstall = 'ESP';
+        document.getElementById('installBoardsButton').click();
+    }
+    document.getElementById('installMicrobitBoards').onclick = function() {
+        _coreToInstall = 'MicroBit';
+        document.getElementById('installBoardsButton').click();
+    }
+    document.getElementById('installBoardsButton').onclick = function() {
+        var cmd = 'arduino-cli.exe core install "';
+        switch (_coreToInstall) {
+            case 'ST':
+                cmd += 'STM32:stm32"';
+                break;
+            case 'Arduino':
+                cmd += 'arduino:avr"';
+                break;
+            case 'ESP':
+                cmd += 'esp8266:esp8266"';
+                break;
+            case 'MicroBit':
+                cmd += document.getElementById("installBoardsInput").value + '"';
+                break;
+            default:
+                cmd += document.getElementById("installBoardsInput").value + '"';
+                break;
+        }
+        console.log(_coreToInstall)
+        _coreToInstall = '';
         document.getElementById('content_serial').style.color = '#00FF00';
         document.getElementById('content_serial').innerHTML = MSG['installBoardsButton_msg'];
         exec(cmd, {

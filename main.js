@@ -1,523 +1,98 @@
-/**
- * @license
- * Copyright 2020 Sébastien CANET
- * SPDX-License-Identifier: BSD-3-Clause
- */
-
-/**
- * @fileoverview Modules to control application life and create native browser window.
- * @author scanet@libreduc.cc (Sébastien CANET)
- */
-
-// const startArrowhead = require('./Arrowhead');
-// const startArrowhead = require('../../arrowhead');
-
 let {
     app,
     BrowserWindow,
-    ipcMain,
+    Tray,
     globalShortcut,
-    dialog,
-    Tray
+    ipcMain
 } = require('electron');
-
-let {
-    exec,
-    processToFork
-} = require('child_process');
 let path = require('path');
-let fs = require('fs-extra');
+let remoteMain = require('@electron/remote/main');
+remoteMain.initialize();
 
-// const axios = require("axios");
+app.commandLine.appendSwitch('enable-features', 'ElectronSerialChooser');
 
-let BlocklyWindow = null;
-let SerialWindow = null;
-let FactoryWindow = null;
-let devtools = null;
-let tray = null;
-//for settings file or argument from Arrowhead
-let fileSettings = "./STudio4Education.json";
-let papyrusSettings = "./PapyrusS4Econfig.json";
-let Settings = '';
+let vendorId = '';
+let productId = '';
+ipcMain.on('variableSelectedPort', function(event, arg) {
+    vendorId = arg[0];
+    productId = arg[1];
+});
 
-require('@electron/remote/main').initialize();
-
-function createBlocklyWindow() {
-    let BlocklyWindow = new BrowserWindow({
+function createS4E_mainWindow() {
+    const S4E_mainWindow = new BrowserWindow({
         width: 1510,
         height: 700,
         frame: false,
         webPreferences: {
             preload: path.join(__dirname, 'preload.js'),
+            enableBlinkFeatures: 'Serial',
             nodeIntegration: true,
             enableRemoteModule: true,
             contextIsolation: false
         },
-        icon: __dirname + '/www/S4E/media/icon.ico'
-            // icon: __dirname + '../../../www/S4E/media/icon.ico'
-    });
-    var url = '/www/index.html';
-    // var url = '../../../www/index.html';
-    if (process.platform === 'win32' && process.argv.length >= 2) {
-        url = url + process.argv[1];
-    }
-    // if (!fs.existsSync(fileSettings)) {
-    // console.log("File not found");
-    // fs.writeFileSync(fileSettings, '', (err) => {
-    // if (err) console.log("An error ocurred creating the file " + err.message);
-    // else console.log("The file has been succesfully saved");
-    // })
-    // } else {
-    // Settings = fs.readFileSync(fileSettings, 'utf8', (err, Settings) => {
-    // if (err) {
-    // console.log("An error occured reading the file :" + err.message);
-    // Settings = "";
-    // return
-    // }
-    // console.log("The file Settings is : " + Settings);
-    // })
-    // }
-    url = `file://${__dirname}` + url;
-    if (!fs.existsSync(papyrusSettings)) {
-        console.log("File not found");
-        BlocklyWindow.loadURL(url);
-    } else {
-        Settings = fs.readFileSync(papyrusSettings, 'utf8', (err, Settings) => {
-            if (err) {
-                console.log("An error occured reading the file :" + err.message);
-                Settings = "";
-                return;
-            }
-            console.log("The file Settings is : " + Settings);
+        // icon: __dirname + '/www/S4E/media/icon.ico'
+        icon: __dirname + '../../../www/S4E/media/icon.ico'
+    })
+
+    remoteMain.enable(S4E_mainWindow.webContents);
+
+    S4E_mainWindow.webContents.session.on('select-serial-port', (event, portList, webContents, callback) => {
+        event.preventDefault();
+        //send port list to renderer, create list in table
+        S4E_mainWindow.webContents.send('portList-data', portList);
+        const selectedPort = portList.find((device) => {
+            return device.vendorId === vendorId && device.productId === productId
         })
-        var idsCategories = JSON.parse(Settings);
-        var toolboxidsList = "";
-        for (let i = 0; i < idsCategories.components.length; i++)
-            toolboxidsList += idsCategories.components[i].id + ',';
-        toolboxidsList = toolboxidsList.slice(0, -1);
-        if (idsCategories.arguments) {
-            url += '?' + idsCategories.arguments;
-            if (toolboxidsList)
-                url += '&toolboxids=' + toolboxidsList;
-        } else if (toolboxidsList)
-            url += '?toolboxids=' + toolboxidsList;
-        BlocklyWindow.loadURL(url);
-    }
+        if (!selectedPort) {
+            callback('')
+        } else {
+            callback(selectedPort.portId)
+        }
+    })
 
-    // BlocklyWindow.loadURL(`file://${__dirname}` + url + '?' + idsCategories.arguments + '&toolboxids=' + idsCategories.components[0].id + ',' + idsCategories.components[1].id);
-    // fs.writeFileSync(fileSettings, `file://${__dirname}` + url + '?' + idsCategories.arguments + '&toolboxids=' + idsCategories.components[0].id + ',' + idsCategories.components[1].id);
-    BlocklyWindow.setMenu(null);
-    BlocklyWindow.on('closed', function() {
-        BlocklyWindow = null;
-        SerialWindow = null;
-    });
-    // devtools = new BrowserWindow();
-    // BlocklyWindow.webContents.setDevToolsWebContents(devtools.webContents);
-    // BlocklyWindow.webContents.openDevTools({
-    // mode: 'detach'
-    // });
-};
+    S4E_mainWindow.webContents.session.on('serial-port-added', (event, port) => {
+        console.log('serial-port-added FIRED WITH', port);
+        event.preventDefault();
+        S4E_mainWindow.webContents.send('portList-info', 'New connection on port' + port.portName);
+    })
 
-function createSerialWindow(argLangChoice) {
-    SerialWindow = new BrowserWindow({
-        width: 640,
-        height: 560,
-        'parent': BlocklyWindow,
-        webPreferences: {
-            nodeIntegration: true,
-            contextIsolation: false
-        },
-        resizable: true,
-        // icon: __dirname + '/src/icon.ico'
-        icon: __dirname + '../../../www/S4E/media/icon.ico'
-    });
-    // var url = '/nodejs/serialMonitor.html';
-    var url = '../../../nodejs/serialMonitor.html';
-    if (argLangChoice !== "" || argLangChoice !== "undefined")
-        url = url + '?lang=' + argLangChoice;
-    SerialWindow.loadURL(`file://${__dirname}` + url);
-    SerialWindow.setMenu(null);
-    SerialWindow.on('closed', function() {
-        SerialWindow = null;
-        // BlocklyWindow.document.getElementById('serialConnectButton').className = 'iconButtons';
-    });
-    // BlocklyWindow.document.getElementById('serialConnectButton').className = 'iconButtonsClicked';
-    // devtools = new BrowserWindow();
-    // SerialWindow.webContents.setDevToolsWebContents(devtools.webContents);
-    // SerialWindow.webContents.openDevTools({
-    // mode: 'detach'
-    // });
-};
+    S4E_mainWindow.webContents.session.on('serial-port-removed', (event, port) => {
+        console.log('serial-port-removed FIRED WITH', port);
+        event.preventDefault();
+        S4E_mainWindow.webContents.send('portList-info', 'Disconnection on port' + port.portName);
+    })
 
-function createHackCableWindow(argLangChoice) {
-    HackCableWindow = new BrowserWindow({
-        width: 1066,
-        height: 640,
-        'parent': BlocklyWindow,
-        webPreferences: {
-            nodeIntegration: true,
-            contextIsolation: false
-        },
-        resizable: true,
-        icon: __dirname + '../../../www/S4E/media/icon.ico'
-    });
-    var url = '../../../www/tools/hackcable/index.html';
-    if (argLangChoice !== "" || argLangChoice !== "undefined")
-        url = url + '?lang=' + argLangChoice;
-    HackCableWindow.loadURL(`file://${__dirname}` + url);
-    HackCableWindow.setMenu(null);
-    HackCableWindow.on('closed', function() {
-        HackCableWindow = null;
-    });
-};
-
-function createFactoryWindow(argLangChoice) {
-    FactoryWindow = new BrowserWindow({
-        width: 1066,
-        height: 640,
-        'parent': BlocklyWindow,
-        webPreferences: {
-            nodeIntegration: true,
-            contextIsolation: false
-        },
-        resizable: true,
-        icon: __dirname + '../../../www/S4E/media/icon.ico'
-    });
-    var url = '../../../www/tools/blockFactory/blockFactory.html';
-    if (argLangChoice !== "" || argLangChoice !== "undefined")
-        url = url + '?lang=' + argLangChoice;
-    FactoryWindow.loadURL(`file://${__dirname}` + url);
-    FactoryWindow.setMenu(null);
-    FactoryWindow.on('closed', function() {
-        FactoryWindow = null;
-    });
-};
-
-function createBlocklyHtmlWindow(argLangChoice) {
-    BlocklyHtmlWindow = new BrowserWindow({
-        width: 1066,
-        height: 640,
-        'parent': BlocklyWindow,
-        webPreferences: {
-            nodeIntegration: true,
-            contextIsolation: false
-        },
-        resizable: true,
-        icon: __dirname + '../../../www/S4E/media/icon.ico'
-    });
-    var url = '../../../www/tools/html/html_factory.html';
-    if (argLangChoice !== "" || argLangChoice !== "undefined")
-        url = url + '?lang=' + argLangChoice;
-    BlocklyHtmlWindow.loadURL(`file://${__dirname}` + url);
-    BlocklyHtmlWindow.setMenu(null);
-    BlocklyHtmlWindow.on('closed', function() {
-        BlocklyHtmlWindow = null;
-    });
-};
-
-function createNodeRedWindow(argLangChoice) {
-    NodeRedWindow = new BrowserWindow({
-        width: 1066,
-        height: 640,
-        'parent': BlocklyWindow,
-        webPreferences: {
-            //needed for jQuery use inside Node-RED
-            nodeIntegration: false,
-            contextIsolation: false
-        },
-        resizable: true,
-        icon: __dirname + '../../../www/S4E/media/icon.ico'
-    });
-    var url = 'http://localhost:8000';
-    if (argLangChoice !== "" || argLangChoice !== "undefined")
-        url = url + '?lang=' + argLangChoice;
-    NodeRedWindow.loadURL('http://localhost:8000/red/');
-    NodeRedWindow.setMenu(null);
-    NodeRedWindow.on('closed', function() {
-        NodeRedWindow = null;
-    });
-    // const $ = require( "jquery" )( NodeRedWindow );
-};
-
-function openDevTools(BlocklyWindow = BrowserWindow.getFocusedWindow()) {
-    if (BlocklyWindow) {
-        BlocklyWindow.webContents.toggleDevTools();
-    }
-};
-
-function refresh(BlocklyWindow = BrowserWindow.getFocusedWindow()) {
-    BlocklyWindow.webContents.reloadIgnoringCache();
-};
-//need to be deleted at next serialport upgrade > 9.0.0
-app.allowRendererProcessReuse = true;
+    // var url = '/www/index.html';
+    var url = '../../../www/index.html';
+    url = `file://${__dirname}` + url;
+    S4E_mainWindow.loadURL(url);
+}
 
 app.whenReady().then(() => {
-    // app.allowRendererProcessReuse = true;
-    createBlocklyWindow();
+    createS4E_mainWindow();
     globalShortcut.register('F8', openDevTools);
     globalShortcut.register('F5', refresh);
-    tray = new Tray('./www/S4E/media/logo_only.png');
-    tray.setToolTip('S4E');
-});
+    let tray = new Tray(path.join(__dirname, '../../../www/S4E/media/logo_only.png'));
+    tray.setToolTip('STudio4Education');
 
-app.on('activate', function() {
-    if (BrowserWindow.getAllWindows().length === 0)
-        createBlocklyWindow();
-});
+    app.on('activate', function() {
+        if (BrowserWindow.getAllWindows().length === 0) createS4E_mainWindow()
+    })
+})
 
 app.on('window-all-closed', function() {
-    if (process.platform !== 'darwin')
-        app.quit();
-});
-ipcMain.on('hackCable', (event, argLangChoice) => {
-    createHackCableWindow(argLangChoice);
-});
-ipcMain.on('blockFactory', (event, argLangChoice) => {
-    createFactoryWindow(argLangChoice);
-});
-ipcMain.on('blocklyHTML', (event, argLangChoice) => {
-    createBlocklyHtmlWindow(argLangChoice);
-});
+    if (process.platform !== 'darwin') app.quit()
+})
 
-ipcMain.on('launch_local_webserver', (event, argLangChoice, state) => {
-    const express = require('express');
-    const localWebServer = express();
-    const path = require('path');
-    const port = 999;
-    const truc = {
-        server: null,
-        sockets: [],
-    };
-    if (state) {
-        localWebServer.use(express.static(`${__dirname}` + "../../../www"));
-        localWebServer.get('/', function(req, res) {
-            res.sendFile(path.join(`${__dirname}`, "../../../www", 'index.html'));
-        });
-        truc.server = localWebServer.listen(port, function() {
-            dialog.showMessageBox({
-                title: 'Launch',
-                type: 'info',
-                message: `server is listening on port: ${port}`
-            });
-        });
-        truc.server.on('connection', (socket) => {
-            console.log('Add socket', truc.sockets.length + 1);
-            truc.sockets.push(socket);
-        });
-    } else {
-        // clean the cache
-        Object.keys(require.cache).forEach((id) => {
-            delete require.cache[id];
-        });
-        truc.sockets.forEach((socket, index) => {
-            console.log('Destroying socket', index + 1);
-            if (socket.destroyed === false) {
-                socket.destroy();
-            }
-        });
-        truc.sockets = [];
-        dialog.showMessageBox({
-            title: 'Stop',
-            type: 'warning',
-            message: `server is stopped on port: ${port}`
-        });
+function openDevTools(S4E_mainWindow = BrowserWindow.getFocusedWindow()) {
+    if (S4E_mainWindow) {
+        S4E_mainWindow.webContents.toggleDevTools();
     }
-});
-ipcMain.on('launch_with_papyrus_configuration', (event) => {
-    dialog.showMessageBox({
-        title: 'Launch',
-        type: 'info',
-        message: 'Press ok to restart'
-    });
-    app.relaunch();
-    app.exit();
-});
-ipcMain.on('launch_Blynk_server', (event, argLangChoice) => {
-    // run_script("java -jar ./nodejs/blynk/server.jar -dataFolder ./nodejs/blynk", [""], null);
-});
-ipcMain.on('serialConnect', (event, argLangChoice) => {
-    createSerialWindow(argLangChoice);
-});
-ipcMain.on('save-csv', (event) => {
-    var filename = dialog.showSaveDialog(BlocklyWindow, {
-        title: 'Export CSV',
-        defaultPath: './',
-        filters: [{
-            name: 'data',
-            extensions: ['csv']
-        }]
-    }).then(result => {
-        event.sender.send('saved-csv', result.filePath)
-    });
-});
-ipcMain.on('save-json', (event) => {
-    var filename = dialog.showSaveDialog(BlocklyWindow, {
-        title: 'Save JSON',
-        defaultPath: './',
-        filters: [{
-            name: 'data',
-            extensions: ['json']
-        }]
-    }).then(result => {
-        event.sender.send('saved-json', result.filePath)
-    });
-});
+}
 
-ipcMain.on('serialConnectIOT_launch_websocket', (event, argLangChoice, comPortToUse) => {
-    const SerialPort = require('serialport');
-    const Readline = require('@serialport/parser-readline');
-    const portToOpen = new SerialPort(comPortToUse, {
-        autoOpen: false,
-        baudRate: 9600
-    });
-    const parser = portToOpen.pipe(new Readline({
-        delimiter: '\n'
-    }));
-    var express = require('express'),
-        app = express(),
-        server = require('http').Server(app),
-        io = require('socket.io')(server),
-        serverPort = 8888;
-    server.listen(serverPort, () => console.log('Server listening on port' + serverPort))
-        //useful only to get directly webpage & websocket on it
-    app.get('*', function(req, res) {
-        fs.readFile(__dirname + '../../../nodejs/socket/index.html', 'utf8', function(err, data) {
-            if (err) {
-                res.writeHead(500);
-                return res.end('Error loading index.html');
-            }
-            res.writeHead(200, {
-                'Content-Type': "text/html; charset=utf-8"
-            });
-            var result = data.replace("Node Serial Connection", "Node Serial Connection " + comPortToUse);
-            res.end(result);
-        });
-    });
-    io.on('connection', (socket) => {
-        socket.emit('connected');
-        //verify if message is sended from HTML page
-        socket.on('send', function(data) {
-            console.log(data);
-            portToOpen.write(data.data);
-        });
-        dialog.showMessageBox({
-            title: 'Launch',
-            type: 'info',
-            message: 'new connection made'
-        });
-    });
-    // JAMAIS LANCE ???
-    portToOpen.on('open', function() {
-        dialog.showMessageBox({
-            title: 'Launch',
-            type: 'info',
-            message: 'launching on port ' + comPortToUse
-        });
-        parser.on('open', function() {
-            dialog.showMessageBox({
-                title: 'Launch',
-                type: 'info',
-                message: 'data on port ' + comPortToUse
-            });
-        });
-    });
-    // portToOpen.on('open', () => {
-    // console.log('Serial Port Opened');
-    // io.on('connection', (socket) => {
-    // socket.emit('connected')
-    // parser.on('data', data => {
-    // console.log(data);
-    // socket.emit('data', {
-    // data: data
-    // });
-    // })
-    // })
-    // })
-    // portToOpen.on('error', function (err) {
-    // console.log('Error: ', err.message)
-    // })
-    parser.on('data', function(data) {
-        console.log(data);
-        io.emit('data', {
-            data: data
-        });
-    });
-    event.sender.send("serialConnectIOT_websocket_ok");
-});
+function refresh(S4E_mainWindow = BrowserWindow.getFocusedWindow()) {
+    S4E_mainWindow.webContents.reloadIgnoringCache();
+}
 
-ipcMain.on('launchNodeRed', (event) => {
-    var httpLaunchNodeRed = require('http');
-    var expressLaunchNodeRed = require("express");
-    var RED = require("node-red");
-    var appLaunchNodeRed = expressLaunchNodeRed();
-    appLaunchNodeRed.use("/", expressLaunchNodeRed.static("public"));
-    var serverLaunchNodeRed = httpLaunchNodeRed.createServer(appLaunchNodeRed);
-    var settings = {
-        httpAdminRoot: "/red",
-        httpNodeRoot: "/api",
-        userDir: __dirname + "/nodejs/nodered",
-        // userDir: "./nodejs/nodered",
-        functionGlobalContext: {},
-        logging: {
-            console: {
-                level: process.env.NODE_RED_LOGLEVEL || "info"
-            }
-        },
-        editorTheme: {
-            page: {
-                title: "STudio4Education - Node-RED"
-                    // favicon: "/absolute/path/to/theme/icon",
-                    // css: "/absolute/path/to/custom/css/file",
-                    // scripts: "/absolute/path/to/custom/js/file"  // As of 0.17
-            },
-            header: {
-                title: "STudio4Education - Node-RED"
-                    // image: "/absolute/path/to/header/image", // or null to remove image
-                    // url: "http://nodered.org" // optional url to make the header text/image a link to this url
-            }
-
-            // deployButton: {
-            //     type:"simple",
-            //     label:"Save",
-            //     icon: "/absolute/path/to/deploy/button/image" // or null to remove image
-            // },
-
-            // menu: { // Hide unwanted menu items by id. see editor/js/main.js:loadEditor for complete list
-            //     "menu-item-import-library": false,
-            //     "menu-item-export-library": false,
-            //     "menu-item-keyboard-shortcuts": false,
-            //     "menu-item-help": {
-            //         label: "Alternative Help Link Text",
-            //         url: "http://example.com"
-            //     }
-            // },
-
-            // userMenu: false, // Hide the user-menu even if adminAuth is enabled
-
-            // login: {
-            //     image: "/absolute/path/to/login/page/big/image" // a 256x256 image
-            // },
-
-            // logout: {
-            //     redirect: "http://example.com" // As of 0.17
-            // }
-        }
-    };
-    console.log(settings.userDir);
-    RED.init(serverLaunchNodeRed, settings);
-    appLaunchNodeRed.use(settings.httpAdminRoot, RED.httpAdmin);
-    appLaunchNodeRed.use(settings.httpNodeRoot, RED.httpNode);
-    // serverLaunchNodeRed.listen(8000);
-    serverLaunchNodeRed.listen(8000, 'localhost', function() {
-        console.log(
-            "Express 4 https server listening on http%s://%s:%d%s, serving node-red",
-            serverLaunchNodeRed.address().address.replace("0.0.0.0", "localhost"),
-            serverLaunchNodeRed.address().port);
-    });
-    RED.start();
-    setTimeout(() => {
-        createNodeRedWindow();
-    }, 3000);
-});
 module.exports.openDevTools = openDevTools;
 module.exports.refresh = refresh;

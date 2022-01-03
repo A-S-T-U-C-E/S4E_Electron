@@ -15,43 +15,9 @@
  * @author scanet@libreduc.cc (Sébastien CANET)
  */
 
-const { ipcRenderer } = require('electron');
 const { exec } = require('child_process');
 const fs = require('fs-extra');
 const tableify = require('tableify')
-const SerialPort = require('serialport');
-
-//populate COM port modal with all com port detected on system
-document.getElementById('serialButton').addEventListener("mouseover", function(event) {
-    SerialPort.list().then(ports => {
-        let portsList = ports.map(function(obj) {
-            return {
-                path: obj.path,
-                manufacturer: obj.manufacturer,
-                vendorId: obj.vendorId,
-                productId: obj.productId
-            }
-        });
-        if (portsList.length === 0) {
-            document.getElementById('portListModalBody').innerHTML = "Aucun port n'est disponible";
-        } else {
-            document.getElementById('portListModalBody').innerHTML = tableify(portsList);
-        }
-    })
-});
-
-//COM port list inside the modal
-document.getElementById('serialMenu').addEventListener("mouseover", function(event) {
-    SerialPort.list().then(ports => {
-        document.getElementById('serialMenu').options.length = 0;
-        ports.forEach(function(port) {
-            var option = document.createElement('option');
-            option.value = port.path;
-            option.text = port.path;
-            document.getElementById('serialMenu').appendChild(option);
-        });
-    });
-});
 
 window.addEventListener('load', function load(event) {
     document.getElementById('verifyButton').onclick = function(event) {
@@ -60,20 +26,22 @@ window.addEventListener('load', function load(event) {
         } catch (err) {
             fs.mkdirSync('.\\compiler\\tmp', {
                 recursive: false
-            }, (err) => {
-                if (err)
-                    throw err;
+            }, (error) => {
+                if (error)
+                    throw error;
             });
         }
         var file_path = '.\\tmp';
         var file = '.\\compiler\\tmp\\tmp.ino';
-        // 'editor' object was defined in index.html as ace editor object
-        var data = editor.getValue();
+        // 'Code.editor' object was defined as Monaco editor object
+        var data;
+        if (Code.editor)
+            data = Code.editor.getValue();
+        else data = Blockly.Arduino.workspaceToCode(Code.mainWorkspace);
         var boardSelected = document.getElementById('boardMenu').value;
         if ((boardSelected == "none") || (boardSelected == "...") || (boardSelected == "") || (boardSelected == "undefined")) {
             document.getElementById('content_serial').style.color = '#FF0000';
             document.getElementById('content_serial').innerHTML = MSG['IDE_select_board'];
-            return;
         } else {
             document.getElementById('content_serial').style.color = '#FFFFFF';
             document.getElementById('content_serial').innerHTML = MSG['IDE_upload1'] + profile.default['description'];
@@ -147,25 +115,5 @@ window.addEventListener('load', function load(event) {
                 }
             });
         });
-    };
-    document.getElementById('serialMonitorButton').onclick = function(event) {
-        var langChoice = document.getElementById('languageMenu').value;
-        var boardSelected = document.getElementById('boardMenu').value;
-        var comPortSelected = document.getElementById('serialMenu').value;
-        if ((boardSelected == "none") || (boardSelected == "...") || (boardSelected == "") || (boardSelected == "undefined")) {
-            document.getElementById('content_serial').style.color = '#FF0000';
-            document.getElementById('content_serial').innerHTML = MSG['IDE_select_board'];
-            return;
-        } else if (comPortSelected === "none") {
-            document.getElementById('content_serial').style.color = '#FF0000';
-            document.getElementById('content_serial').innerHTML = MSG['IDE_select_port'];
-            return;
-        } else {
-            document.getElementById('content_hoverButton').style.color = '#FFFFFF';
-            document.getElementById('content_hoverButton').innerHTML = MSG['IDE_connect'] + comPortSelected;
-            localStorage.setItem("comPort", comPortSelected);
-            localStorage.setItem("availableSpeed", JSON.stringify(profile.default['serialList']));
-            ipcRenderer.send("serialConnect", langChoice);
-        }
     };
 });

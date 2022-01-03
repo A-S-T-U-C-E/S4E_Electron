@@ -1,14 +1,13 @@
 {
-    "name": "S4E",
-    "version": "0.9.0",
+    "name": "STudio4Education",
+    "productName": "STudio4Education",
     "description": "STudio4Education is a web-based visual programming editor for [STmicroelectronics boards](https://www.st.com/content/st_com/en.html)",
     "license": "BSD-3-Clause",
-    "author": "Sébastien Canet <scanet@libreduc.cc>",
-    "main": "main.js",
     "keywords": [
         "blockly",
         "ST",
         "STM",
+        "STmicro",
         "ST32",
         "STM32",
         "Nucleo",
@@ -17,11 +16,11 @@
         "S4E",
         "STudio4Education",
         "electron",
-        "ELECTRON",
-        "serialport",
-        "SERIALPORT",
-        "electron-builder"
+        "ELECTRON"
     ],
+    "main": "./main.js",
+    "version": "0.9.0",
+    "author": "Sébastien Canet <scanet@libreduc.cc>",
     "build": {
         "asar": true,
         "appId": "com.electron.STudio4Education",
@@ -34,20 +33,17 @@
         "productName": "STudio4Education",
         "win": {
             "target": [
-                "portable",
                 "zip"
             ],
             "icon": "src/appIcon.png",
             "files": [
-                "!v0.*/*",
-                "!arrowhead*/*",
-                "!deprecated*/*",
                 "!dist*/*",
                 "!nbproject/*",
                 "!.github/*",
+                "!.settings/*",
                 "!.vscode/*",
-                "!www_manual_typing_a_finir/*",
-                "!win-ia32-unpacked/*"
+                "!*.ffs_db",
+                "!*.ffs_gui"
             ]
         },
         "nsis": {
@@ -75,21 +71,17 @@
             "README.md",
             "LICENSE"
         ],
-        "publish": [
-            {
-                "provider": "github",
-                "repo": "A-S-T-U-C-E/S4E_Electron",
-                "owner": "SebCanet",
-                "releaseType": "release"
-            }
-        ]
+        "publish": [{
+            "provider": "github",
+            "repo": "A-S-T-U-C-E/S4E_Electron",
+            "owner": "SebCanet",
+            "releaseType": "release"
+        }]
     },
     "scripts": {
-        "rebuild": "electron-rebuild -f -w serialport @serialport/bindings /m",
-        "prepare": "electron-build-env npm rebuild",
         "start": "electron .",
         "compile32": "electron-builder --win --ia32",
-        "compile": "electron-builder --win --x64"
+        "compile64": "electron-builder --win --x64"
     },
     "repository": {
         "type": "git",
@@ -98,38 +90,14 @@
     "bugs": {
         "url": "https://github.com/A-S-T-U-C-E/S4E_Electron/issues"
     },
-    "devDependencies": {
-        "child_process": "^1.0.2",
-        "electron": "^16.0.4",
-        "electron-builder": "^22.14.5",
-        "electron-rebuild": "^3.2.5"
-    },
     "dependencies": {
         "@electron/remote": "^2.0.1",
-        "@mapbox/node-pre-gyp": "^1.0.7",
-        "aws-sdk": "^2.1046.0",
-        "body-parser": "^1.19.1",
-        "electron-build-env": "^0.2.0",
-        "electron-updater": "^4.6.1",
+        "edit-json-file": "^1.7.0",
         "fs-extra": "^10.0.0",
-        "lowdb": "^3.0.0",
-        "node-gyp": "^8.4.1",
-        "node-red": "^2.1.4",
-        "node-red-contrib-arrowhead": "~0.2.0",
-        "node-red-contrib-blockly": "^2.0.0",
-        "node-red-contrib-jsontohtml": "^1.0.2",
-        "node-red-contrib-socketio": "^1.1.0",
-        "node-red-dashboard": "^3.1.2",
-        "node-red-node-arduino": "^0.3.1",
-        "node-red-node-random": "^0.4.0",
-        "node-red-node-rbe": "~0.5.0",
-        "node-red-node-serialport": "^0.15.0",
-        "node-red-node-tail": "~0.3.1",
-        "node-red-node-ui-table": "^0.3.11",
-        "node-static": "^0.7.11",
-        "serialport": "^10.0.0",
-        "socket.io": "^4.4.0",
-        "socket.io-client": "^4.4.0",
         "tableify": "^1.1.1"
+    },
+    "devDependencies": {
+        "electron": "^16.0.5",
+        "electron-builder": "^22.14.5"
     }
 }

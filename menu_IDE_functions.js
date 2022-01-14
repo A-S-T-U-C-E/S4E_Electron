@@ -38,7 +38,7 @@ window.addEventListener('load', function load(event) {
         if (Code.editor)
             data = Code.editor.getValue();
         else data = Blockly.Arduino.workspaceToCode(Code.mainWorkspace);
-        var boardSelected = document.getElementById('boardMenu').value;
+        var boardSelected = document.getElementById('boardDescriptionSelector').value;
         if ((boardSelected == "none") || (boardSelected == "...") || (boardSelected == "") || (boardSelected == "undefined")) {
             document.getElementById('content_serial').style.color = '#FF0000';
             document.getElementById('content_serial').innerHTML = MSG['IDE_select_board'];
@@ -71,7 +71,7 @@ window.addEventListener('load', function load(event) {
     };
     document.getElementById('uploadButton').onclick = function(event) {
         var file_path = '.\\tmp';
-        var boardSelected = document.getElementById('boardMenu').value;
+        var boardSelected = document.getElementById('boardDescriptionSelector').value;
         var comPortSelected = document.getElementById('serialMenu').value;
         if ((boardSelected == "none") || (boardSelected == "...") || (boardSelected == "") || (boardSelected == "undefined")) {
             document.getElementById('content_serial').style.color = '#FF0000';

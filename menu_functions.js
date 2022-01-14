@@ -24,6 +24,7 @@ const ArrowheadConfigFilePathName = './arrowhead/arrowhead_config.json';
 
 window.addEventListener('load', function load(event) {
     var localWebServerLaunched = false;
+    var nodeRedServerLaunched = false;
     var ArrowheadConfiguration_autoLaunched = false;
     document.getElementById('wiringButton').onclick = function(event) {
         // var val = location.search.match(new RegExp('[?&]lang=([^&]+)'));
@@ -47,13 +48,20 @@ window.addEventListener('load', function load(event) {
         // var val = location.search.match(new RegExp('[?&]lang=([^&]+)'));
         // var argLangChoice = val ? decodeURIComponent(val[1].replace(/\+/g, '%20')) : 'en';
         var langChoice = document.getElementById('languageMenu').value;
-        ipcRenderer.send("launchNodeRed", langChoice);
+        if (!nodeRedServerLaunched) {
+            document.getElementById('launchRedServer').className = 'iconButtonsClicked';
+            nodeRedServerLaunched = true;
+        } else {
+            document.getElementById('launchRedServer').className = 'iconButtons';
+            nodeRedServerLaunched = false;
+        }
+        ipcRenderer.send("launchNodeRed", langChoice, nodeRedServerLaunched);
     };
     document.getElementById('launchWebServer').onclick = function(event) {
         // var val = location.search.match(new RegExp('[?&]lang=([^&]+)'));
         // var argLangChoice = val ? decodeURIComponent(val[1].replace(/\+/g, '%20')) : 'en';
         var langChoice = document.getElementById('languageMenu').value;
-        if (localWebServerLaunched == false) {
+        if (!localWebServerLaunched) {
             document.getElementById('launchWebServer').className = 'iconButtonsClicked';
             localWebServerLaunched = true;
         } else {

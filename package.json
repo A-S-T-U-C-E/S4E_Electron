@@ -43,7 +43,8 @@
                 "!.settings/*",
                 "!.vscode/*",
                 "!*.ffs_db",
-                "!*.ffs_gui"
+                "!*.ffs_gui",
+                "!*python/*"
             ]
         },
         "nsis": {
@@ -71,12 +72,14 @@
             "README.md",
             "LICENSE"
         ],
-        "publish": [{
-            "provider": "github",
-            "repo": "A-S-T-U-C-E/S4E_Electron",
-            "owner": "SebCanet",
-            "releaseType": "release"
-        }]
+        "publish": [
+            {
+                "provider": "github",
+                "repo": "A-S-T-U-C-E/S4E_Electron",
+                "owner": "SebCanet",
+                "releaseType": "release"
+            }
+        ]
     },
     "scripts": {
         "start": "electron .",
@@ -93,11 +96,13 @@
     "dependencies": {
         "@electron/remote": "^2.0.1",
         "edit-json-file": "^1.7.0",
+        "express": "^4.17.2",
         "fs-extra": "^10.0.0",
+        "node-red": "^2.1.5",
         "tableify": "^1.1.1"
     },
     "devDependencies": {
-        "electron": "^16.0.5",
+        "electron": "^16.0.7",
         "electron-builder": "^22.14.5"
     }
 }

@@ -1,13 +1,10 @@
 /**
- * @license
- * Copyright 2012 Google LLC
- * SPDX-License-Identifier: Apache-2.0
+ * @license Licensed under the Apache License, Version 2.0 (the "License"):
+ *          http://www.apache.org/licenses/LICENSE-2.0
  */
 
 /**
  * @fileoverview Utility functions for handling Instances.
- * @author Carlosperate (ardublockly)
- * @author scanet@libreduc.cc (Sébastien Canet)
  */
 'use strict';
 
@@ -104,8 +101,7 @@ Blockly.Instances.isInstancePresent = function(
  * @param {string} newName New Instance name.
  * @param {!Blockly.Workspace} workspace Workspace rename instances in.
  */
-Blockly.Instances.renameInstance = function(
-    oldName, newName, instanceType, workspace) {
+Blockly.Instances.renameInstance = function(oldName, newName, instanceType, workspace) {
     Blockly.Events.setGroup(true);
     var blocks = workspace.getAllBlocks();
     // Iterate through every block.
@@ -125,8 +121,7 @@ Blockly.Instances.renameInstance = function(
  * @return {string} New instance name.
  */
 Blockly.Instances.generateUniqueName = function(workspace) {
-    var combinedList = Blockly.Variables.allVariables(workspace).concat(
-        Blockly.Instances.allInstances(workspace));
+    var combinedList = workspace.getAllVariables().concat(Blockly.Instances.allInstances(workspace));
     var newName = '';
     if (combinedList.length) {
         var nameSuffix = 1;
@@ -220,16 +215,17 @@ Blockly.Instances.appendToName_ = function(instanceName, nameList) {
         return Blockly.Instances.generateUniqueName(workspace);
     } else {
         var newName = instanceName;
-        var nameSuffix = 2;
+        var nameSuffix = 1;
 
-        if (instanceName.match(/_\d+$/)) {
-            // instanceName ends with and underscore and a number, so increase count
-            var instanceNameSuffix = instanceName.match(/\d+$/)[0];
-            instanceName = instanceName.slice(
-                0, (instanceNameSuffix.length * -1) - 1);
-            nameSuffix = parseInt(instanceNameSuffix, 10) + 1;
-            newName = instanceName + '_' + nameSuffix;
-        }
+        /*    if (instanceName.match(/_\d+$/)) {
+              // instanceName ends with and underscore and a number, so increase count
+              var instanceNameSuffix = instanceName.match(/\d+$/)[0];
+              instanceName = instanceName.slice(
+                  0, (instanceNameSuffix.length * -1) - 1);
+              nameSuffix = parseInt(instanceNameSuffix, 10) + 1;
+              newName = instanceName + '_' + nameSuffix;
+            }
+        */
         while (nameList.indexOf(newName) !== -1) {
             newName = instanceName + '_' + nameSuffix++;
         }

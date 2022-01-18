@@ -1,0 +1,12 @@
+dist/
+node_modules/
+nbproject/
+.github/
+.settings
+.vscode/
+*.ffs_db
+*.ffs_gui
+python/
+*thumbs.db
+*Thumbs.db
+*.mp4

@@ -11,19 +11,19 @@
 let startupHelper = require('./arrowhead/utils/startupHelper');
 
 const rejectHandler = (message) => {
-    document.getElementById("content_serial").style.color = '#FF0000';
-    document.getElementById("content_serial").innerHTML += '<br>' + message;
+    document.getElementById("compiler-output-text").style.color = '#FF0000';
+    document.getElementById("compiler-output-text").innerHTML += '<br>' + message;
     console.log(message);
 }
 
 window.addEventListener('load', function load(event) {
     document.getElementById('ArrowheadConfiguration_auto').onclick = async function(event) {
-        document.getElementById("content_serial").style.color = '#00FF00';
-        document.getElementById("content_serial").innerHTML = '<br>start Arrowhead connect script';
+        document.getElementById("compiler-output-text").style.color = '#00FF00';
+        document.getElementById("compiler-output-text").innerHTML = '<br>start Arrowhead connect script';
         let systemFound = true;
         let responseFunction = startupHelper.validateENV()
             .then(async() => {
-                document.getElementById("content_serial").innerHTML += '<br>ping registry service';
+                document.getElementById("compiler-output-text").innerHTML += '<br>ping registry service';
                 responseFunction = await echo()
             })
             .then(async() => {
@@ -57,8 +57,8 @@ window.addEventListener('load', function load(event) {
             )
     };
     document.getElementById('papyrusConnect').onclick = async function(event) {
-        document.getElementById("content_serial").style.color = '#00FF00';
-        document.getElementById("content_serial").innerHTML = '<br>Start Papyrus download file';
+        document.getElementById("compiler-output-text").style.color = '#00FF00';
+        document.getElementById("compiler-output-text").innerHTML = '<br>Start Papyrus download file';
         let responseFunction = downloadFileFromPapyrus()
             .then(async() => {
                 const { ipcRenderer } = require('electron');
@@ -82,7 +82,7 @@ async function downloadFileFromPapyrus() {
         axios.get(papyrusURL)
             .then(response => {
                 if (response.status === 200) {
-                    document.getElementById("content_serial").innerHTML += '<br>Successfully downloaded file';
+                    document.getElementById("compiler-output-text").innerHTML += '<br>Successfully downloaded file';
                     let fs = require('fs');
                     fs.writeFileSync('./arrowhead/HomeAutomationSystemST4Econfig.json', JSON.stringify(response.data));
                     return resolve(response)
@@ -90,8 +90,8 @@ async function downloadFileFromPapyrus() {
             })
             .catch(error => {
                 console.log('Error during orchestration', error)
-                document.getElementById("content_serial").style.color = '#FF0000';
-                document.getElementById("content_serial").innerHTML += error;
+                document.getElementById("compiler-output-text").style.color = '#FF0000';
+                document.getElementById("compiler-output-text").innerHTML += error;
                 return reject(error.response.data.errorMessage)
             })
     })
@@ -113,7 +113,7 @@ async function orchestration(orchestrationRequestForm) {
         axios.post(orchestrationURL, orchestrationRequestForm, opts)
             .then(response => {
                 if (response.status === 200) {
-                    document.getElementById("content_serial").innerHTML += '<br>Successfully launched orchestration';
+                    document.getElementById("compiler-output-text").innerHTML += '<br>Successfully launched orchestration';
                     let fs = require('fs');
                     fs.writeFileSync('./arrowhead/orchestrationResponse.txt', JSON.stringify(response));
                     sessionStorage.setItem("PapyrusProvider", response.data.response[0].provider.address + ":" + response.data.response[0].provider.port);
@@ -122,8 +122,8 @@ async function orchestration(orchestrationRequestForm) {
             })
             .catch(error => {
                 console.log('Error during orchestration', error)
-                document.getElementById("content_serial").style.color = '#FF0000';
-                document.getElementById("content_serial").innerHTML += error;
+                document.getElementById("compiler-output-text").style.color = '#FF0000';
+                document.getElementById("compiler-output-text").innerHTML += error;
                 return reject(error.response.data.errorMessage)
             })
     })
@@ -176,22 +176,22 @@ async function query(URL, serviceRegistryEntry) {
     console.log('Querying system')
     return new Promise((resolve, reject) => {
         if (!serviceRegistryEntry) {
-            document.getElementById("content_serial").style.color = '#FF0000';
-            document.getElementById("content_serial").innerHTML += 'Error during querying, missing Service Definition Requirement';
+            document.getElementById("compiler-output-text").style.color = '#FF0000';
+            document.getElementById("compiler-output-text").innerHTML += 'Error during querying, missing Service Definition Requirement';
             return reject('Error during querying, missing Service Definition Requirement')
         }
         axios.post(URL, serviceRegistryEntry, opts)
             .then(response => {
                 if (response.status === 200) {
-                    document.getElementById("content_serial").innerHTML += '<br>Service already registered into Service Registry';
-                    document.getElementById("content_serial").innerHTML += '<br>Id: ' + response.data.id;
+                    document.getElementById("compiler-output-text").innerHTML += '<br>Service already registered into Service Registry';
+                    document.getElementById("compiler-output-text").innerHTML += '<br>Id: ' + response.data.id;
                     return resolve(response.data);
                 }
             })
             .catch(error => {
                 console.log('Error during querying requested service', error)
-                document.getElementById("content_serial").style.color = '#FF0000';
-                document.getElementById("content_serial").innerHTML += error.response.data.errorMessage;
+                document.getElementById("compiler-output-text").style.color = '#FF0000';
+                document.getElementById("compiler-output-text").innerHTML += error.response.data.errorMessage;
                 return reject(error.response.data.errorMessage)
             })
     })
@@ -209,8 +209,8 @@ async function register(serviceRegistryEntry, force) {
     return new Promise((resolve, reject) => {
         axios.post(orchestrationURL, serviceRegistryEntry, opts)
             .then((response) => {
-                document.getElementById("content_serial").innerHTML += '<br>Successfully registered service into Service Registry';
-                document.getElementById("content_serial").innerHTML += '<br>Id: ' + response.data.id;
+                document.getElementById("compiler-output-text").innerHTML += '<br>Successfully registered service into Service Registry';
+                document.getElementById("compiler-output-text").innerHTML += '<br>Id: ' + response.data.id;
                 return resolve('Successfully registered service into Service Registry', response.data)
             })
             .catch(async error => {
@@ -223,8 +223,8 @@ async function register(serviceRegistryEntry, force) {
                     }
                     return resolve('Service is already registered into Service Registry')
                 }
-                document.getElementById("content_serial").style.color = '#FF0000';
-                document.getElementById("content_serial").innerHTML += error;
+                document.getElementById("compiler-output-text").style.color = '#FF0000';
+                document.getElementById("compiler-output-text").innerHTML += error;
                 return reject(error.response.data.errorMessage)
             })
     })
@@ -243,14 +243,14 @@ async function unregister(Id) {
         axios.delete(orchestrationURL, opts)
             .then((response) => {
                 if (response.status === 200) {
-                    document.getElementById("content_serial").innerHTML += '<br>Successfully unregistered service from Service Registry';
-                    document.getElementById("content_serial").innerHTML += '<br>Id: ' + response.data;
+                    document.getElementById("compiler-output-text").innerHTML += '<br>Successfully unregistered service from Service Registry';
+                    document.getElementById("compiler-output-text").innerHTML += '<br>Id: ' + response.data;
                     return resolve(`Successfully unregistered service from Service Registry`)
                 }
             })
             .catch(error => {
-                document.getElementById("content_serial").style.color = '#FF0000';
-                document.getElementById("content_serial").innerHTML += error;
+                document.getElementById("compiler-output-text").style.color = '#FF0000';
+                document.getElementById("compiler-output-text").innerHTML += error;
                 console.log('Error removing service', error)
                 return reject(error.response.data.errorMessage)
             })

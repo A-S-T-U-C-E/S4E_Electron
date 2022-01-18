@@ -19,7 +19,7 @@
         "ELECTRON"
     ],
     "main": "./main.js",
-    "version": "0.9.0",
+    "version": "0.9.1",
     "author": "Sébastien Canet <scanet@libreduc.cc>",
     "build": {
         "asar": true,
@@ -44,7 +44,10 @@
                 "!.vscode/*",
                 "!*.ffs_db",
                 "!*.ffs_gui",
-                "!*python/*"
+                "!*python/*",
+                "!*/thumbs.db",
+                "!*/Thumbs.db",
+                "!*/*.mp4"
             ]
         },
         "nsis": {
@@ -84,7 +87,8 @@
     "scripts": {
         "start": "electron .",
         "compile32": "electron-builder --win --ia32",
-        "compile64": "electron-builder --win --x64"
+        "compile64": "electron-builder --win --x64",
+        "compile": "npm run compile32 && npm run compile64"
     },
     "repository": {
         "type": "git",
@@ -98,7 +102,7 @@
         "edit-json-file": "^1.7.0",
         "express": "^4.17.2",
         "fs-extra": "^10.0.0",
-        "node-red": "^2.1.5",
+        "node-red": "^2.1.6",
         "tableify": "^1.1.1"
     },
     "devDependencies": {

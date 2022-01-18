@@ -77,8 +77,8 @@ window.addEventListener('load', function load(event) {
     //     ipcRenderer.send("launch_papyrus_connection", langChoice);
     // };
     // document.getElementById('ArrowheadConfiguration_auto').onclick = function(event) {
-    //     document.getElementById("content_serial").style.color = '#00FF00';
-    //     document.getElementById("content_serial").innerHTML = 'start AH script';
+    //     document.getElementById("compiler-output-text").style.color = '#00FF00';
+    //     document.getElementById("compiler-output-text").innerHTML = 'start AH script';
     //     ipcRenderer.send("registerToArrowhead");
     // };
     // document.getElementById('blynkConnect').onclick = function (event) {
@@ -92,7 +92,7 @@ window.addEventListener('load', function load(event) {
         // var val = location.search.match(new RegExp('[?&]lang=([^&]+)'));
         // var argLangChoice = val ? decodeURIComponent(val[1].replace(/\+/g, '%20')) : 'en';
         var comPortToUse = localStorage.getItem("comPort");
-        document.getElementById('content_serial').innerHTML += "ok on port " + comPortToUse + "<br>";
+        document.getElementById('compiler-output-text').innerHTML += "ok on port " + comPortToUse + "<br>";
         var langChoice = document.getElementById('languageMenu').value;
         ipcRenderer.send("serialConnectIOT_launch_websocket", langChoice, comPortToUse);
     };
@@ -108,7 +108,7 @@ window.addEventListener('load', function load(event) {
                 zeroFill(d.getMinutes()) + ':' +
                 zeroFill(d.getSeconds())
         }
-        document.getElementById('content_serial').innerHTML += "tentative...<br>";
+        document.getElementById('compiler-output-text').innerHTML += "tentative...<br>";
         const io = require("socket.io-client");
         var connectionOptions = {
             "force new connection": true,
@@ -119,18 +119,18 @@ window.addEventListener('load', function load(event) {
         var socket = io.connect('http://192.168.0.200:8888', connectionOptions);
         socket.on('init', (data) => {
             console.log(data.message);
-            document.getElementById('content_serial').innerHTML += data.message + "<br>";
+            document.getElementById('compiler-output-text').innerHTML += data.message + "<br>";
         })
         socket.on('connected', () => {
             console.log('Socket Connected')
-            document.getElementById('content_serial').innerHTML += "connected<br>";
+            document.getElementById('compiler-output-text').innerHTML += "connected<br>";
         });
         socket.on('disconnected', () => {
             console.log('Socket Disconnected');
-            document.getElementById('content_serial').innerHTML += "disconnected<br>";
+            document.getElementById('compiler-output-text').innerHTML += "disconnected<br>";
         });
         socket.on('data', (data) => {
-            var msgs = document.getElementById("content_serial");
+            var msgs = document.getElementById("compiler-output-text");
             var txt = msgs.innerHTML;
             var rep = data.data.replace(/\x0D\x0A/g, "<br />");
             txt = txt + "<br>" + now() + " " + rep;

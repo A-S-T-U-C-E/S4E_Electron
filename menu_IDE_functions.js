@@ -40,11 +40,11 @@ window.addEventListener('load', function load(event) {
         else data = Blockly.Arduino.workspaceToCode(Code.mainWorkspace);
         var boardSelected = document.getElementById('boardDescriptionSelector').value;
         if ((boardSelected == "none") || (boardSelected == "...") || (boardSelected == "") || (boardSelected == "undefined")) {
-            document.getElementById('content_serial').style.color = '#FF0000';
-            document.getElementById('content_serial').innerHTML = MSG['IDE_select_board'];
+            document.getElementById('compiler-output-text').style.color = '#FF0000';
+            document.getElementById('compiler-output-text').innerHTML = MSG['IDE_select_board'];
         } else {
-            document.getElementById('content_serial').style.color = '#FFFFFF';
-            document.getElementById('content_serial').innerHTML = MSG['IDE_upload1'] + profile.default['description'];
+            document.getElementById('compiler-output-text').style.color = '#FFFFFF';
+            document.getElementById('compiler-output-text').innerHTML = MSG['IDE_upload1'] + profile.default['description'];
             var upload_arg = profile.default['upload_arg'];
             if (document.getElementById('detailedCompilation').checked === true)
                 var cmd = 'arduino-cli.exe compile -v -b ' + upload_arg + ' ' + file_path;
@@ -55,17 +55,17 @@ window.addEventListener('load', function load(event) {
                 if (err)
                     return console.log(err);
             });
-            document.getElementById('content_serial').innerHTML += '<br>' + MSG['IDE_verif_progress'];
+            document.getElementById('compiler-output-text').innerHTML += '<br>' + MSG['IDE_verif_progress'];
             exec(cmd, {
                 cwd: './compiler'
             }, (error, stdout, stderr) => {
                 if (error) {
-                    document.getElementById('content_serial').style.color = '#FF0000';
-                    document.getElementById('content_serial').innerHTML = stderr;
+                    document.getElementById('compiler-output-text').style.color = '#FF0000';
+                    document.getElementById('compiler-output-text').innerHTML = stderr;
                     return;
                 }
-                document.getElementById('content_serial').style.color = '#00FF00';
-                document.getElementById('content_serial').innerHTML = stdout + '<br>' + MSG['IDE_verif_ok'];
+                document.getElementById('compiler-output-text').style.color = '#00FF00';
+                document.getElementById('compiler-output-text').innerHTML = stdout + '<br>' + MSG['IDE_verif_ok'];
             });
         }
     };
@@ -74,18 +74,18 @@ window.addEventListener('load', function load(event) {
         var boardSelected = document.getElementById('boardDescriptionSelector').value;
         var comPortSelected = document.getElementById('serialMenu').value;
         if ((boardSelected == "none") || (boardSelected == "...") || (boardSelected == "") || (boardSelected == "undefined")) {
-            document.getElementById('content_serial').style.color = '#FF0000';
-            document.getElementById('content_serial').innerHTML = MSG['IDE_select_board'];
+            document.getElementById('compiler-output-text').style.color = '#FF0000';
+            document.getElementById('compiler-output-text').innerHTML = MSG['IDE_select_board'];
             return;
         } else {
             if (comPortSelected === "none") {
-                document.getElementById('content_serial').style.color = '#FF0000';
-                document.getElementById('content_serial').innerHTML = MSG['IDE_select_port'];
+                document.getElementById('compiler-output-text').style.color = '#FF0000';
+                document.getElementById('compiler-output-text').innerHTML = MSG['IDE_select_port'];
                 return;
             } else {
-                document.getElementById('content_serial').style.color = '#FFFFFF';
-                document.getElementById('content_serial').innerHTML = MSG['IDE_upload1'] + profile.default['description'] + MSG['IDE_upload2'] + comPortSelected;
-                document.getElementById('content_serial').innerHTML += '<br>' + MSG['IDE_upload3'];
+                document.getElementById('compiler-output-text').style.color = '#FFFFFF';
+                document.getElementById('compiler-output-text').innerHTML = MSG['IDE_upload1'] + profile.default['description'] + MSG['IDE_upload2'] + comPortSelected;
+                document.getElementById('compiler-output-text').innerHTML += '<br>' + MSG['IDE_upload3'];
                 var upload_arg = profile.default['upload_arg'];
             }
         }
@@ -97,12 +97,12 @@ window.addEventListener('load', function load(event) {
             cwd: './compiler'
         }, (error, stdout, stderr) => {
             if (error) {
-                document.getElementById('content_serial').style.color = '#FF0000';
-                document.getElementById('content_serial').innerHTML = stderr;
+                document.getElementById('compiler-output-text').style.color = '#FF0000';
+                document.getElementById('compiler-output-text').innerHTML = stderr;
                 return;
             }
-            document.getElementById('content_serial').style.color = '#00FF00';
-            document.getElementById('content_serial').innerHTML = stdout + '<br>' + MSG['IDE_upload_ok'];
+            document.getElementById('compiler-output-text').style.color = '#00FF00';
+            document.getElementById('compiler-output-text').innerHTML = stdout + '<br>' + MSG['IDE_upload_ok'];
             const path = require('path');
             fs.readdir('.\\compiler\\tmp', (err, files) => {
                 if (err)

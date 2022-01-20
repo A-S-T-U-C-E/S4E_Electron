@@ -103,6 +103,9 @@
         "express": "^4.17.2",
         "fs-extra": "^10.0.0",
         "node-red": "^2.1.6",
+        "node-red-contrib-arrowhead": "^0.2.0",
+        "node-red-contrib-blockly": "^2.0.0",
+        "node-red-node-arduino": "^0.3.1",
         "tableify": "^1.1.1"
     },
     "devDependencies": {

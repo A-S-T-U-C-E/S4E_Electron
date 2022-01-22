@@ -4,5 +4,6 @@
         "**/dist": true,
         "**/nbproject": true,
         "**/node_modules": true
-    }
+    },
+    "cmake.configureOnOpen": false
 }

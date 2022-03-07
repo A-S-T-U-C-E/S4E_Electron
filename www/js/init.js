@@ -11,6 +11,9 @@
 
 Code.imageSize = 32;
 
+if (!(sessionStorage.getItem('installedBoardsST')))
+    sessionStorage.setItem('installedBoardsST', 1);
+
 /**
  * Load blocks saved in session/local storage.
  * @param {string} defaultXml Text representation of default blocks.
@@ -148,7 +151,9 @@ Code.urlGet = async function(url, fecthMethod, callback, params = null) {
  * Initialize Blockly.  Called on page load.
  */
 Code.init = async function() {
-    // board menu as  URL choice
+    if (sessionStorage.getItem('installedBoardsST') == 1) Code.installBoards('ST');
+    if (sessionStorage.getItem('installedBoardsArduino') == 1) Code.installBoards('arduino');
+    if (sessionStorage.getItem('installedBoardsESP') == 1) Code.installBoards('esp');
     Code.setBoard();
     Code.initLanguage();
     setOnOffLine();
@@ -169,7 +174,7 @@ Code.init = async function() {
     match = location.search.match(/level=([^&]+)/);
     var level = match ? match[1] : 'skill1';
     document.forms.options.elements.levelMenu.value = level;
-    Code.changeLevel(level);
+    Code.changeLevel();
     levelMenu.addEventListener('change', Code.changeLevel, true);
     Code.addPluginToWorkspace();
     // add plugin disable-top-blocks
@@ -178,41 +183,6 @@ Code.init = async function() {
     // disableTopBlocksPlugin.init();
     Code.BlocklyWorkspaceOnresize();
     window.addEventListener('resize', Code.BlocklyWorkspaceOnresize, false);
-    //define resizable workspace
-    var blocklyArea = document.getElementById('content_area');
-    var blocklyDiv = document.getElementById('content_blocks');
-    // const metrics = Code.mainWorkspace.getMetrics();
-    var BlocklyWorkspaceOnresize = function(e) {
-        var element = blocklyArea;
-        var x = 0;
-        var y = 0;
-        do {
-            x += element.offsetLeft;
-            y += element.offsetTop;
-            element = element.offsetParent;
-        } while (element);
-        blocklyDiv.style.left = x + 'px';
-        blocklyDiv.style.top = y + 'px';
-        blocklyDiv.style.width = blocklyArea.offsetWidth + 'px';
-        blocklyDiv.style.height = blocklyArea.offsetHeight + 'px';
-        Blockly.svgResize(Code.mainWorkspace);
-        // TODO yet to finish...
-        // if (Code.mainWorkspace.RTL) {
-        //     blocklyDiv.style.left = metrics.absoluteLeft + 'px';
-        //     blocklyDiv.style.right = 'auto';
-        // } else {
-        //     blocklyDiv.style.left = 'auto';
-        //     if (metrics.toolboxPosition === Blockly.TOOLBOX_AT_RIGHT) {
-        //         blocklyDiv.style.right = metrics.toolboxWidth + 'px';
-        //     } else {
-        //         blocklyDiv.style.right = '0';
-        //     }
-        // }
-        // blocklyDiv.style.top = metrics.absoluteTop + 'px';
-    };
-    BlocklyWorkspaceOnresize();
-    Blockly.svgResize(Code.mainWorkspace);
-    window.addEventListener('resize', BlocklyWorkspaceOnresize, false);
     // Hook a save function onto unload.
     window.addEventListener('unload', auto_save_and_restore_blocks, false);
     if ('BlocklyStorage' in window) {
@@ -223,24 +193,26 @@ Code.init = async function() {
     match = location.search.match(/theme=([^&]+)/);
     var theme = match ? match[1] : 'Zelos';
     document.forms.options.elements.themeMenu.value = theme;
-    changeTheme(theme);
+    changeThemeBlockly(theme);
+    changeThemeUI(document.getElementById('interfaceColorMenu').options[document.getElementById('interfaceColorMenu').selectedIndex].value);
+    editorLoadThemeList();
 
     //keyboard nav attribution
-    var actions = [
-        Code.navigationController.ACTION_PREVIOUS,
-        Code.navigationController.ACTION_OUT,
-        Code.navigationController.ACTION_NEXT,
-        Code.navigationController.ACTION_IN,
-        Code.navigationController.ACTION_INSERT,
-        Code.navigationController.ACTION_MARK,
-        Code.navigationController.ACTION_DISCONNECT,
-        Code.navigationController.ACTION_TOOLBOX,
-        Code.navigationController.ACTION_EXIT,
-        Code.navigationController.ACTION_MOVE_WS_CURSOR_UP,
-        Code.navigationController.ACTION_MOVE_WS_CURSOR_LEFT,
-        Code.navigationController.ACTION_MOVE_WS_CURSOR_DOWN,
-        Code.navigationController.ACTION_MOVE_WS_CURSOR_RIGHT
-    ];
+    // var actions = [
+    //     Code.navigationController.ACTION_PREVIOUS,
+    //     Code.navigationController.ACTION_OUT,
+    //     Code.navigationController.ACTION_NEXT,
+    //     Code.navigationController.ACTION_IN,
+    //     Code.navigationController.ACTION_INSERT,
+    //     Code.navigationController.ACTION_MARK,
+    //     Code.navigationController.ACTION_DISCONNECT,
+    //     Code.navigationController.ACTION_TOOLBOX,
+    //     Code.navigationController.ACTION_EXIT,
+    //     Code.navigationController.ACTION_MOVE_WS_CURSOR_UP,
+    //     Code.navigationController.ACTION_MOVE_WS_CURSOR_LEFT,
+    //     Code.navigationController.ACTION_MOVE_WS_CURSOR_DOWN,
+    //     Code.navigationController.ACTION_MOVE_WS_CURSOR_RIGHT
+    // ];
     // createKeyMappingList(actions);
 
     // function used for dragging and moving splitted windows
@@ -335,8 +307,6 @@ Code.init = async function() {
     Code.sketchNameSizeEffect();
     Code.sketchNameSet();
     Code.mainWorkspace.addChangeListener(Code.renderContent);
-    sessionStorage.setItem('toolboxSize', Code.mainWorkspace.getToolbox().getWidth());
-    // Code.filterToolbox();
     // load blocks stored in session or passed by url
     var urlFile = Code.getStringParamFromUrl('url', '');
     var loadOnce = null;
@@ -368,6 +338,16 @@ Code.init = async function() {
         //no URL, load blocks (or not, depends if load once/already blocks)
         Code.loadBlocks();
         // sessionStorage.removeItem('loadOnceBlocks');
+    }
+    var categoriesKeywordsFilter = Code.getStringParamFromUrl('kwids', '');
+    if (categoriesKeywordsFilter) {
+        let toolboxConcatFiltered = {
+            "kind": "categoryToolbox",
+            "contents": []
+        };
+        toolboxConcatFiltered = createFilterCategoriesList(toolboxConcatFiltered, categoriesKeywordsFilter)
+        Code.mainWorkspace.updateToolbox(toolboxConcatFiltered);
+        Code.buildControlPanelForToolbox();
     }
 };
 

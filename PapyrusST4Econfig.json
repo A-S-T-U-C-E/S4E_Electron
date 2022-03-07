@@ -1,0 +1,16 @@
+{
+	"arguments" : "lang=fr",
+	"components" :	[
+		{
+			"id": "temperature",
+			"name": "capteur extérieur",
+			"description": "capteur de température",
+			"levels": "1,2,3"
+		}, {
+			"id": "relay",
+			"name": "relay",
+			"description": "relais 220V piloté en tout ou rien",
+			"levels": "1,2,3"
+		}
+	]
+}

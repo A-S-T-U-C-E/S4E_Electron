@@ -10,6 +10,7 @@
  */
 
 let { exec } = require('child_process');
+const { profile } = require('console');
 const fs = require('fs-extra');
 let _coreToInstall = '';
 
@@ -85,15 +86,19 @@ window.addEventListener('load', function load(event) {
         switch (_coreToInstall) {
             case 'ST':
                 cmd += 'STMicroelectronics:stm32"';
+                Code.installBoards('ST');
                 break;
             case 'Arduino':
                 cmd += 'arduino:avr"';
+                Code.installBoards('arduino');
                 break;
             case 'ESP':
                 cmd += 'esp8266:esp8266"';
+                Code.installBoards('ESP');
                 break;
             case 'MicroBit':
                 cmd += document.getElementById("installBoardsInput").value + '"';
+                Code.installBoards('microbit');
                 break;
             default:
                 cmd += document.getElementById("installBoardsInput").value + '"';

@@ -10,8 +10,14 @@ let remoteMain = require('@electron/remote/main');
 remoteMain.initialize();
 
 let S4E_mainWindow = null;
+let tray = null;
 let NodeRedWindow = null;
 app.commandLine.appendSwitch('enable-features', 'ElectronSerialChooser');
+//for settings file or argument from Arrowhead
+const fs = require('fs-extra');
+var fileSettings = "./STudio4Education.json";
+var papyrusSettings = "./PapyrusST4Econfig.json";
+var Settings = '';
 
 let vendorId = '';
 let productId = '';
@@ -66,8 +72,38 @@ function createS4E_mainWindow() {
 
     // var url = '/www/index.html';
     var url = '../../../www/index.html';
+    if (process.platform === 'win32' && process.argv.length >= 2) {
+        url = url + process.argv[1];
+    }
     url = `file://${__dirname}` + url;
-    S4E_mainWindow.loadURL(url);
+    if (!fs.existsSync(papyrusSettings)) {
+        console.log("File not found");
+        S4E_mainWindow.loadURL(url);
+    } else {
+        Settings = fs.readFileSync(papyrusSettings, 'utf8', (err, Settings) => {
+            if (err) {
+                console.log("An error occured reading the file :" + err.message);
+                return "";
+            }
+            console.log("The file Settings is : " + Settings);
+        })
+        var idsCategories = JSON.parse(Settings);
+        var categoryIdsList = "";
+        for (let i = 0; i < idsCategories.components.length; i++)
+            categoryIdsList += idsCategories.components[i].id + ',';
+        categoryIdsList = categoryIdsList.slice(0, -1);
+        if (idsCategories.arguments) {
+            url += '?' + idsCategories.arguments;
+            if (categoryIdsList)
+                url += '&kwids=' + categoryIdsList;
+        } else if (categoryIdsList)
+            url += '?kwids=' + categoryIdsList;
+        S4E_mainWindow.loadURL(url);
+    }
+    S4E_mainWindow.setMenu(null);
+    S4E_mainWindow.on('closed', function() {
+        S4E_mainWindow = null;
+    });
 }
 
 app.whenReady().then(() => {

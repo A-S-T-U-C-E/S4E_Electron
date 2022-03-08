@@ -1,7 +1,0 @@
-Blockly.Blocks.DS18B20_SEARCH.getBlockType = function() {
-    return Blockly.Types.BOOLEAN;
-};
-
-Blockly.Blocks.DS18B20_TEMP.getBlockType = function() {
-    return Blockly.Types.DECIMAL;
-};

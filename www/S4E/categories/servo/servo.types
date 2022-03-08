@@ -1,9 +1,0 @@
-Blockly.Blocks.SERVO_MOVE_EXTERNAL.getBlockType = function() {
-    return Blockly.Types.NULL;
-};
-Blockly.Blocks.SERVO_MOVE_SLIDER.getBlockType = function() {
-    return Blockly.Types.NULL;
-};
-Blockly.Blocks.SERVO_READ_DEGREES.getBlockType = function() {
-    return Blockly.Types.NUMBER;
-};

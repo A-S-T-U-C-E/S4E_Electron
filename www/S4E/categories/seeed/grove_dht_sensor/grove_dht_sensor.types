@@ -1,3 +1,0 @@
-Blockly.Blocks.GROVE_DHT_SENSOR_READ.getBlockType = function() {
-    return Blockly.Types.SHORT_NUMBER;
-};

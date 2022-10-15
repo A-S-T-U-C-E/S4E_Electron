@@ -110,7 +110,7 @@
         "tableify": "^1.1.1"
     },
     "devDependencies": {
-        "electron": "^17.1.1",
+        "electron": "^17.2.0",
         "electron-builder": "^22.14.13"
     }
 }
